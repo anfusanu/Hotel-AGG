@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
 
 
 
-var superAdminRouter = require('./routes/superAdminRoutes');
+var portalRouter = require('./routes/portalRoutes');
 
 var app = express();
 
@@ -56,9 +56,9 @@ mongoose.connect(process.env.MONGO_URL,{
 
 
 
-app.use('/super-admin',superAdminRouter);
+app.use('/portal',portalRouter);
 app.use('/',(req,res) =>{
-  res.redirect('/super-admin/login')
+  res.redirect('/portal/login')
 });
 
 // catch 404 and forward to error handler

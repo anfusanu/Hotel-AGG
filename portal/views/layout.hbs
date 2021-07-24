@@ -41,9 +41,18 @@
                 <div class="sidebar-menu">
                     <ul class="menu">
                         <!-- <li class="sidebar-title">Menu</li> -->
+                        {{#if newUser}}
+                        <li class="sidebar-item {{#ifeq Active 'registration'}} active {{/ifeq}}">
+                            <a href="/portal/registration" class='sidebar-link'>
+                                <i class="bi bi-grid-fill"></i>
+                                <span>Registration</span>
+                            </a>
+                        </li>
+                        {{else}}
+
 
                         <li class="sidebar-item {{#ifeq Active 'dashboard'}} active {{/ifeq}}">
-                            <a href="/super-admin/dashboard" class='sidebar-link'>
+                            <a href="/portal/dashboard" class='sidebar-link'>
                                 <i class="bi bi-grid-fill"></i>
                                 <span>Dashboard</span>
                             </a>
@@ -83,16 +92,16 @@
 
                          <li class="sidebar-title">Management</li>
 
-                        <li class="sidebar-item  {{#ifeq Active 'portal'}} active {{/ifeq}}">
-                            <a href="/super-admin/portal-mgt" class='sidebar-link'>
+                        <li class="sidebar-item  {{#ifeq Active 'reception'}} active {{/ifeq}}">
+                            <a href="/portal/reception-mgt" class='sidebar-link'>
                                 <i class="bi bi-stack"></i>
-                                <span>Portal MGT</span>
+                                <span>Reception MGT</span>
                             </a>
                         </li>
                      
 
                         <li class="sidebar-item  {{#ifeq Active 'subs'}} active {{/ifeq}}">
-                            <a href="/super-admin/subs-mgt" class='sidebar-link'>
+                            <a href="/portal/subs-mgt" class='sidebar-link'>
                                 <i class="bi bi-file-earmark-medical-fill"></i>
                                 <span>Subscription</span>
                             </a>
@@ -100,29 +109,29 @@
 
                         
                         <li class="sidebar-item  {{#ifeq Active 'sales'}} active {{/ifeq}}">
-                            <a href="/super-admin/sales" class='sidebar-link'>
+                            <a href="/portal/sales" class='sidebar-link'>
                                 <i class="bi bi-cash"></i>
                                 <span>Sales</span>
                             </a>
                         </li>
 
-                         <li class="sidebar-title">Settings</li>
+                        
+                        {{/if}}
+                        <li class="sidebar-title">Settings</li>
 
 
                         <li class="sidebar-item  {{#ifeq Active 'settings'}} active {{/ifeq}}">
-                            <a href="/super-admin/change-password" class='sidebar-link'>
+                            <a href="/portal/change-password" class='sidebar-link'>
                                 <i class="bi bi-key-fill"></i>
                                 <span>Change Password</span>
                             </a>
                         </li>
-
                         <li class="sidebar-item ">
-                            <a href="/super-admin/logout" class='sidebar-link'>
+                            <a href="/portal/logout" class='sidebar-link'>
                                 <i class="bi bi-door-closed-fill"></i>
                                 <span>Logout</span>
                             </a>
                         </li>
-
                     </ul>
                 </div>
                 <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>

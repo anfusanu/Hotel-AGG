@@ -1,186 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>ALPHA ECOM</title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="all,follow">
-  <!-- Bootstrap CSS-->
-  <link rel="stylesheet" href="/templates/user-template/vendor/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/templates/admin-template/vendors/bootstrap-icons/bootstrap-icons.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>AGG | Hotels.</title>
 
-  <!-- Lightbox-->
-  <link rel="stylesheet" href="/templates/user-template/vendor/lightbox2/css/lightbox.min.css">
-  <!-- Range slider-->
-  <link rel="stylesheet" href="/templates/user-template/vendor/nouislider/nouislider.min.css">
-  <!-- Bootstrap select-->
-  <link rel="stylesheet" href="/templates/user-template/vendor/bootstrap-select/css/bootstrap-select.min.css">
-  <!-- Owl Carousel-->
-  <link rel="stylesheet" href="/templates/user-template/vendor/owl.carousel2/assets/owl.carousel.min.css">
-  <link rel="stylesheet" href="/templates/user-template/vendor/owl.carousel2/assets/owl.theme.default.css">
-  <!-- Google fonts-->
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@300;400;700&amp;display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Martel+Sans:wght@300;400;800&amp;display=swap">
-  <!-- theme stylesheet-->
-  <link rel="stylesheet" href="/templates/user-template/css/style.default.css" id="theme-stylesheet">
-  <!-- Custom stylesheet - for your changes-->
-  <link rel="stylesheet" href="/templates/user-template/css/custom.css">
-  <link rel="stylesheet" href="/templates/admin-template/vendors/toastify/toastify.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-    integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
-    crossorigin="anonymous" /> <!-- Favicon-->
-  <link rel="shortcut icon" href="/templates/user-template/img/favicon.png">
-  <!-- Tweaks for older IEs-->
-  <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
+    <!-- Favicons-->
+    <link rel="shortcut icon" href="/templates/user-template/img/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" type="image/x-icon" href="/templates/user-template/img/apple-touch-icon-57x57-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="/templates/user-template/img/apple-touch-icon-72x72-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="/templates/user-template/img/apple-touch-icon-114x114-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="/templates/user-template/img/apple-touch-icon-144x144-precomposed.png">
+
+    <!-- GOOGLE WEB FONT -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800" rel="stylesheet">
+
+    <!-- BASE CSS -->
+    <link href="/templates/user-template/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/templates/user-template/css/style.css" rel="stylesheet">
+	<link href="/templates/user-template/css/vendors.css" rel="stylesheet">
+
+    <!-- YOUR CUSTOM CSS -->
+    <link href="/templates/user-template/css/custom.css" rel="stylesheet">
+
 </head>
 
 <body>
-  <div class="page-holder">
-    <!-- navbar-->
-    <header class="header bg-white" style="
-    position: sticky;
-    top: 0;
-    z-index: 99;">
-      <div class="container px-0 px-lg-3">
-        <nav class="navbar navbar-expand-lg navbar-light py-3 px-lg-0"><a class="navbar-brand" href="/"><span
-              class="font-weight-bold text-uppercase text-dark">ALPHA</span></a>
-          <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-            aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-              <li class="nav-item">
-                <!-- Link--><a class="nav-link {{#if home_active}} active {{/if}}" href="/">Home</a>
-              </li>
-              <li class="nav-item">
-                <!-- Link--><a class="nav-link{{#if shop_active}} active {{/if}}" href="/shop?page=1">Shop</a>
-              </li>
-
-            </ul>
-            {{#if notLoggedIn}}
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item"><a class="nav-link" href="/cart"> <i
-                    class="fas fa-dolly-flatbed mr-1 text-gray"></i>Cart<small class="text-gray">(<span id="cart-count">
-                      {{#if count.cart}}
-                      {{count.cart}}
-                      {{else}}0
-                      {{/if}}</span>)</small></a></li>
-              <li class="nav-item"><a class="nav-link" href="/login">
-                  <i class="fas fa-user-alt mr-1 text-gray"></i>Login</a></li>
-            </ul>
-            {{else}}
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item"><a class="nav-link" href="/cart"> <i
-                    class="fas fa-dolly-flatbed mr-1 text-gray"></i>Cart<small class="text-gray">(<span id="cart-count">
-                      {{#if count.cart}}
-                      {{count.cart}}
-                      {{else}}0
-                      {{/if}}</span>)</small></a></li>
-              <li class="nav-item"><a class="nav-link" href="/wishlist"> <i class="far fa-heart mr-1"></i><small
-                    class="text-gray"> (<span id="wish-count">
-                      {{#if count.wish}}
-                      {{count.wish}}
-                      {{else}}0
-                      {{/if}}</span>)</small></a></li>
-              <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="pagesDropdown" href="#"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
-                    class="fas fa-user-alt mr-1 text-gray"></i>{{user}}</a>
-                <div class="dropdown-menu mt-3" aria-labelledby="pagesDropdown">
-                  <a class="dropdown-item border-0 transition-link" href="/settings/profile">Setting</a>
-                  <a class="dropdown-item border-0 transition-link" href="/logout">Logout</a>
-                </div>
-              </li>
-            </ul>
-            {{/if}}
-          </div>
-        </nav>
-      </div>
-    </header>
-
+    <!-- Wrapper -->
     {{{body}}}
-    <footer class="bg-dark text-white">
-      <div class="container py-4">
-        <div class="row py-5">
-          <div class="col-md-4 mb-3 mb-md-0">
-            <h6 class="text-uppercase mb-3">Customer services</h6>
-            <ul class="list-unstyled mb-0">
-              <li><a class="footer-link" href="#">Help &amp; Contact Us</a></li>
-              <li><a class="footer-link" href="#">Returns &amp; Refunds</a></li>
-              <li><a class="footer-link" href="#">Terms &amp; Conditions</a></li>
-            </ul>
-          </div>
-          <div class="col-md-4 mb-3 mb-md-0">
-            <h6 class="text-uppercase mb-3">Company</h6>
-            <ul class="list-unstyled mb-0">
-              <li><a class="footer-link" href="#">What We Do</a></li>
-              <li><a class="footer-link" href="#">Available Services</a></li>
-              <li><a class="footer-link" href="#">FAQs</a></li>
-            </ul>
-          </div>
-          <div class="col-md-4">
-            <h6 class="text-uppercase mb-3">Social media</h6>
-            <ul class="list-unstyled mb-0">
-              <li><a class="footer-link" href="#">Twitter</a></li>
-              <li><a class="footer-link" href="#">Instagram</a></li>
-              <li><a class="footer-link" href="#">Facebook</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="border-top pt-4" style="border-color: #1d1d1d !important">
-          <div class="row">
-            <div class="col-lg-6">
-              <p class="small text-muted mb-0">&copy; 2021 All rights reserved.</p>
-            </div>
-            <div class="col-lg-6 text-lg-right">
-              <p class="small text-muted mb-0">Designed by <a class="text-white reset-anchor" href="#">Anfus Inc</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
-    <!-- JavaScript files-->
-    <script src="/templates/user-template/vendor/jquery/jquery.min.js"></script>
-    <script src="/templates/user-template/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="/templates/user-template/vendor/lightbox2/js/lightbox.min.js"></script>
-    <script src="/templates/user-template/vendor/nouislider/nouislider.min.js"></script>
-    <script src="/templates/user-template/vendor/bootstrap-select/js/bootstrap-select.min.js"></script>
-    <script src="/templates/user-template/vendor/owl.carousel2/owl.carousel.min.js"></script>
-    <script src="/templates/user-template/vendor/owl.carousel2.thumbs/owl.carousel2.thumbs.min.js"></script>
-    <script src="/templates/user-template/js/front.js"></script>
-    <script>
-      // ------------------------------------------------------- //
-      //   Inject SVG Sprite - 
-      //   see more here 
-      //   https://css-tricks.com/ajaxing-svg-sprite/
-      // ------------------------------------------------------ //
-      function injectSvgSprite(path) {
 
-        var ajax = new XMLHttpRequest();
-        ajax.open("GET", path, true);
-        ajax.send();
-        ajax.onload = function (e) {
-          var div = document.createElement("div");
-          div.className = 'd-none';
-          div.innerHTML = ajax.responseText;
-          document.body.insertBefore(div, document.body.childNodes[0]);
-        }
-      }
-      // this is set to BootstrapTemple website as you cannot 
-      // inject local SVG sprite (using only 'icons/orion-svg-sprite.svg' path)
-      // while using file:// protocol
-      // pls don't forget to change to your domain :)
-      injectSvgSprite('https://bootstraptemple.com/files/icons/orion-svg-sprite.svg');
+  <!-- COMMON SCRIPTS -->
+    <script src="/templates/user-template/js/jquery-2.2.4.min.js"></script>
+    <script src="/templates/user-template/js/common_scripts.js"></script>
+    <script src="/templates/user-template/js/main.js"></script>
+	<script src="/templates/user-template/assets/validate.js"></script>
+	
+	<!-- DATEPICKER  -->
+	<script>
+	$(function() {
+	  'use strict';
+	  $('input[name="dates"]').daterangepicker({
+		  autoUpdateInput: false,
+		  locale: {
+			  cancelLabel: 'Clear'
+		  }
+	  });
+	  $('input[name="dates"]').on('apply.daterangepicker', function(ev, picker) {
+		  $(this).val(picker.startDate.format('MM-DD-YY') + ' > ' + picker.endDate.format('MM-DD-YY'));
+	  });
+	  $('input[name="dates"]').on('cancel.daterangepicker', function(ev, picker) {
+		  $(this).val('');
+	  });
+	});
+	</script>
+	
+	<!-- INPUT QUANTITY  -->
+	<script src="/templates/user-template/js/input_qty.js"></script>
 
-    </script>
-    <!-- FontAwesome CSS - loading as last, so it doesn't block rendering-->
-
-  </div>
+	<!-- SPECIFIC SCRIPTS -->
+	<script src="/templates/user-template/js/pw_strenght.js"></script>
+	
 </body>
-
 </html>

@@ -6,11 +6,11 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session')
 var hbs = require('hbs')
+const mongoose = require('mongoose');
 
 
 
-var adminRouter = require('./routes/admin');
-var usersRouter = require('./routes/users');
+var userRouter = require('./routes/userRoutes');
 
 var app = express();
 
@@ -39,18 +39,27 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-  secret: 'keyboard_cat',
+  secret: process.env.SESSION_SECRET,
   cookie: { maxAge: 6000000 },
   resave: false,
   saveUninitialized: true
 
 }))
 
+mongoose.connect(process.env.MONGO_URL,{
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true
+})
+.then( () => console.log('DB connected'))
+.catch((err) => console.log(err));
 
 
 
-app.use('/', usersRouter);
-app.use('/admin', adminRouter);
+app.use('/app',userRouter);
+// app.use('/',(req,res) =>{
+//   res.redirect('/portal/login')
+// });
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
