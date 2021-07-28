@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AGG ADMIN</title>
     <style>
-        body{
+        body {
             background-color: rgb(245, 245, 245) !important;
         }
     </style>
@@ -14,6 +14,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/templates/admin-template/css/bootstrap.css">
+
+    {{#ifeq Active 'imageUpload'}}
+    <link rel="stylesheet" href="/templates/admin-template/vendors/toastify/toastify.css">
+    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
+    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
+        rel="stylesheet">
+
+    {{/ifeq}}
 
     <link rel="stylesheet" href="/templates/admin-template/vendors/iconly/bold.css">
 
@@ -23,42 +31,56 @@
     <link rel="shortcut icon" href="/templates/admin-template/images/favicon.svg" type="image/x-icon">
 </head>
 
-    <div id="app">
+<div id="app">
 
-        <div id="sidebar" class="active">
-            <div class="sidebar-wrapper active">
-                <div class="sidebar-header">
-                    <div class="d-flex justify-content-between">
-                        <div class="logo">
-                            <a href="index.html"><img src="/templates/admin-template/images/logo/logo.png" alt="Logo"
-                                    srcset=""></a>
-                        </div>
-                        <div class="toggler">
-                            <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
-                        </div>
+    <div id="sidebar" class="active">
+        <div class="sidebar-wrapper active">
+            <div class="sidebar-header">
+                <div class="d-flex justify-content-between">
+                    <div class="logo">
+                        <a href="index.html"><img src="/templates/admin-template/images/logo/logo.png" alt="Logo"
+                                srcset=""></a>
+                    </div>
+                    <div class="toggler">
+                        <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
                     </div>
                 </div>
-                <div class="sidebar-menu">
-                    <ul class="menu">
-                        <!-- <li class="sidebar-title">Menu</li> -->
-                        {{#if newUser}}
-                        <li class="sidebar-item {{#ifeq Active 'registration'}} active {{/ifeq}}">
-                            <a href="/portal/registration" class='sidebar-link'>
-                                <i class="bi bi-grid-fill"></i>
-                                <span>Registration</span>
-                            </a>
-                        </li>
-                        {{else}}
+            </div>
+            <div class="sidebar-menu">
+                <ul class="menu">
+                    <!-- <li class="sidebar-title">Menu</li> -->
+                    {{#if newUser}}
+                    <li class="sidebar-item {{#ifeq Active 'registration'}} active {{/ifeq}}">
+                        <a href="/registration/initial" class='sidebar-link'>
+                            <i class="bi bi-grid-fill"></i>
+                            <span>Initial Registration</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item {{#ifeq Active 'imageUpload'}} active {{/ifeq}}">
+                        <a href="/registration/image-upload" class='sidebar-link'>
+                            <i class="bi bi-cloud-arrow-up-fill"></i>
+                            <span>Image upload</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item {{#ifeq Active 'serviceRegistration'}} active {{/ifeq}}">
+                        <a href="/registration/services" class='sidebar-link'>
+                            <i class="bi bi-stack"></i>
+                            <span>Service Registration</span>
+                        </a>
+                    </li>
+                    {{else}}
 
 
-                        <li class="sidebar-item {{#ifeq Active 'dashboard'}} active {{/ifeq}}">
-                            <a href="/portal/dashboard" class='sidebar-link'>
-                                <i class="bi bi-grid-fill"></i>
-                                <span>Dashboard</span>
-                            </a>
-                        </li>
+                    <li class="sidebar-item {{#ifeq Active 'dashboard'}} active {{/ifeq}}">
+                        <a href="/portal/dashboard" class='sidebar-link'>
+                            <i class="bi bi-grid-fill"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
 
-                        <!-- <li class="sidebar-item  has-sub">
+                    <!-- <li class="sidebar-item  has-sub">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-stack"></i>
                                 <span>Components</span>
@@ -87,64 +109,64 @@
                             </ul>
                         </li> -->
 
-                        
 
 
-                         <li class="sidebar-title">Management</li>
 
-                        <li class="sidebar-item  {{#ifeq Active 'reception'}} active {{/ifeq}}">
-                            <a href="/portal/reception-mgt" class='sidebar-link'>
-                                <i class="bi bi-stack"></i>
-                                <span>Reception MGT</span>
-                            </a>
-                        </li>
-                     
+                    <li class="sidebar-title">Management</li>
 
-                        <li class="sidebar-item  {{#ifeq Active 'subs'}} active {{/ifeq}}">
-                            <a href="/portal/subs-mgt" class='sidebar-link'>
-                                <i class="bi bi-file-earmark-medical-fill"></i>
-                                <span>Subscription</span>
-                            </a>
-                        </li>
-
-                        
-                        <li class="sidebar-item  {{#ifeq Active 'sales'}} active {{/ifeq}}">
-                            <a href="/portal/sales" class='sidebar-link'>
-                                <i class="bi bi-cash"></i>
-                                <span>Sales</span>
-                            </a>
-                        </li>
-
-                        
-                        {{/if}}
-                        <li class="sidebar-title">Settings</li>
+                    <li class="sidebar-item  {{#ifeq Active 'reception'}} active {{/ifeq}}">
+                        <a href="/portal/reception-mgt" class='sidebar-link'>
+                            <i class="bi bi-stack"></i>
+                            <span>Reception MGT</span>
+                        </a>
+                    </li>
 
 
-                        <li class="sidebar-item  {{#ifeq Active 'settings'}} active {{/ifeq}}">
-                            <a href="/portal/change-password" class='sidebar-link'>
-                                <i class="bi bi-key-fill"></i>
-                                <span>Change Password</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item ">
-                            <a href="/portal/logout" class='sidebar-link'>
-                                <i class="bi bi-door-closed-fill"></i>
-                                <span>Logout</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+                    <li class="sidebar-item  {{#ifeq Active 'subs'}} active {{/ifeq}}">
+                        <a href="/portal/subs-mgt" class='sidebar-link'>
+                            <i class="bi bi-file-earmark-medical-fill"></i>
+                            <span>Subscription</span>
+                        </a>
+                    </li>
+
+
+                    <li class="sidebar-item  {{#ifeq Active 'sales'}} active {{/ifeq}}">
+                        <a href="/portal/sales" class='sidebar-link'>
+                            <i class="bi bi-cash"></i>
+                            <span>Sales</span>
+                        </a>
+                    </li>
+
+
+                    {{/if}}
+                    <li class="sidebar-title">Settings</li>
+
+
+                    <li class="sidebar-item  {{#ifeq Active 'settings'}} active {{/ifeq}}">
+                        <a href="/portal/change-password" class='sidebar-link'>
+                            <i class="bi bi-key-fill"></i>
+                            <span>Change Password</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item ">
+                        <a href="/portal/logout" class='sidebar-link'>
+                            <i class="bi bi-door-closed-fill"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
+            <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
         </div>
-        <div id="main">
-            <header class="mb-3">
-                <a href="#" class="burger-btn d-block d-xl-none">
-                    <i class="bi bi-justify fs-3"></i>
-                </a>
-            </header>
+    </div>
+    <div id="main">
+        <header class="mb-3">
+            <a href="#" class="burger-btn d-block d-xl-none">
+                <i class="bi bi-justify fs-3"></i>
+            </a>
+        </header>
         {{{body}}}
-            {{!-- <footer>
+        {{!-- <footer>
                 <div class="footer clearfix mb-0 text-muted">
                     <div class="float-start">
                         <p>2021 &copy; Mazer</p>
@@ -155,16 +177,16 @@
                     </div>
                 </div>
             </footer> --}}
-        </div>
     </div>
+</div>
 
-    <script src="/templates/admin-template/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-    <script src="/templates/admin-template/js/bootstrap.bundle.min.js"></script>
+<script src="/templates/admin-template/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="/templates/admin-template/js/bootstrap.bundle.min.js"></script>
 
-    <script src="/templates/admin-template/vendors/apexcharts/apexcharts.js"></script>
-    <script src="/templates/admin-template/js/pages/dashboard.js"></script>
+<script src="/templates/admin-template/vendors/apexcharts/apexcharts.js"></script>
+<script src="/templates/admin-template/js/pages/dashboard.js"></script>
 
-    <script src="/templates/admin-template/js/main.js"></script>
-    </body>
+<script src="/templates/admin-template/js/main.js"></script>
+</body>
 
 </html>

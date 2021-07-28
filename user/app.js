@@ -57,9 +57,9 @@ mongoose.connect(process.env.MONGO_URL,{
 
 
 app.use('/app',userRouter);
-// app.use('/',(req,res) =>{
-//   res.redirect('/portal/login')
-// });
+app.use('/',(req,res) =>{
+  res.redirect('/app')
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

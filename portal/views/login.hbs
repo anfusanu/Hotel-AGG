@@ -81,8 +81,8 @@
     <script>
       document.getElementById('signup').addEventListener('click',(event)=>{
         event.preventDefault();
-         const adminEmail = document.getElementById('loginAdminEmail').value;
-        const passKey = document.getElementById('loginPassKey').value;
+         const adminEmail = document.getElementById('signupAdminEmail').value;
+        const passKey = document.getElementById('signupPassKey').value;
 
         const requestOptions = {
         method: "POST",
@@ -96,8 +96,8 @@
         fetch(`/portal/signup`, requestOptions)
         .then((response) =>  response.json())
         .then((data) => {
-          console.log(data)
-        })
+          if (!data.isMatch) alert(data.message)
+          else window.location.href = "/portal/dashboard"})
         .catch((err) => console.log(err));
       })
        

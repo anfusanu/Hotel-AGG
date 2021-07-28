@@ -1,0 +1,375 @@
+<style>
+  #map {
+    width: 100%;
+    height: 100%;
+    border-radius: .5rem;
+  }
+</style>
+<link rel="stylesheet" href="/templates/admin-template/vendors/toastify/toastify.css">
+
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css" rel="stylesheet" />
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js"></script>
+<!-- Load the `mapbox-gl-geocoder` plugin. -->
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet"
+  href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css" />
+<!-- Promise polyfill script is required -->
+
+<!-- to use Mapbox GL Geocoder in IE 11. -->
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+<div class="page-heading">
+  <h3>
+    Register
+  </h3>
+</div>
+<section class="row">
+  <div class="col-md-12 col-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title">
+          Enter the details of your place
+        </h4>
+      </div>
+      <div class="card-content">
+        <div class="card-body">
+          <form class="form form-vertical" action="/registration/initial-update" method="POST" id="registrationForm">
+            <div class="form-body">
+              <div class="row px-4">
+                <div class="row p-5 m-3 bg-light shadow-lg" style="border-radius: .5 rem;">
+                  <!--  Enter your first name of the owner of the portal -->
+                  <h4 class="p-3">
+                    Info
+                  </h4>
+                  <div class="col-12 col-md-6">
+                    <div class="form-group">
+                      <label for="first-name-vertical">
+                        First Name
+                      </label>
+                      <input value="{{requestDetail.firstName}}" type="text" class="form-control" name="firstName"
+                        id="firstName" placeholder="Enter your first name" />
+                    </div>
+                  </div>
+                  <!--  Enter the last name of the owner of the portal  -->
+                  <div class="col-12 col-md-6">
+                    <div class="form-group">
+                      <label for="first-name-vertical">
+                        Last Name
+                      </label>
+                      <input value="{{requestDetail.lastName}}" type="text" class="form-control" name="lastName"
+                        id="lastName" placeholder="Enter your first name" />
+                    </div>
+                  </div>
+
+                  <!-- Title of your place -->
+                  <div class="col-12 col-md-6">
+                    <div class="form-group">
+                      <label for="first-name-vertical">
+                        Title of your portal
+                      </label>
+                      <input value="{{requestDetail.portalTitle}}" type="text" class="form-control" name="portalTitle"
+                        id="portalTitle" placeholder="Enter your portal title" />
+                    </div>
+                  </div>
+                  <!-- Portal type -->
+                  <div class="col-12 col-md-6">
+                    <div class="form-group">
+                      <label for="first-name-vertical">
+                        What kind of place will you host?
+                      </label>
+                      <select class="form-select" id="spaceType" name="spaceType">
+                        {{#if requestDetail.spaceType}}
+                        <option value="{{requestDetail.spaceType}}">
+                          --{{requestDetail.spaceType}}--
+                        </option>
+
+                        {{else}}
+                        <option value="">
+                          --Select your space type--
+                        </option>
+                        {{/if}}
+                        <option value="Flat">
+                          Flat
+                        </option>
+                        <option value="House">
+                          House
+                        </option>
+                        <option value="PG">
+                          PG
+                        </option>
+                        <option value="Hotel">
+                          Hotel
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <!-- Space privacy options  -->
+                  <div class="col-12 col-md-6">
+                    <div class="form-group">
+                      <label for="first-name-vertical">
+                        What kind of privacy the guests will have?
+                      </label>
+                      <select class="form-select" id="spacePrivacy" name="spacePrivacy">
+                        {{#if requestDetail.spacePrivacy}}
+                        <option value="{{requestDetail.spacePrivacy}}">
+                          --{{requestDetail.spacePrivacy}}--
+                        </option>
+
+                        {{else}}
+                        <option value="">
+                          --Select your space privacy--
+                        </option>
+                        {{/if}}
+
+                        <option value="Private">
+                          Private
+                        </option>
+                        <option value="Shared">
+                          Shared
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <!-- Other services provided -->
+                  <div class="col-md-6 col-12">
+                    <label for="first-name-vertical">
+                      Other service provided
+                    </label>
+                    <ul class="list-unstyled mb-0 p-2">
+                      <li class="d-inline-block me-2 mb-1">
+                        <div class="form-check">
+                          <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="form-check-input form-check-primary form-check-glow"
+                              name="foodService" id="foodService" {{#if requestDetail.services.foodService}} checked
+                              {{/if}} />
+                            <label class="form-check-label" for="foodService">Food Service</label>
+                          </div>
+                        </div>
+                      </li>
+                      <li class="d-inline-block me-2 mb-1">
+                        <div class="form-check">
+                          <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="form-check-input form-check-primary form-check-glow"
+                              name="eventHall" id="eventHall" {{#if requestDetail.services.eventHall}} checked
+                              {{/if}} />
+                            <label class="form-check-label" for="eventHall">Event Halls</label>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <!--  User bio  -->
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label for="first-name-vertical">
+                        Description about yourself
+                      </label>
+                      <textarea type="text" rows="6" class="form-control" placeholder="Your bio" id="userBio"
+                        name="userBio">{{requestDetail.userBio}}</textarea>
+                    </div>
+                  </div>
+                  <!--  Description of place  -->
+                  <div class="col-12">
+                    <div class="form-group">
+                      <label for="first-name-vertical">
+                        Description of the place
+                      </label>
+                      <textarea type="text" class="form-control"
+                        placeholder="Write a detailed description of your place" rows="6" id="portalBio"
+                        name="portalBio">{{requestDetail.portalBio}}</textarea>
+                    </div>
+                  </div>
+                </div>
+                <!--  Google map Integration  -->
+                <div class="row p-5 m-3 bg-light shadow-lg" style="border-radius: .5rem;">
+                  <div class="col-12 col-md-4">
+                    <h4 class="p-4">
+                      Address
+                    </h4>
+                    <div class="form-group">
+                      <label for="first-name-vertical">
+                        Location of you place
+                      </label>
+                      <input value="{{requestDetail.portalAddress.place}}" type="text" class="form-control"
+                        placeholder="Eg: Place" id="place" name="place" />
+                    </div>
+                    <div class="form-group">
+                      <label for="first-name-vertical">
+                        Address
+                      </label>
+                      <textarea type="text" class="form-control" placeholder="Enter your full Address" id="address"
+                        name="address" style="resize: none;">{{requestDetail.portalAddress.address}}</textarea>
+                    </div>
+                    <div class="form-group">
+                      <label for="first-name-vertical">
+                        District
+                      </label>
+                      <input value="{{requestDetail.portalAddress.district}}" type="text" class="form-control"
+                        placeholder="District" id="district" name="district" />
+                    </div>
+                    <div class="form-group">
+                      <label for="first-name-vertical">
+                        State
+                      </label>
+                      <input value="{{requestDetail.portalAddress.state}}" type="text" class="form-control"
+                        placeholder="State" id="state" name="state" />
+                    </div>
+                    <div class="form-group">
+                      <label for="first-name-vertical">
+                        Pin Code
+                      </label>
+                      <input value="{{requestDetail.portalAddress.pincode}}" type="number" class="form-control"
+                        maxlength="6" minlength="6" placeholder="Pincode" id="pincode" name="pincode" />
+                    </div>
+                    <div class="form-group">
+                      <label for="first-name-vertical">
+                        Geo Location
+                      </label>
+                      <textarea class="form-control" name="geolocation" id="geolocation" cols="10"
+                        placeholder="Geo Location"
+                        style="resize: none;">{{requestDetail.portalAddress.geolocation}}</textarea>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-8">
+                   <div class="shadow-sm" id="map"></div>
+                  </div>
+                  <!--  Google map Integration END  -->
+                </div>
+                <div class="col-12 d-flex justify-content-end p-4">
+                  <button type="submit" id="update" class="btn btn-primary me-1 mb-1 p-3 m-4 fw-bold">
+                    Update Info
+                  </button>
+
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script src="/templates/admin-template/vendors/toastify/toastify.js"></script>
+
+<script>
+  mapboxgl.accessToken =
+    'pk.eyJ1IjoiYW5mdXNhbnUiLCJhIjoiY2tyazNiZXdiMG1mbzMxbGluZ2V1YW1iZiJ9.IH0s4V3VCqZeAERV01LooA';
+  var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [80.26, 13.09],
+    zoom: 13
+  });
+  const geolocate = new mapboxgl.GeolocateControl({
+    positionOptions: {
+      enableHighAccuracy: true
+    },
+    trackUserLocation: true,
+    showAccuracyCircle: false
+  })
+  map.on('load', function () {
+    geolocate.trigger();
+  });
+  const marker = new
+  mapboxgl.Marker({
+    draggable: true
+  })
+  const geocoder = new MapboxGeocoder({
+    mapboxgl: mapboxgl,
+    accessToken: mapboxgl.accessToken,
+    marker: false
+  })
+  geocoder.on('result', e => {
+    marker.setLngLat(e.result.center).addTo(map)
+    document.getElementById('geolocation').value = e.lngLat;
+    marker.on('dragend',
+      e => {
+        document.getElementById('geolocation').value = e.target.getLngLat(); //
+        marker
+      })
+  })
+  // Add the control to the map. map.addControl(geocoder) 
+  // Add geolocate control to the map.
+
+  map.addControl(geolocate);
+  map.addControl(new mapboxgl.NavigationControl());
+  map.on('click', (e) => {
+    marker.setLngLat(e.lngLat).addTo(map)
+    document.getElementById('geolocation').value = e.lngLat;
+    marker.on('dragend',
+      e => {
+        document.getElementById('geolocation').value = e.target.getLngLat();
+      })
+  })
+</script>
+<script src="/templates/admin-template/vendors/jquery/jquery.min.js"></script>
+<script>
+  document.getElementById('registrationForm')
+    .addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          firstName: $('#firstName').val(),
+          lastName: $('#lastName').val(),
+          portalTitle: $('#portalTitle').val(),
+          spaceType: $('#spaceType').val(),
+          spacePrivacy: $('#spacePrivacy').val(),
+          userBio: $('#userBio').val(),
+          portalBio: $('#portalBio').val(),
+          place: $('#place').val(),
+          address: $('#address').val(),
+          district: $('#district').val(),
+          state: $('#state').val(),
+          pincode: $('#pincode').val(),
+          geolocation: $('#geolocation').val(),
+          foodService: $('#foodService').is(':checked'),
+          eventHall: $('#eventHall').is(':checked'),
+        }),
+      }
+
+      fetch(`/registration/initial-update`, requestOptions)
+        .then((response) => response.json())
+        .then((isSuccess) => {
+          if (isSuccess) {
+            Toastify({
+              text: "Updated",
+              duration: 3000,
+              close: true,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "#0",
+            }).showToast();
+          } else {
+            Toastify({
+              text: "Error.. Please try again",
+              duration: 3000,
+              close: true,
+              gravity: "top",
+              position: "right",
+              backgroundColor: "#ff0000",
+            }).showToast();
+          }
+        })
+        .catch((err) => {
+          Toastify({
+            text: "Error.. Please try again",
+            duration: 3000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            backgroundColor: "#ff0000",
+          }).showToast();
+          console.log(err)
+          setTimeout(function () {
+            location.reload();
+          }, 1000)
+
+        })
+
+    })
+</script>

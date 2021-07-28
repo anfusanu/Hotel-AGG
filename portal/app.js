@@ -11,6 +11,7 @@ const mongoose = require('mongoose');
 
 
 var portalRouter = require('./routes/portalRoutes');
+var registrationRouter = require('./routes/registrationRouter')
 
 var app = express();
 
@@ -57,6 +58,8 @@ mongoose.connect(process.env.MONGO_URL,{
 
 
 app.use('/portal',portalRouter);
+app.use('/registration',registrationRouter);
+
 app.use('/',(req,res) =>{
   res.redirect('/portal/login')
 });
