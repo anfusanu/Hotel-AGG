@@ -61,6 +61,27 @@
                     </div>
                   </div>
 
+                  
+                  <div class="col-12 col-md-6">
+                    <div class="form-group">
+                      <label for="first-name-vertical">
+                        Contact Email
+                      </label>
+                      <input value="{{requestDetail.emailAddress}}" type="text" class="form-control" name="emailAddress"
+                        id="emailAddress" placeholder="Enter your email" />
+                    </div>
+                  </div>
+                  <!--  Enter the phone number of the owner of the portal  -->
+                  <div class="col-12 col-md-6">
+                    <div class="form-group">
+                      <label for="first-name-vertical">
+                        Contact Number
+                      </label>
+                      <input value="{{requestDetail.phoneNumber}}" type="text" class="form-control" name="phoneNumber"
+                        id="phoneNumber" placeholder="Enter your phone number" />
+                    </div>
+                  </div>
+
                   <!-- Title of your place -->
                   <div class="col-12 col-md-6">
                     <div class="form-group">
@@ -133,7 +154,7 @@
                   <!-- Other services provided -->
                   <div class="col-md-6 col-12">
                     <label for="first-name-vertical">
-                      Other service provided
+                      Other service provided {{requestDetail.services.foodService}}
                     </label>
                     <ul class="list-unstyled mb-0 p-2">
                       <li class="d-inline-block me-2 mb-1">
@@ -150,7 +171,7 @@
                         <div class="form-check">
                           <div class="custom-control custom-checkbox">
                             <input type="checkbox" class="form-check-input form-check-primary form-check-glow"
-                              name="eventHall" id="eventHall" {{#if requestDetail.services.eventHall}} checked
+                              name="eventHall" id="eventHall" {{#if requestDetail.services.eventHall.status}} checked
                               {{/if}} />
                             <label class="form-check-label" for="eventHall">Event Halls</label>
                           </div>
@@ -225,13 +246,16 @@
                       <label for="first-name-vertical">
                         Geo Location
                       </label>
-                      <textarea class="form-control" name="geolocation" id="geolocation" cols="10"
-                        placeholder="Geo Location"
-                        style="resize: none;">{{requestDetail.portalAddress.geolocation}}</textarea>
+                      <input class="form-control my-2" name="latitude" id="latitude" cols="10" placeholder="Latitude"
+                        value="{{requestDetail.portalAddress.geolocation.latitude}}" />
+
+                      <input class="form-control" name="longitude" id="longitude" cols="10" placeholder="Longitude"
+                        value="{{requestDetail.portalAddress.geolocation.longitude}}" />
                     </div>
                   </div>
                   <div class="col-12 col-md-8">
-                   {{!-- <div class="shadow-sm" id="map"></div> --}}
+                    {{!-- Map DIV is below --}}
+                    <div class="shadow-sm" id="map"></div>
                   </div>
                   <!--  Google map Integration END  -->
                 </div>
@@ -280,26 +304,25 @@
     marker: false
   })
   geocoder.on('result', e => {
-    marker.setLngLat(e.result.center).addTo(map)
-    document.getElementById('geolocation').value = e.lngLat;
-    marker.on('dragend',
-      e => {
-        document.getElementById('geolocation').value = e.target.getLngLat(); //
-        marker
-      })
+    marker.on('dragend', e => {
+      document.getElementById('latitude').value = e.target.getLngLat().lat;
+      document.getElementById('longitude').value = e.target.getLngLat().lng;
+    })
   })
   // Add the control to the map. map.addControl(geocoder) 
   // Add geolocate control to the map.
 
+  map.addControl(geocoder);
   map.addControl(geolocate);
   map.addControl(new mapboxgl.NavigationControl());
   map.on('click', (e) => {
     marker.setLngLat(e.lngLat).addTo(map)
-    document.getElementById('geolocation').value = e.lngLat;
-    marker.on('dragend',
-      e => {
-        document.getElementById('geolocation').value = e.target.getLngLat();
-      })
+    document.getElementById('latitude').value = e.lngLat.lat;
+    document.getElementById('longitude').value = e.lngLat.lng;
+    marker.on('dragend', e => {
+      document.getElementById('latitude').value = e.target.getLngLat().lat;
+      document.getElementById('longitude').value = e.target.getLngLat().lng;
+    })
   })
 </script>
 <script src="/templates/admin-template/vendors/jquery/jquery.min.js"></script>
@@ -316,6 +339,8 @@
         body: JSON.stringify({
           firstName: $('#firstName').val(),
           lastName: $('#lastName').val(),
+          emailAddress:$('#emailAddress').val(),
+          phoneNumber:$('#phoneNumber').val(),
           portalTitle: $('#portalTitle').val(),
           spaceType: $('#spaceType').val(),
           spacePrivacy: $('#spacePrivacy').val(),
@@ -326,7 +351,8 @@
           district: $('#district').val(),
           state: $('#state').val(),
           pincode: $('#pincode').val(),
-          geolocation: $('#geolocation').val(),
+          longitude: $('#longitude').val(),
+          latitude: $('#latitude').val(),
           foodService: $('#foodService').is(':checked'),
           eventHall: $('#eventHall').is(':checked'),
         }),

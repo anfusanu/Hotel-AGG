@@ -1,0 +1,283 @@
+<link rel="stylesheet" href="/templates/admin-template/vendors/toastify/toastify.css" />
+
+<div class="page-heading">
+    <h3>
+        Service Registration
+    </h3>
+</div>
+<section class="row">
+    <div class="col-md-12 col-12">
+        <div class="card">
+            {{!-- <div class="card-header">
+                <h4 class="card-title">
+                    Enter the details of your place
+                </h4>
+            </div> --}}
+            <div class="card-content">
+                <div class="card-body">
+                    <form class="form form-vertical" action="/registration/services" method="POST" id="servicesForm">
+                        <div class="form-body">
+                            <div class="row px-4">
+                                <!-- Room Details -->
+                                <div class="row p-5 m-3 bg-light shadow-lg" style="border-radius: .5 rem;">
+                                    <div class="col-md-6">
+                                        <h4>
+                                            Room Details
+                                        </h4>
+                                        <p>Add the types of rooms you provide.</p>
+                                    </div>
+                                    <div class="col-md-6 d-flex justify-content-end">
+
+                                        <button type="button" class="btn p-2 fw-bold rounded-pill m-3 border-0" data-bs-toggle="modal"
+                                            data-bs-target="#roomModal">
+                                            <i class="bi bi-file-plus-fill display-4 text-primary"></i>
+                                        </button>
+                                    </div>
+                                    {{#if services.roomService.roomDetail}}
+                                    <div class="col-md-12 p-5">
+                                        <table class="table">
+                                            <tr>
+                                                <th>Title</th>
+                                                <th>Type</th>
+                                                <th>Price</th>
+                                                <th>Quantity</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                            
+                                            {{#each services.roomService.roomDetail}}
+                                            <tr>
+                                                <td>{{roomTitle}}</td>
+                                                <td> {{roomType}} </td>
+                                                <td>${{roomPrice}}</td>
+                                                <td>{{roomQty}} Room/s</td>
+                                                <td class="text-center"><i class="bi bi-trash-fill text-danger" style="cursor: pointer;"
+                                                onclick="window.location.href= '/registration/services/delete-room' "></i></td>
+
+                                            </tr>
+                                            {{/each}}
+                                        </table>
+
+                                    </div>
+                                    {{/if}}
+
+
+                                </div>
+                                {{#if services.eventHall.status}}
+                                <div class="row p-5 m-3 bg-light shadow-lg" style="border-radius: .5 rem;">
+                                    <div class="col-md-6">
+                                        <h4>
+                                            Event Details
+                                        </h4>
+                                        <p>Add the types of events you provide.</p>
+                                    </div>
+                                    <div class="col-md-6 d-flex justify-content-end">
+
+                                        <button type="button" class="btn p-2 fw-bold rounded-pill m-3 border-0" data-bs-toggle="modal"
+                                            data-bs-target="#eventModal">
+                                            <i class="bi bi-file-plus-fill display-4 text-primary"></i>
+                                        </button>
+
+                                    </div>
+                                    {{#if services.eventHall.eventDetail}}
+                                    <div class="col-md-12 p-5">
+                                        <table class="table">
+                                            <tr>
+                                                <th>Title</th>
+                                                <th>Type</th>
+                                                <th>Price</th>
+                                                <th>Quantity</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                            
+                                            {{#each services.eventHall.eventDetail}}
+                                            <tr>
+                                                <td>{{eventTitle}}</td>
+                                                <td> {{eventType}} </td>
+                                                <td>${{eventPrice}}</td>
+                                                <td>{{eventQty}} Hall/s</td>
+                                                <td class="text-center"><i class="bi bi-trash-fill text-danger" style="cursor: pointer;"
+                                                onclick="window.location.href= '/registration/services/delete-event' "></i></td>
+
+                                            </tr>
+                                            {{/each}}
+                                        </table>
+
+                                    </div>
+                                    {{/if}}
+
+
+                                </div>
+
+                                {{/if}}
+                                {{!-- {{#if services.foodService}}
+                                <div class="row p-3 m-3 bg-light shadow-lg" style="border-radius: 1 rem;">
+                                    <!--  Enter your first name of the owner of the portal -->
+                                    <h4 class="p-3">
+                                        Food Services
+                                    </h4>
+                                    <div class="col-12 col-md-12">
+                                        <div class="form-group">
+                                            <label for="foodServiceDesc" class="py-3">
+                                                Enter a description of the food available in your
+                                                place..
+                                            </label>
+                                            <textarea class="form-control" name="foodServiceDesc" id="foodServiceDesc"
+                                                placeholder="Food can be added after the approval" rows="5"
+                                                style="resize: none;"></textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                {{/if}} --}}
+
+                               
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!--  MODAL of Event Registration -->
+<div class="modal fade text-left" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel33">
+                    ADD EVENT </h4>
+                    <p>This is only for your request purpose.</p>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <form id="addEvent" method="POST" action="/registration/services/add-event">
+            
+                <div class="modal-body">
+                    <label>Title: </label>
+                    <div class="form-group">
+                        <input type="text" placeholder="Event name" class="form-control" id="eventTitle" name="eventTitle" required/>
+                    </div>
+                    <label>Type: </label>
+                    <div class="form-group">
+                        <select class="form-select" id="eventType" name="eventType">
+                            <option value="">
+                                --Select your event type--
+                            </option>
+                            <option value="AC">
+                                AC
+                            </option>
+                            <option value="Non-AC">
+                                Non-AC
+                            </option>
+                            <option value="Wild">
+                                Wild
+                            </option>
+                            <option value="Unique">
+                                Unique
+                            </option>
+                        </select>
+                    </div>
+                    <label>Price: </label>
+                    <div class="form-group">
+                        <input type="text" placeholder="Price of event" class="form-control" id="eventPrice" name="eventPrice" required/>
+                    </div>
+                    <label>How many such events you provide: </label>
+                    <div class="form-group">
+                        <input type="text" placeholder="Quantity" class="form-control" id="eventQty" name="eventQty" required/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Close</span>
+                    </button>
+                    <button type="submit" class="btn btn-primary ml-1">
+                        <i class="bx bx-check d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">ADD</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- MODAL OF ROOM REGISTRATION -->
+
+<div class="modal fade text-left" id="roomModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel33">
+                    ADD ROOM </h4>
+                    <p>This is only for your request purpose.</p>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <form id="addRoom" method="POST" action="/registration/services/add-room">
+            
+                <div class="modal-body">
+                    <label>Title: </label>
+                    <div class="form-group">
+                        <input type="text" placeholder="Room name" class="form-control" id="roomTitle" name="roomTitle" required/>
+                    </div>
+                    <label>Type: </label>
+                    <div class="form-group">
+                        <select class="form-select" id="roomType" name="roomType"  required>
+                            <option value="">
+                                --Select your room type--
+                            </option>
+                            <option value="AC">
+                                AC
+                            </option>
+                            <option value="Non-AC">
+                                Non-AC
+                            </option>
+                            <option value="Wild">
+                                Wild
+                            </option>
+                            <option value="Unique">
+                                Unique
+                            </option>
+                        </select>
+                    </div>
+                    <label>Price: </label>
+                    <div class="form-group">
+                        <input type="text" placeholder="Price of room" class="form-control" id="roomPrice" name="roomPrice" required/>
+                    </div>
+                    <label>How many such rooms you provide: </label>
+                    <div class="form-group">
+                        <input type="text" placeholder="Quantity" class="form-control" id="roomQty" name="roomQty" required/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Close</span>
+                    </button>
+                    <button type="submit" class="btn btn-primary ml-1">
+                        <i class="bx bx-check d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">ADD</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    document.getElementById('addEvent').addEventListener('submit', (event)=>{
+        console.log('SUBMITTED')
+    })
+</script>

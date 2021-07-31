@@ -29,12 +29,11 @@ module.exports = {
           const admin = new Admin(formCred);
           admin
             .save()
-            .then((user) => {
-              console.log(user);
+            .then((dbUser) => {
               resolve({
                 isMatch: true,
-                userId: user._id,
-                hotelId: user.hotelId,
+                userId: dbUser._id,
+                userStatus: dbUser.userStatus 
               });
             })
             .catch((err) =>{

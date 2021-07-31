@@ -7,9 +7,12 @@ const helper = require("../helpers/portalHelper");
 const verifyLogin = (req, res, next) => {
   console.log(req.session.admin);
   if (req.session.admin) {
-    if (req.session.admin.verifiedUser !== "Pending") next();
+    if (req.session.admin.verifiedUser == "Verified") next();
+    else if (req.session.admin.verifiedUser == "Placed")
+      res.redirect("/registration/placed");
     else res.redirect("/registration/initial");
-  } else {
+  } 
+  else {
     req.session.destroy();
     res.redirect("/portal/login");
   }
@@ -45,13 +48,12 @@ router.post("/login", function (req, res) {
 });
 
 router.post("/signup", function (req, res) {
-  console.log(req.body);
   helper
     .signUp(req.body)
     .then((loginStatus) => {
       req.session.admin = {
         userId: loginStatus.userId,
-        isLogged: true,
+        verifiedUser: loginStatus.userStatus,
       };
       res.json(loginStatus);
     })
@@ -78,6 +80,10 @@ router.get("/subs-mgt", verifyLogin, function (req, res) {
 
 router.get("/sales", verifyLogin, function (req, res) {
   res.render("sales", { Active: "sales" });
+});
+
+router.get("/test", function (req, res) {
+  res.render("test", { Active: "sales" });
 });
 
 // router.get("/admin-init", (req,res) =>{

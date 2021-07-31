@@ -1,0 +1,123 @@
+<script src="/templates/admin-template/vendors/jquery/jquery.min.js"></script>
+
+
+
+<div class="page-heading">
+    <h3>
+        Register
+    </h3>
+</div>
+<input type="text" name="" id="search" />
+
+<section class="row">
+    <div class="col-md-12 col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">
+                    Enter the details of your place
+                </h4>
+            </div>
+            <div class="card-content">
+                <div class="card-body">
+                    <form class="form form-vertical" action="/registration/initial-update" method="POST"
+                        id="registrationForm">
+                        <div class="form-body">
+                            <div class="row px-4">
+                                <div class="row p-5 m-3 bg-light shadow-lg" style="border-radius: .5 rem;">
+                                    <!--  Enter your first name of the owner of the portal -->
+                                    <h4 class="p-3">
+                                        Info
+                                    </h4>
+
+                                    <!--  Description of place  -->
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="numberOfRooms">
+                                                Description of the place
+                                            </label>
+                                            <select name="numberOfRooms" id="numberOfRooms"
+                                                class="form-select mb-2 mr-sm-2 mb-sm-0">
+                                                <option value="">Select Value</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div id="roomTypeSection"></div>
+                                    </div>
+
+                                </div>
+                                <!--  Google map Integration  -->
+
+                                <div class="col-12 d-flex justify-content-end p-4">
+                                    <button type="submit" id="update" class="btn btn-primary me-1 mb-1 p-3 m-4 fw-bold">
+                                        Update Info
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    
+</script>
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#numberOfRooms").on("change", function () {
+            var numInputs = $(this).val();
+            $('#roomTypeSection').html('');
+            for (var i = 0; i < numInputs; i++) {
+                var j = i * 1;
+                var $section = $(
+                    `
+                    <div class="row">
+                        <div class="col-4 col-md-4">
+                            <div class="form-group">
+                                <label for="roomType${j}">
+                                    Room Name
+                                </label>
+                                <input value="" type="text" class="form-control" name="roomName${j}"
+                                    id="roomName${j}" placeholder="Enter the room title" />
+                            </div>
+                        </div>
+
+                        <div class="col-4 col-md-4">
+                            <div class="form-group">
+                                <label for="roomType${j}">
+                                    Room Name
+                                </label>
+                                <input value="" type="text" class="form-control" name="roomName${j}"
+                                    id="roomName${j}" placeholder="Enter the room title" />
+                            </div>
+                        </div>
+
+                        <div class="col-4 col-md-4">
+                            <div class="form-group">
+                                <label for="roomType${j}">
+                                    Room Name
+                                </label>
+                                <input value="" type="text" class="form-control" name="roomName${j}"
+                                    id="roomName${j}" placeholder="Enter the room title" />
+                            </div>
+                        </div>
+                    </div>
+                    `
+                );
+                $('#roomTypeSection').append($section);
+            }
+        });
+    });
+</script>

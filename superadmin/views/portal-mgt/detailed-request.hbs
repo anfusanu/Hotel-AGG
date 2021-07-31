@@ -1,0 +1,417 @@
+<style>
+    #map {
+        width: 100%;
+        height: 100%;
+        border-radius: .5rem;
+    }
+</style>
+<link rel="stylesheet" href="/templates/admin-template/vendors/toastify/toastify.css">
+
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css" rel="stylesheet" />
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js"></script>
+<!-- Load the `mapbox-gl-geocoder` plugin. -->
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet"
+    href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css"
+    type="text/css" />
+<!-- Promise polyfill script is required -->
+
+<!-- to use Mapbox GL Geocoder in IE 11. -->
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+<div class="page-heading">
+    <h3>
+        Request Details
+    </h3>
+</div>
+<section class="row">
+    <div class="col-md-12 col-12">
+        <div class="card">
+            <!-- <div class="card-header">
+                <h4 class="card-title">
+                    Enter the details of your place
+                </h4>
+            </div> -->
+            <div class="card-content">
+                <div class="card-body">
+                  
+                        <div class="form-body">
+                            <div class="row px-4">
+                                <div class="row p-5 m-3 bg-light shadow-lg" style="border-radius: .5 rem;">
+                                    <!--  Enter your first name of the owner of the portal -->
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="first-name-vertical">
+                                                First Name
+                                            </label>
+                                            <h4 class="p-3">
+                                                {{requestDetail.firstName}}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <!--  Enter the last name of the owner of the portal  -->
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="first-name-vertical">
+                                                Last Name
+                                            </label>
+                                            <h4 class="p-3">
+                                                {{requestDetail.lastName}}
+                                            </h4>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="first-name-vertical">
+                                                Email
+                                            </label>
+                                            <h4 class="p-3">
+                                                {{requestDetail.emailAddress}}
+                                            </h4>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-md-4">
+                                        <div class="form-group">
+                                            <label for="first-name-vertical">
+                                                Phone Number
+                                            </label>
+                                            <h4 class="p-3">
+                                                {{requestDetail.phoneNumber}}
+                                            </h4>
+                                        </div>
+                                    </div>
+
+                                    <!-- Title of your place -->
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="first-name-vertical">
+                                                Title of your portal
+                                            </label>
+                                            <h4 class="p-3">
+                                                {{requestDetail.portalTitle}}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="first-name-vertical">
+                                                Title Tag
+                                            </label>
+                                            <h4 class="p-3">
+                                                {{requestDetail.portalTag}}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <!-- Portal type -->
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="first-name-vertical">
+                                                What kind of place will you host?
+                                            </label>
+                                            <h4 class="p-3">
+                                                {{requestDetail.spaceType}}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <!-- Space privacy options  -->
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="first-name-vertical">
+                                                What kind of privacy the guests will have?
+                                            </label>
+                                            <h4 class="p-3">
+                                                {{requestDetail.spacePrivacy}}
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <!--  Services provided -->
+                                    <div class="py-4">
+                                        <label for="first-name-vertical text-center">
+                                            Services Provided
+                                        </label>
+                                    </div>
+                                    {{#if requestDetail.services.roomService.status}}
+                                    <div class="row d-flex justify-content-center py-1">
+                                        <div class="col-md-2">
+                                            <h5 class="p-3">
+
+                                                <i class="bi bi-house-door display-4 p-3"></i>
+                                            </h5>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <table class="table">
+                                                <tr>
+                                                    <th>Title</th>
+                                                    <th>Type</th>
+                                                    <th>Price</th>
+                                                    <th>Quantity</th>
+                                                </tr>
+
+                                                {{#each requestDetail.services.roomService.roomDetail}}
+                                                <tr>
+                                                    <td>{{roomTitle}}</td>
+                                                    <td> {{roomType}} </td>
+                                                    <td>${{roomPrice}}</td>
+                                                    <td>{{roomQty}} Room/s</td>
+
+
+                                                </tr>
+                                                {{/each}}
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                    {{/if}}
+
+
+                                    {{#if requestDetail.services.eventHall.status}}
+                                    <div class="row d-flex justify-content-center py-5">
+                                        <div class="col-md-2">
+                                            <h5 class="p-3">
+                                                <i class="bi bi-columns-gap display-4 p-3"></i>
+                                            </h5>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <table class="table">
+                                                <tr>
+                                                    <th>Title</th>
+                                                    <th>Type</th>
+                                                    <th>Price</th>
+                                                    <th>Quantity</th>
+                                                </tr>
+
+                                                {{#each requestDetail.services.eventHall.eventDetail}}
+                                                <tr>
+                                                    <td>{{eventTitle}}</td>
+                                                    <td> {{eventType}} </td>
+                                                    <td>${{eventPrice}}</td>
+                                                    <td>{{eventQty}} Hall/s</td>
+
+
+                                                </tr>
+                                                {{/each}}
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                    {{/if}}
+
+
+                                    {{#if requestDetail.services.foodService}}
+                                    <div class="row d-flex justify-content-center">
+                                        <div class="col-md-2">
+                                            <h5 class="p-3">
+                                                <i class="bi bi-egg-fried display-4 p-3"></i>
+                                            </h5>
+                                        </div>
+                                        <div class="col-md-10"> <br>
+                                            <p class="text-center">The portal provide food that can be added later..
+                                                {{requestDetail.services.foodService}}</p>
+                                        </div>
+                                    </div>
+                                    {{/if}}
+
+
+
+
+
+                                    <div class="row py-5 my-5">
+                                        <!--  User bio  -->
+                                        <div class="col-12 col-md-6 ">
+                                            <div class="form-group">
+                                                <label for="first-name-vertical">
+                                                    User Bio
+                                                </label>
+                                                <h6 class="p-3">
+                                                    {{requestDetail.userBio}}
+                                                </h6>
+                                            </div>
+                                        </div>
+                                        <!--  Description of place  -->
+                                        <div class="col-12 col-md-6">
+                                            <div class="form-group">
+                                                <label for="first-name-vertical">
+                                                    Portal Bio
+                                                </label>
+                                                <h6 class="p-3">
+                                                    {{requestDetail.portalBio}}
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--  Google map Integration  -->
+                            <div class="row p-5 m-3 bg-light shadow-lg" style="border-radius: .5rem;">
+                                <div class="col-12 col-md-4">
+                                    <h4 class="p-4">
+                                        Address
+                                    </h4>
+                                    <div class="form-group">
+                                        <label for="first-name-vertical">
+                                            Location of you place
+                                        </label>
+                                        <h6 class="p-3">
+                                            {{requestDetail.portalAddress.place}}
+                                        </h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="first-name-vertical">
+                                            Address
+                                        </label>
+                                        <h6 class="p-3">
+                                            {{requestDetail.portalAddress.address}}
+                                        </h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="first-name-vertical">
+                                            District
+                                        </label>
+                                        <h6 class="p-3">
+                                            {{requestDetail.portalAddress.district}}
+                                        </h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="first-name-vertical">
+                                            State
+                                        </label>
+                                        <h6 class="p-3">
+                                            {{requestDetail.portalAddress.state}}
+                                        </h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="first-name-vertical">
+                                            Pin Code
+                                        </label>
+                                        <h6 class="p-3">
+                                            {{requestDetail.portalAddress.pincode}}
+                                        </h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="first-name-vertical">
+                                            Geo Location
+                                        </label>
+
+                                        <h6 class="p-3">
+                                            {{requestDetail.portalAddress.geolocation.latitude}},<br>
+                                            {{requestDetail.portalAddress.geolocation.longitude}}
+                                        </h6>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-8">
+                                    {{!-- Map DIV is below --}}
+                                    <!-- <div class="shadow-sm" id="map"></div> -->
+                                </div>
+                                <!--  Google map Integration END  -->
+                            </div>
+
+
+                            <div class="row d-flex justify-content-end p-5">
+                                <div class="col-md-6">
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#rejectModal"
+                                        style="background-color: #FF5473; font-weight: 900"
+                                        class="btn btn-outline-light p-2 w-100"><i class="bi bi-x-square-fill px-2"></i>
+                                        REJECT</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="/super-admin/portal-mgt/accept-request/{{requestDetail._id}}"
+                                        style="background-color: #4AF8B9; font-weight: 900;"
+                                        class="btn btn-outline-light p-2 w-100">
+                                        <i class="bi bi-check-square-fill px-2"></i>ACCEPT</a>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+
+<!-- Modal for Reject Message -->
+
+<div class="modal fade text-left" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel33"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel33">
+                    Why reject ? </h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <i data-feather="x"></i>
+                </button>
+            </div>
+            <form id="reject" method="POST" action="/super-admin/portal-mgt/reject-request/">
+                <input type="text" id="reqId" name="reqId" hidden value="{{requestDetail._id}}" />
+
+                <div class="modal-body">
+                    <div class="form-group d-flex justify-content-center">
+                            <input type="radio" class="btn-check" name="rejectType" id="warning" value="rejectWarning"
+                                autocomplete="off" checked>
+                            <label class="btn btn-outline-success" for="warning">Reject with Warning</label>
+
+
+                            <input type="radio" class="btn-check" name="rejectType" id="block" value="rejectBlock"
+                                autocomplete="off">
+                            <label class="btn btn-outline-danger" for="block">Reject and Block</label>
+                    </div>
+
+                    <label>Message for portal: </label>
+                    <div class="form-group">
+                        <textarea type="text" placeholder="Message" class="form-control" id="requestStatus"
+                            name="requestStatus" style="resize: none;" rows="5"></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                        <i class="bx bx-x d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Close</span>
+                    </button>
+                    <button type="submit" class="btn btn-danger ml-1">
+                        <i class="bx bx-check d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Reject</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    mapboxgl.accessToken =
+        'pk.eyJ1IjoiYW5mdXNhbnUiLCJhIjoiY2tyazNiZXdiMG1mbzMxbGluZ2V1YW1iZiJ9.IH0s4V3VCqZeAERV01LooA';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [{
+            {
+                requestDetail.portalAddress.geolocation.longitude
+            }
+        }, {
+            {
+                requestDetail.portalAddress.geolocation.latitude
+            }
+        }],
+        zoom: 13
+    });
+
+    const marker = new mapboxgl.Marker()
+
+    map.on('load', function (e) {
+        console.log(e)
+        marker.setLngLat([{
+            {
+                requestDetail.portalAddress.geolocation.longitude
+            }
+        }, {
+            {
+                requestDetail.portalAddress.geolocation.latitude
+            }
+        }]).addTo(map)
+    });
+</script>
