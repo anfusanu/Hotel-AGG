@@ -4,13 +4,26 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var session = require('express-session')
 var hbs = require('hbs')
 const mongoose = require('mongoose');
 
+ 
+const redis = require('redis')
+var session = require('express-session')
+let RedisStore = require('connect-redis')(session)
+// let redisClient = redis.createClient()
 
+let redisClient = redis.createClient({
+  host: 'localhost',
+  port: 6379,
+  password: 'A0S98FD76f3g6bvk2g35h98SG7FD2o354hjsd968',
+  db: 1,
+})
+redisClient.unref()
+redisClient.on('error', console.log)
 
 var userRouter = require('./routes/userRoutes');
+var appRouter = require('./routes/appRoutes');
 
 var app = express();
 
@@ -22,16 +35,28 @@ app.set('view engine', 'hbs');
 hbs.registerHelper('ifeq', function (arg1, arg2, options) {
   return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
 });
+hbs.registerHelper('ifEqual', function (arg1, arg2, options) {
+  return (`${arg1}` == `${arg2}`) ? options.fn(this) : options.inverse(this);
+});
 hbs.registerHelper('if_eq', function () {
   const args = Array.prototype.slice.call(arguments, 0, -1);
   const options = arguments[arguments.length - 1];
   const allEqual = args.every(function (expression) {
     return args[0] === expression;
   });
-
   return allEqual ? options.fn(this) : options.inverse(this);
 });
 
+hbs.registerHelper('distance', function (v1) {
+  let number = parseInt(v1) || 30000
+  return number /1000;
+});
+
+
+hbs.registerHelper('maxGuest', function (v1,v2) {
+  if (v1 > v2) return v2
+  else return v1
+});
 
 app.use(logger('dev'));
 app.use(express.json({ limit: '50mb' }));
@@ -40,9 +65,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   secret: process.env.SESSION_SECRET,
-  cookie: { maxAge: 6000000 },
+  store: new RedisStore({ client: redisClient }),
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: false
 
 }))
 
@@ -56,7 +81,8 @@ mongoose.connect(process.env.MONGO_URL,{
 
 
 
-app.use('/app',userRouter);
+app.use('/app',appRouter);
+app.use('/user',userRouter);
 app.use('/',(req,res) =>{
   res.redirect('/app')
 });

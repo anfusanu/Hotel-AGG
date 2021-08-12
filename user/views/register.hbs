@@ -1,52 +1,50 @@
-<div
-  id="register_bg"
-  style="background: url(/templates/user-template/img/hero_in_bg_1.jpg); background-size: cover; background-position: center;"
->
-  <nav id="menu" class="fake_menu"></nav>
+<div id="register_bg"
+  style="background: url(/templates/user-template/img/hero_in_bg_1.jpg); background-size: cover; background-position: center;">
+  {{!-- <nav id="menu" class="fake_menu"></nav>
   <div id="preloader">
     <div data-loader="circle-side"></div>
-  </div>
+  </div> --}}
   <!-- End Preload -->
   <div id="login">
     <aside>
-      <figure>
+      <figure style="cursor: pointer;" onclick="window.location.href='/app'">
         AGG
         {{! <a href="index.html"><img src="img/logo_sticky.png" width="155" height="36" data-retina="true" alt="" class="logo_sticky"></a> }}
       </figure>
-      <form autocomplete="off">
+      <form autocomplete="off" method="POST" action="/app/register" id="signupForm">
         <div class="form-group">
           <label>
             Your Name
           </label>
-          <input class="form-control" type="text" id="firstName" />
+          <input class="form-control" type="text" id="firstName" name="firstName" required/>
           <i class="ti-user"></i>
         </div>
         <div class="form-group">
           <label>
             Your Last Name
           </label>
-          <input class="form-control" type="text" id="lastName" />
+          <input class="form-control" type="text" id="lastName" name="lastName" required/>
           <i class="ti-user"></i>
         </div>
         <div class="form-group">
           <label>
             Your Email
           </label>
-          <input class="form-control" type="email" id="userEmail" />
+          <input class="form-control" type="email" id="userEmail" name="userEmail" required/>
           <i class="icon_mail_alt"></i>
         </div>
         <div class="form-group">
           <label>
             Your password
           </label>
-          <input class="form-control" type="password" id="password1" />
+          <input class="form-control" type="password" id="password1" name="password1" required/>
           <i class="icon_lock_alt"></i>
         </div>
         <div class="form-group">
           <label>
             Confirm password
           </label>
-          <input class="form-control" type="password" id="password2" />
+          <input class="form-control" type="password" id="password2" required/>
           <i class="icon_lock_alt"></i>
         </div>
         <div id="pass-info" class="clearfix"></div>
@@ -56,7 +54,7 @@
         <div class="text-center add_top_10">
           Already have an acccount?
           <strong>
-            <a href="#">
+            <a href="/app/login">
               Sign In
             </a>
           </strong>
@@ -68,30 +66,44 @@
     </aside>
   </div>
 </div>
-<!-- /login -->
+
+
+<script src="/templates/user-template/js/jquery-2.2.4.min.js"></script>
+  <script src="/templates/user-template/js/common_scripts.js"></script>
+  <script src="/templates/user-template/js/main.js"></script>
+  <script src="/templates/user-template/assets/validate.js"></script>
+
+
+
+  <!-- SPECIFIC SCRIPTS -->
+  <script src="/templates/user-template/js/pw_strenght.js"></script>
+
 <script>
-  document.getElementById('signup').addEventListener('click',(event)=>{
-        event.preventDefault();
-        const userEmail = document.getElementById('userEmail').value;
-        const passKey = document.getElementById('password1').value;
-        const firstName = document.getElementById('firstName').value;
-        const lastName = document.getElementById('lastName').value;
-
-
-        const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userEmail,passKey,firstName,lastName
-        }),
-      }
-
-        fetch(`/app/signup`, requestOptions)
-        .then((response) =>  response.json())
-        .then((data) => {
-          if (data.isMatch) window.location.href = '/app'
-          else alert(data.message)
-        })
-        .catch((err) => console.log(err));
+  document.getElementById('signupForm').addEventListener('submit', (event) => {
+    event.preventDefault();
+    console.log('HI IS IT WORKING')
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const userEmail = document.getElementById('userEmail').value;
+    const passKey = document.getElementById('password1').value;
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        userEmail,
+        passKey,
+        firstName,
+        lastName
+      }),
+    }
+    fetch(`/app/signup`, requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        if (!data.isMatch) alert(data.message)
+        else window.location.href = "/app"
       })
+      .catch((err) => console.log(err));
+  });
 </script>

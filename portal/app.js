@@ -1,12 +1,31 @@
 require('dotenv').config();
+
 var createError = require('http-errors');
 var express = require('express');
+var hbs = require('hbs')
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
+
+const redis = require('redis')
 var session = require('express-session')
-var hbs = require('hbs')
+let RedisStore = require('connect-redis')(session)
+// let redisClient = redis.createClient()
+
+let redisClient = redis.createClient({
+  host: 'localhost',
+  port: 6379,
+  password: 'A0S98FD76f3g6bvk2g35h98SG7FD2o354hjsd968',
+  db: 1,
+})
+redisClient.unref()
+redisClient.on('error', console.log)
+
+// let store = new RedisStore({ client: redisClient })
+
 const mongoose = require('mongoose');
+// const fileUpload = require('express-fileupload')
 
 
 
@@ -34,6 +53,7 @@ hbs.registerHelper('if_eq', function () {
 });
 
 
+
 app.use(logger('dev'));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
@@ -41,12 +61,14 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   secret: process.env.SESSION_SECRET,
-  cookie: { maxAge: 6000000 },
+  store: new RedisStore({ client: redisClient }),
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: false
 
 }))
-
+// app.use(fileUpload({
+//   limits: { fileSize: 50 * 1024 * 1024 },
+// }));
 mongoose.connect(process.env.MONGO_URL,{
   useNewUrlParser: true,
   useCreateIndex: true,

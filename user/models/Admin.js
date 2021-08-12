@@ -2,10 +2,6 @@ const mongoose = require("mongoose");
 
 const adminSchema = new mongoose.Schema(
   {
-    hotelId: {
-      type: String,
-      required: true,
-    },
     adminEmail: {
       type: String,
       trim: true,
@@ -18,6 +14,10 @@ const adminSchema = new mongoose.Schema(
     },
     userRole: {
       type: Number,
+      required: true,
+    },
+    userStatus: {
+      type: String,
       required: true,
     },
   },

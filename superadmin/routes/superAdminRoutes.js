@@ -24,41 +24,38 @@ router.get("/dashboard", verifyLogin, function (req, res) {
 
 //  Poratl MGT router where you handle the become a host requests
 router.get("/portal-mgt", verifyLogin, function (req, res) {
-  helper.getPortalRequests()
-  .then(portalRequests =>{
-  res.render("portal-mgt/request-mgt", { Active: "portal",portalRequests });
-  })
+  helper.getPortalRequests().then((portalRequests) => {
+    res.render("portal-mgt/request-mgt", { Active: "portal", portalRequests });
+  });
 });
 
 // detailed request of a user to become host, Where admin can choose to accept or reject it
-router.get("/portal-mgt/detailed-request/:reqId", verifyLogin,  (req, res) => {
-  helper.getRequestDetail(req.params.reqId)
-  .then(requestDetail => {
-    res.render('portal-mgt/detailed-request',{requestDetail})
-
-  })
-
+router.get("/portal-mgt/detailed-request/:reqId", verifyLogin, (req, res) => {
+  helper.getRequestDetail(req.params.reqId).then((requestDetail) => {
+    res.render("portal-mgt/detailed-request", { requestDetail });
+  });
 });
 
 // Admin accepts a request (GET request)
-router.get("/portal-mgt/accept-request/:reqId", verifyLogin, function (req, res) {
-  helper.acceptRequest(req.params.reqId)
-  .then(requestDetail => {
-    res.redirect('/super-admin/portal-mgt/')
-  })
-
-});
+router.get(
+  "/portal-mgt/accept-request/:reqId",
+  verifyLogin,
+  function (req, res) {
+    helper.acceptRequest(req.params.reqId).then((requestDetail) => {
+      res.redirect("/super-admin/portal-mgt/");
+    });
+  }
+);
 
 // Admin rejects a request with a message (POST request)
 
 router.post("/portal-mgt/reject-request/", verifyLogin, function (req, res) {
-console.log(req.body);
+  console.log(req.body);
   // helper.rejectRequest(req.body.reqId)
   // .then(requestDetail => {
   //   res.render('portal-mgt/detailed-request',{requestDetail})
 
   // })
-
 });
 
 router.get("/subs-mgt", verifyLogin, function (req, res) {
@@ -69,6 +66,13 @@ router.get("/sales", verifyLogin, function (req, res) {
   res.render("sales", { Active: "sales" });
 });
 
+router.get("/sales", verifyLogin, function (req, res) {
+  res.render("sales", { Active: "sales" });
+});
+
+
+
+// Pages that are only accessible if not logged in. [LOGIN, SIGNUP]
 router.get("/login", notLogin, function (req, res) {
   res.render("login", { layout: null });
 });

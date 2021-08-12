@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const helper = require("../helpers/registerHelper");
+const { imageUpload } = require("../helpers/s3bucket");
 
 const verifyNewLogin = (req, res, next) => {
   if (req.session.admin) {
@@ -50,9 +51,17 @@ router.get("/image-upload", verifyNewLogin, function (req, res) {
     userId: req.session.admin.userId,
   });
 });
-router.post("/image-upload", verifyNewLogin, function (req, res) {
-  if (req.files) console.log(req.files);
-  else console.log("No files");
+
+
+router.post(`/image-upload`, verifyNewLogin, imageUpload, (req, res) => {
+  let tagId = req.session.admin.userId;
+
+  roomImages = req.files.map(({ location }) => location)
+
+
+  helper.imageRegistration(tagId, roomImages).then((roomService) => {
+    
+  });
 });
 
 router.get("/services", verifyNewLogin, function (req, res) {

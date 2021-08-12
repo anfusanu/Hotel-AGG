@@ -1,0 +1,602 @@
+<link rel="stylesheet" href="/templates/addons/rater-js/style.css">
+
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css" rel="stylesheet" />
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js"></script>
+<!-- Load the `mapbox-gl-geocoder` plugin. -->
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet"
+  href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.2/mapbox-gl-geocoder.css" type="text/css" />
+<!-- Promise polyfill script is required -->
+
+<!-- to use Mapbox GL Geocoder in IE 11. -->
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+
+<main>
+  <section class="hero_in hotels_detail">
+    <div class="wrapper" style="background: url({{roomDetails.roomImages.[0]}}) center; background-size: cover;">
+      <div class="container">
+        <h1 class="fadeInUp"><span></span>{{portalDetails.portalTitle}}</h1>
+      </div>
+      <span class="magnific-gallery">
+        <a href="{{roomDetails.roomImages.[0]}}" class="btn_photos" title="Photo title" data-effect="mfp-zoom-in">View
+          photos</a>
+        {{#each roomDetails.roomImages}}
+        {{#ifeq @index 0}}
+        {{else}}
+        <a href="{{this}}" title="Photo title" data-effect="mfp-zoom-in"></a>
+        {{/ifeq}}
+        {{/each}}
+      </span>
+    </div>
+  </section>
+  <!--/hero_in-->
+
+  <div class="bg_color_1">
+    <nav class="secondary_nav sticky_horizontal">
+      <div class="container">
+        <ul class="clearfix">
+          <li><a href="#description" class="active">Description</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+          <li><a href="#sidebar">Booking</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container margin_60_35">
+      <div class="row">
+        <div class="col-lg-8">
+          <section id="description">
+            <h2>Description</h2>
+            <p>{{portalDetails.portalBio}}</p>
+            <p>{{roomDetails.roomDescription}}</p>
+
+            <div class="row">
+              <div class="col-lg-6">
+                <ul class="bullets">
+                  <li>Dolorem mediocritatem</li>
+                  <li>Mea appareat</li>
+                  <li>Prima causae</li>
+                  <li>Singulis indoctum</li>
+                </ul>
+              </div>
+              <div class="col-lg-6">
+                <ul class="bullets">
+                  <li>Timeam inimicus</li>
+                  <li>Oportere democritum</li>
+                  <li>Cetero inermis</li>
+                  <li>Pertinacia eum</li>
+                </ul>
+              </div>
+            </div>
+            <!-- /row -->
+            <hr />
+            <h3>Services</h3>
+
+
+
+
+            {{#each roomServices}}
+
+      
+            <div class="room_type {{#ifEqual this._id ../roomDetails._id}}gray tgl{{/ifEqual}}" 
+            style="cursor: pointer;"
+            {{#ifEqual this._id ../roomDetails._id}}
+                 onclick="window.location.href = '#'"
+                 {{else}}
+                 onclick="gotoRoom('{{this._id}}')"
+                 {{/ifEqual}}
+            >
+              <div class="row">
+                <div class="col-md-4" style="background : url({{this.roomImages.[0]}}) center;  background-size: cover;"></div>
+                <div class="col-md-8">
+                  <h4>{{this.roomTitle}}</h4>
+                  <p>{{this.roomDescription}}</p>
+                  <ul class="hotel_facilities">
+                    <li><img src="img/hotel_facilites_icon_3.svg" alt="" />King
+                      size Bed</li>
+                    <li><img src="img/hotel_facilites_icon_4.svg" alt="" />Free
+                      Wifi</li>
+                    <li><img src="img/hotel_facilites_icon_6.svg" alt="" />Bathtub</li>
+                    <li><img src="img/hotel_facilites_icon_7.svg" alt="" />Air
+                      Condition</li>
+                    <li><img src="img/hotel_facilites_icon_9.svg" alt="" />Swimming pool</li>
+                    <li><img src="img/hotel_facilites_icon_3.svg" alt="" />Hairdryer</li>
+                  </ul>
+                </div>
+              </div>
+              <!-- /row -->
+            </div>
+            {{/each}}
+
+
+
+            <!-- /rom_type -->
+            <hr />
+            <h3>Location</h3>
+            <div id="map" class="map map_single add_bottom_30"></div>
+            <!-- End Map -->
+          </section>
+          <!-- /section -->
+
+          <section id="reviews">
+            <h2>Reviews</h2>
+            <div class="reviews-container">
+              <div class="row">
+                <div class="col-lg-3">
+                  <div id="review_summary">
+                    <strong>8.5</strong>
+                    <em>Superb</em>
+                    <small>Based on 4 reviews</small>
+                  </div>
+                </div>
+                <div class="col-lg-9">
+                  <div class="row">
+                    <div class="col-lg-10 col-9">
+                      <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 90%" aria-valuenow="90"
+                          aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    </div>
+                    <div class="col-lg-2 col-3"><small><strong>5 stars</strong></small></div>
+                  </div>
+                  <!-- /row -->
+                  <div class="row">
+                    <div class="col-lg-10 col-9">
+                      <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 95%" aria-valuenow="95"
+                          aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    </div>
+                    <div class="col-lg-2 col-3"><small><strong>4 stars</strong></small></div>
+                  </div>
+                  <!-- /row -->
+                  <div class="row">
+                    <div class="col-lg-10 col-9">
+                      <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60"
+                          aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    </div>
+                    <div class="col-lg-2 col-3"><small><strong>3 stars</strong></small></div>
+                  </div>
+                  <!-- /row -->
+                  <div class="row">
+                    <div class="col-lg-10 col-9">
+                      <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="20"
+                          aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    </div>
+                    <div class="col-lg-2 col-3"><small><strong>2 stars</strong></small></div>
+                  </div>
+                  <!-- /row -->
+                  <div class="row">
+                    <div class="col-lg-10 col-9">
+                      <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 0" aria-valuenow="0"
+                          aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    </div>
+                    <div class="col-lg-2 col-3"><small><strong>1 stars</strong></small></div>
+                  </div>
+                  <!-- /row -->
+                </div>
+              </div>
+              <!-- /row -->
+            </div>
+
+            <hr/>
+
+            <div class="reviews-container">
+
+              <div class="review-box clearfix">
+                <figure class="rev-thumb"><img src="img/avatar1.jpg" alt="" />
+                </figure>
+                <div class="rev-content">
+                  <div class="rating">
+                    <i class="icon_star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i
+                      class="icon_star voted"></i><i class="icon_star"></i>
+                  </div>
+                  <div class="rev-info">
+                    Admin – April 03, 2016:
+                  </div>
+                  <div class="rev-text">
+                    <p>
+                      Sed eget turpis a pede tempor malesuada. Vivamus quis mi
+                      at leo pulvinar hendrerit. Cum sociis natoque penatibus et
+                      magnis dis
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- /review-box -->
+              <div class="review-box clearfix">
+                <figure class="rev-thumb"><img src="img/avatar2.jpg" alt="" />
+                </figure>
+                <div class="rev-content">
+                  <div class="rating">
+                    <i class="icon-star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i
+                      class="icon_star voted"></i><i class="icon_star"></i>
+                  </div>
+                  <div class="rev-info">
+                    Ahsan – April 01, 2016:
+                  </div>
+                  <div class="rev-text">
+                    <p>
+                      Sed eget turpis a pede tempor malesuada. Vivamus quis mi
+                      at leo pulvinar hendrerit. Cum sociis natoque penatibus et
+                      magnis dis
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- /review-box -->
+              <div class="review-box clearfix">
+                <figure class="rev-thumb"><img src="img/avatar3.jpg" alt="" />
+                </figure>
+                <div class="rev-content">
+                  <div class="rating">
+                    <i class="icon-star voted"></i><i class="icon_star voted"></i><i class="icon_star voted"></i><i
+                      class="icon_star voted"></i><i class="icon_star"></i>
+                  </div>
+                  <div class="rev-info">
+                    Sara – March 31, 2016:
+                  </div>
+                  <div class="rev-text">
+                    <p>
+                      Sed eget turpis a pede tempor malesuada. Vivamus quis mi
+                      at leo pulvinar hendrerit. Cum sociis natoque penatibus et
+                      magnis dis
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- /review-box -->
+            </div>
+            <!-- /review-container -->
+          </section>
+          <!-- /section -->
+          <hr />
+          {{#if user}}
+          <div class="add-review">
+            <h5>Leave a Review</h5>
+            <form id="reviewForm">
+              <div class="row">
+                <label for="" class="py-2 px-4">Rating</label>
+                <div class="form-group col-md-12">
+                  <div id="step"></div>
+                  <input type="hidden" name="reviewRating" id="reviewRating" value="0.5">
+                </div>
+
+                <div class="form-group col-md-12">
+                  <label>Heading *</label>
+                  <input
+                    type="text"
+                    name="reviewSubject"
+                    id="reviewSubject"
+                    placeholder=""
+                    class="form-control"
+                  />
+                </div>
+
+                <div class="form-group col-md-12">
+                  <label>Your Review</label>
+                  <textarea
+                    name="reviewText"
+                    id="reviewText"
+                    class="form-control"
+                    style="height:130px;"
+                  ></textarea>
+                </div>
+                <div class="form-group col-md-12 add_top_20">
+                  <input
+                    type="submit"
+                    value="Submit"
+                    class="btn_1"
+                    id="submit-review"
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
+          {{else}}
+          <div class="add-review">
+            <h5>Leave a Review</h5>
+            <form id="reviewForm">
+              <div class="row">
+               
+
+                <div class="form-group col-md-12 add_top_20">
+                  <a
+                    type="button"
+                    class="btn_1"
+                    href="/app/login"
+                  >Login to review</a>
+                </div>
+              </div>
+            </form>
+          </div>
+          {{/if}}
+
+
+        </div>
+        <!-- /col -->
+
+        <aside class="col-lg-4" id="sidebar">
+          <input type="hidden" id="dbRoomPrice" value="{{roomDetails.roomPrice}}">
+          <input type="hidden" id="dbExtraGuestPrice" value="{{roomDetails.extraBed}}">
+          <div class="box_detail booking">
+            <div class="price" >
+              <span >  <span id="roomPrice" style="font-size: 1.5rem !important;">{{roomDetails.roomPrice}}</span> <small>/night</small></span>
+              <div class="score"><span>Good<em>350 Reviews</em></span><strong>7.0</strong></div>
+            </div>
+
+            <div class="form-group">
+              <input class="form-control" type="text" name="dates" id="dates" placeholder="When.." autocomplete="off" value="{{query.dateFrom}} > {{query.dateTo}}"/>
+              <i class="icon_calendar"></i>
+            </div>
+
+            <div class="panel-dropdown">
+              <a href="#">Guests <span class="qtyTotal">1</span></a>
+              <div class="panel-dropdown-content right">
+                <div class="qtyButtons">
+                  <label>Guest</label>
+                  <input type="text" name="qtyInput" id="guestQty" value="{{#maxGuest query.guestQty roomDetails.maxOccupancy}}{{/maxGuest}}" max="{{roomDetails.maxOccupancy}}" />
+                </div>
+
+              </div>
+            </div>
+
+            <br>
+            <div >
+              Reserved 
+              <span class="float-right" > 
+                <span id="subTotal">{{roomDetails.roomPrice}}</span>
+                 x <span id="bookDays">1</span>
+                
+                </span>
+            </div>
+   
+            <hr>
+            <div id="total_cart">
+             Grand Total <span class="float-right" id="grandTotal">{{roomDetails.roomPrice}}</span>
+            </div>
+            <input type="hidden" id="roomId" value="{{roomDetails._id}}">
+            <button onclick="bookRoom()" class="add_top_30 btn_1 full-width purchase">Proceed to checkout</button>
+            <button onclick="wishList()" class="btn_1 full-width outline wishlist"><i class="icon_heart"></i>
+              Add to wishlist</button>
+            <div class="text-center"><small>No money charged in this step</small></div>
+          </div>
+         
+        </aside>
+      </div>
+      <!-- /row -->
+    </div>
+    <!-- /container -->
+  </div>
+  <!-- /bg_color_1 -->
+</main>
+<!--/main-->
+
+<script src="/templates/user-template/js/jquery-2.2.4.min.js"></script>
+  <script src="/templates/user-template/js/common_scripts.js"></script>
+  <script src="/templates/user-template/js/main.js"></script>
+  <script src="/templates/user-template/assets/validate.js"></script>
+
+<script src="/templates/addons/rater-js/rater-js.js"></script>
+
+
+  <!-- SPECIFIC SCRIPTS -->
+  <script src="/templates/user-template/js/pw_strenght.js"></script>
+
+
+
+
+  <script>
+    //Date Picker
+    $(function () {
+      'use strict';
+      $('input[name="dates"]').daterangepicker({
+        autoUpdateInput: false,
+        locale: {
+          cancelLabel: 'Clear'
+        }
+      });
+      $('input[name="dates"]').on('apply.daterangepicker', function (ev, picker) {
+        let dateFrom = picker.startDate.format('MM-DD-YYYY')
+        let dateTo = picker.endDate.format('MM-DD-YYYY')
+        $(this).val(dateFrom + ' > ' + dateTo);
+        let reserveDays = Math.round((new Date(dateTo)- new Date(dateFrom))/(1000*60*60*24)) + 1
+        $('#bookDays').html(reserveDays)
+        updateTotal()
+
+      });
+      $('input[name="dates"]').on('cancel.daterangepicker', function (ev, picker) {
+        $(this).val('');
+      });
+    });
+
+
+    // Quantity buttons
+	function qtySum(){
+    var arr = document.getElementsByName('qtyInput');
+    var tot=0;
+    for(var i=0;i<arr.length;i++){
+        if(parseInt(arr[i].value))
+            tot += parseInt(arr[i].value);
+    }
+
+    var cardQty = document.querySelector(".qtyTotal");
+    cardQty.innerHTML = tot;
+	} 
+	qtySum();
+
+	$(function() {
+
+	   $(".qtyButtons input").after('<div class="qtyInc"></div>');
+	   $(".qtyButtons input").before('<div class="qtyDec"></div>');
+	   $(".qtyDec, .qtyInc").on("click", function() {
+
+		  var $button = $(this);
+		  var oldValue = $button.parent().find("input").val();
+
+		  if ($button.hasClass('qtyInc')) {
+        let maxQty = '{{roomDetails.maxOccupancy}}' || 50
+        if (oldValue < parseFloat(maxQty)) {
+			  var newVal = parseFloat(oldValue) + 1;
+
+			 } else {
+         newVal = oldValue
+       }
+
+		  } else {
+			 // don't allow decrementing below zero
+			 if (oldValue > 1) {
+				var newVal = parseFloat(oldValue) - 1;
+			 } else {
+				newVal = 1;
+			 }
+		  }
+
+		  $button.parent().find("input").val(newVal);
+		  qtySum();
+		  $(".qtyTotal").addClass("rotate-x");
+
+	   });
+
+	   function removeAnimation() { $(".qtyTotal").removeClass("rotate-x"); }
+	   const counter = document.querySelector(".qtyTotal");
+	   counter.addEventListener("animationend", removeAnimation);
+
+	});
+
+  </script>
+
+
+<script>
+  //functions for next events
+
+  function gotoRoom (roomId){
+
+  let getDate = moment()
+  let dateFrom = getDate.format('MM-DD-YYYY')
+  let dateTo = getDate.add(1, 'days').format('MM-DD-YYYY')
+  let guestQty = 1
+
+  window.location.href = `/app/hotel-room-detail?roomId=${roomId}&dateFrom=${dateFrom}&dateTo=${dateTo}&guestQty=${guestQty}`
+}
+
+   function bookRoom () {
+
+    roomId = document.getElementById('roomId').value;
+    let dates = (document.getElementById('dates').value).split(" > ");
+    let guestQty = document.getElementById('guestQty').value;
+    reserveDays = Math.round((new Date(dates[1])- new Date(dates[0]))/(1000*60*60*24)) + 1
+    console.log('Booking')
+    console.log(reserveDays)
+
+    if(dates == '') alert('Input a valid date')
+      else{
+      window.location.href = `/app/checkout-room?roomId=${roomId}&dateFrom=${dates[0]}&dateTo=${dates[1]}&guestQty=${guestQty}`
+    }
+  }
+
+  function wishList () {
+    console.log('Add to wishlist')
+  }
+
+  
+
+  function updateTotal () {
+    var formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'INR',
+
+      // These options are needed to round to whole numbers if that's what you want.
+      //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+      //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+    });
+
+
+    let dates = (document.getElementById('dates').value).split(" > ");
+    let guestQty = document.getElementById('guestQty').value;
+    let reserveDays = Math.round((new Date(dates[1])- new Date(dates[0]))/(1000*60*60*24)) + 1
+        
+    let roomPrice = parseFloat(document.getElementById("dbRoomPrice").value)
+    document.getElementById("roomPrice").innerHTML = formatter.format(roomPrice)
+
+    //{{!-- let reserveDays = parseFloat(document.getElementById("bookDays").innerHTML) --}}
+    document.getElementById("bookDays").innerHTML = reserveDays
+    document.getElementById("subTotal").innerHTML = formatter.format(roomPrice)
+    document.getElementById("grandTotal").innerHTML = formatter.format((roomPrice * reserveDays))
+  }
+
+  updateTotal()
+
+</script>
+
+<script>
+  window.raterJs({
+    element:document.querySelector("#step"),
+    rateCallback:function rateCallback(rating, done) {
+        this.setRating(rating); 
+        $('#reviewRating').val(rating)
+        done(); 
+    },
+    starSize:28,
+    step:0.5,
+
+})
+</script>
+<script>
+  document.getElementById('reviewForm').addEventListener('submit',(event) => {
+    event.preventDefault();
+    let reviewText = $('#reviewText').val()
+    let reviewSubject = $('#reviewSubject').val()
+    let reviewRating = $('#reviewRating').val()
+    console.log(reviewRating)
+    console.log(reviewText)
+    console.log(reviewSubject)
+
+  })
+</script>
+
+<script>
+  $('.room_type').hover(
+function(){
+  if (!$(this).hasClass('tgl'))
+  $(this).toggleClass('gray');
+  }
+);
+</script>
+
+
+
+
+
+<script>
+  mapboxgl.accessToken =
+    'pk.eyJ1IjoiYW5mdXNhbnUiLCJhIjoiY2tyazNiZXdiMG1mbzMxbGluZ2V1YW1iZiJ9.IH0s4V3VCqZeAERV01LooA';
+  var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v11',
+    center: [ {{portalDetails.location.coordinates.[0]}} , {{portalDetails.location.coordinates.[1]}}],
+    zoom: 13
+  });
+  map.on('click', (e) => {
+     if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+          window.open(`https://www.google.com/maps/dir/?api=1&origin=${position.coords.latitude},${position.coords.longitude}&destination={{portalDetails.location.coordinates.[1]}},{{portalDetails.location.coordinates.[0]}}`)
+        });
+      } else {
+          window.open(`https://www.google.com/maps/search/?api=1&query={{portalDetails.location.coordinates.[1]}},{{portalDetails.location.coordinates.[0]}}`)
+      }
+  }) 
+  const marker = new
+  mapboxgl.Marker({
+    draggable: false
+  }).setLngLat([ {{portalDetails.location.coordinates.[0]}} , {{portalDetails.location.coordinates.[1]}}] ).addTo(map)
+
+
+</script>
+

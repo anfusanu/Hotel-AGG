@@ -1,0 +1,59 @@
+<main>
+  <div class="hero_in cart_section last">
+    <div class="wrapper">
+      <div class="container">
+        <div class="bs-wizard clearfix">
+          <div class="bs-wizard-step">
+            <div class="text-center bs-wizard-stepnum">Your cart</div>
+            <div class="progress">
+              <div class="progress-bar"></div>
+            </div>
+            <a href="cart-1.html" class="bs-wizard-dot"></a>
+          </div>
+
+          <div class="bs-wizard-step">
+            <div class="text-center bs-wizard-stepnum">Payment</div>
+            <div class="progress">
+              <div class="progress-bar"></div>
+            </div>
+            <a href="cart-2.html" class="bs-wizard-dot"></a>
+          </div>
+
+          <div class="bs-wizard-step active">
+            <div class="text-center bs-wizard-stepnum">Finish!</div>
+            <div class="progress">
+              <div class="progress-bar"></div>
+            </div>
+            <a href="#0" class="bs-wizard-dot"></a>
+          </div>
+        </div>
+        <!-- End bs-wizard -->
+        <div id="confirm">
+          <h4>Order completed!</h4>
+          <p>You'll receive a confirmation email at {{guestInfo.guestEmail}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/hero_in-->
+  <div class="bg_color_1">
+    <div class="container margin_60_35">
+      <div class="row text-center justify-content-center">
+
+        <button class="btn-primary p-3 fw-bold rounded border-0" onclick="window.location.href = '/user/order-history'">
+          Go to Order history</button>
+
+      </div>
+    </div>
+    <!-- /container -->
+  </div>
+</main>
+<!--/main-->
+
+{{! <div id="toTop"></div><!-- Back to top button --> }}
+
+<!-- COMMON SCRIPTS -->
+<script src="/templates/user-template/js/jquery-2.2.4.min.js"></script>
+<script src="/templates/user-template/js/common_scripts.js"></script>
+<script src="/templates/user-template/js/main.js"></script>
+<script src="/templates/user-template/assets/validate.js"></script>

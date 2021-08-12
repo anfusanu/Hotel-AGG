@@ -6362,7 +6362,7 @@ ul.share-buttons li i {
   clear: both;
   cursor: pointer;
   display: block;
-  float: left;
+  /* float: left; */
   font-family: inherit;
   font-size: 14px;
   font-weight: normal;

@@ -6,7 +6,7 @@ const portalRequest = require("../models/PortalRequest");
 module.exports = {
   updateRegistration: (regForm, tagId) => {
     return new Promise(async (resolve, reject) => {
-      console.log(regForm)
+      console.log(regForm);
       let regDB = {
         _id: tagId,
         firstName: regForm.firstName,
@@ -34,11 +34,10 @@ module.exports = {
             latitude: regForm.latitude,
             longitude: regForm.longitude,
           },
-        }
+        },
       };
 
       let data = await portalRequest.findOneAndUpdate({ _id: tagId }, regDB, {
-        new: true,
         upsert: true,
       });
 
@@ -96,17 +95,25 @@ module.exports = {
     });
   },
 
+  imageRegistration: (tagId, portalImages) =>
+    new Promise(async (resolve, reject) => {
+      const portalRequestUpdate = await portalRequest.updateOne(
+        { _id: tagId },
+        { requestStatus: "Placed" }
+      );
+    }),
+
   requestFinishUp: (tagId) => {
     return new Promise(async (resolve, reject) => {
       const portalRequestUpdate = await portalRequest.updateOne(
         { _id: tagId },
-        { requestStatus : "Placed" }
+        { requestStatus: "Placed" }
       );
 
       const userUpdate = await Admin.updateOne(
         { _id: tagId },
-        { userStatus : "Placed" }
-      ); 
+        { userStatus: "Placed" }
+      );
 
       if (portalRequestUpdate.n == 1 && userUpdate.n == 1) resolve(true);
       else reject(false);

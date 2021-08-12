@@ -1,0 +1,52 @@
+<link rel="stylesheet" href="/templates/admin-template/vendors/simple-datatables/style.css">
+<div class="page-heading">
+  <h3>Portal MGT</h3>
+</div>
+  <section class="section">
+    <div class="card">
+      <div class="card-header">
+        Simple Datatable
+      </div>
+      <div class="card-body">
+        <table class="table table-striped" id="table1">
+          <thead>
+            <tr>
+              <th>Portal ID</th>
+              <th>Portal Name</th>
+              <th>Date of join</th>
+              <th>Current Plan</th>
+              <th>Expires On</th>
+              <th>Total Amount</th>
+              <th class="text-center">Action</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Graiden</td>
+              <td>vehicula.aliquet@semconsequat.co.uk</td>
+              <td>076 4820 8838</td>
+              <td>Offenburg</td>
+              <td>Offenburg</td>
+              <td>Offenburg</td>
+
+              <td class="text-center">
+                <span style="background-color: #4AF8B9;" class="badge p-2"><i class="bi bi-shield-fill-check px-2"></i>Active</span>
+                <span style="background-color: #FF5473;" class="badge p-2"><i class="bi bi-shield-fill-x px-2"></i> Block</span>
+
+              </td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </section>
+
+<script
+  src="/templates/admin-template/vendors/simple-datatables/simple-datatables.js"
+></script>
+<script>
+  dataTable = new simpleDatatables.DataTable(table1);
+</script>

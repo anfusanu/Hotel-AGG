@@ -56,7 +56,7 @@ const PortalRequestSchema = new mongoose.Schema(
     services: {
       roomService: {
         status: Boolean,
-        roomDetail: Array
+        roomDetail: Array,
       },
       foodService: {
         status: Boolean,
@@ -94,14 +94,14 @@ const PortalRequestSchema = new mongoose.Schema(
         required: true,
       },
       geolocation: {
-        latitude : {
-          type : String,
-          required: true
+        latitude: {
+          type: String,
+          required: true,
         },
-        longitude : {
-          type : String,
-          required: true
-        }
+        longitude: {
+          type: String,
+          required: true,
+        },
       },
     },
     requestStatus: {
@@ -109,6 +109,7 @@ const PortalRequestSchema = new mongoose.Schema(
       trim: true,
       required: true,
     },
+    portalImages: Array,
   },
   { timestamps: true }
 );

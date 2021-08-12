@@ -1,0 +1,306 @@
+<main>
+
+	<section class="hero_in hotels">
+		<div class="wrapper">
+			<div class="container">
+				<h1 class="fadeInUp"><span></span>PICK YOUR HOTEL</h1>
+			</div>
+		</div>
+	</section>
+	<!--/hero_in-->
+
+
+	<!-- /filters -->
+
+	<div class="collapse" id="collapseMap">
+		<div id="map" class="map"></div>
+	</div>
+	<!-- End Map -->
+
+	<div class="container margin_60_35">
+		<div class="row">
+			<aside class="col-lg-3" id="sidebar">
+				<div id="filters_col">
+					<a data-toggle="collapse" href="#collapseFilters" aria-expanded="false"
+						aria-controls="collapseFilters" id="filters_col_bt">Filters </a>
+					<div class="collapse show" id="collapseFilters">
+						<div class="filter_type">
+							<h6>Types</h6>
+							<ul>
+								
+								{{!-- <li>
+									<label>
+										<input type="checkbox" class="icheck" checked>All <small>(945)</small>
+									</label>
+								</li> --}}
+								
+								<li>
+									<label>
+										<input type="checkbox" class="icheck" id="typeAC" value="AC" checked>AC
+									</label>
+								</li>
+								<li>
+									<label>
+										<input type="checkbox" class="icheck" id="typeNonAC" value="NonAC" checked>Non-AC
+									</label>
+								</li>
+								<li>
+									<label>
+										<input type="checkbox" class="icheck" id="typeWild" value="Wild" checked>Wild
+									</label>
+								</li>
+								<li>
+									<label>
+										<input type="checkbox" class="icheck" id="typeUnique" value="Unique" checked>Unique
+									</label>
+								</li>
+							</ul>
+						</div>
+
+						<div class="filter_type">
+							<h6>Price</h6>
+							<input type="text" id="priceFilter" name="priceFilter" value="">
+						</div>
+						{{#if query.geolocation}}
+						<div class="filter_type">
+							<h6>Distance</h6>
+							<input type="text" id="distanceFilter" name="distanceFilter" value="">
+						</div>
+						{{/if}}
+
+						
+						
+						<div class="filter_type py-4">
+							<button class="btn btn-dark w-100" style="font-weight: 500;" onclick="filter()">Apply</button>
+						</div>
+					</div>
+					<!--/collapse -->
+				</div>
+				<!--/filters col-->
+			</aside>
+			<!-- /aside -->
+
+			<div class="col-lg-9" id="list_sidebar">
+				<div class="isotope-wrapper">
+					{{!-- <div class="box_list isotope-item latest">
+						<div class="row no-gutters">
+							<div class="col-lg-5">
+								<figure>
+									<small>Parirs Centre</small>
+									<a href="hotel-detail.html"><img src="img/hotel_1.jpg" class="img-fluid" alt=""
+											width="800" height="533">
+										<div class="read_more"><span>Read more</span></div>
+									</a>
+								</figure>
+							</div>
+							<div class="col-lg-7">
+								<div class="wrapper">
+									<a href="#0" class="wish_bt"></a>
+									<div class="cat_star"><i class="icon_star"></i><i class="icon_star"></i><i
+											class="icon_star"></i><i class="icon_star"></i></div>
+									<h3><a href="hotel-detail.html">Park Hyatt Hotel</a></h3>
+									<p>Dicam diceret ut ius, no epicuri dissentiet philosophia vix. Id usu zril
+										tacimates neglegentur. Eam id legimus torquatos cotidieque, usu decore
+										percipitur definitiones ex, nihil utinam recusabo mel no.</p>
+									<span class="price">From <strong>$54</strong> /per person</span>
+								</div>
+								<ul>
+									<li><i class="ti-eye"></i> 164 views</li>
+									<li>
+										<div class="score"><span>Superb<em>350
+													Reviews</em></span><strong>8.9</strong></div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div> --}}
+					<!-- /box_list -->
+					{{#each searchResults}}
+					<div class="box_list isotope-item popular w-100">
+						<div class="row no-gutters">
+							<div class="col-lg-5">
+								<figure>
+									<small>{{this.roomFeatureType}}</small>
+									<a href="tour-detail.html"><img src="{{this.roomImages.[0]}}" class="img-fluid" alt=""
+											width="800" height="533">
+										<div class="read_more"><span>Read more</span></div>
+									</a>
+								</figure>
+							</div>
+							<div class="col-lg-7">
+								<div class="wrapper">
+									<a href="#0" class="wish_bt"></a>
+									{{!-- <div class="cat_star"><i class="icon_star"></i><i class="icon_star"></i><i
+											class="icon_star"></i><i class="icon_star"></i></div> --}}
+									<h3 style="cursor: pointer;"  onclick="gotoRoom('{{this._id}}')">{{this.roomTitle}} @{{this.portalDetail.portalTitle}}</h3>
+									<p>{{this.portalDetail.portalBio}}</p>
+									<span class="price">From <strong>${{this.roomPrice}}</strong> /per person</span>
+								</div>
+								<ul>
+									<li><i class="ti-eye"></i> 164 views</li>
+									<li>
+										<div class="score"><span>Good<em>350 Reviews</em></span><strong>7.0</strong>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					{{/each}}
+					<!-- /box_list -->
+					<div class="box_list isotope-item latest">
+					<!-- /box_list -->
+				</div>
+				<!-- /isotope-wrapper -->
+
+				<p class="text-center add_top_30"><a href="#0" class="btn_1 rounded">Load more</a></p>
+			</div>
+			<!-- /col -->
+		</div>
+		<!-- /row -->
+	</div>
+	<!-- /container -->
+	<div class="bg_color_1">
+		<div class="container margin_60_35">
+			<div class="row">
+				<div class="col-md-4">
+					<a href="#0" class="boxed_list">
+						<i class="pe-7s-help2"></i>
+						<h4>Need Help? Contact us</h4>
+						<p>Cum appareat maiestatis interpretaris et, et sit.</p>
+					</a>
+				</div>
+				<div class="col-md-4">
+					<a href="#0" class="boxed_list">
+						<i class="pe-7s-wallet"></i>
+						<h4>Payments and Refunds</h4>
+						<p>Qui ea nemore eruditi, magna prima possit eu mei.</p>
+					</a>
+				</div>
+				<div class="col-md-4">
+					<a href="#0" class="boxed_list">
+						<i class="pe-7s-note2"></i>
+						<h4>Quality Standards</h4>
+						<p>Hinc vituperata sed ut, pro laudem nonumes ex.</p>
+					</a>
+				</div>
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /bg_color_1 -->
+</main>
+<!--/main-->
+
+
+
+<script src="/templates/user-template/js/jquery-2.2.4.min.js"></script>
+  <script src="/templates/user-template/js/common_scripts.js"></script>
+  <script src="/templates/user-template/js/main.js"></script>
+  <script src="/templates/user-template/assets/validate.js"></script>
+
+
+
+  <!-- SPECIFIC SCRIPTS -->
+  <script src="/templates/user-template/js/pw_strenght.js"></script>
+
+<script>
+	function gotoRoom(tagId) {
+		const urlSearchParams = new URLSearchParams(window.location.search);
+		const params = Object.fromEntries(urlSearchParams.entries());
+		let url = `/app/hotel-room-detail?roomId=${tagId}&dateFrom=${params.dateFrom}&dateTo=${params.dateTo}&guestQty=${params.guestQty}`
+		window.location.href = url
+	}
+</script>
+
+  <!-- Map -->
+  <script src="http://maps.googleapis.com/maps/api/js"></script>
+  <script src="/templates/user-template/js/markerclusterer.js"></script>
+  <script src="/templates/user-template/js/map_hotels.js"></script>
+  <script src="/templates/user-template/js/infobox.js"></script>
+
+  <!-- Masonry Filtering -->
+  <script src="/templates/user-template/js/isotope.min.js"></script>
+  <script>
+    $(window).load(function () {
+      var $container = $('.isotope-wrapper');
+      $container.isotope({
+        itemSelector: '.isotope-item',
+        layoutMode: 'masonry'
+      });
+    });
+
+    $('.filters_listing').on('click', 'input', 'change', function () {
+      var selector = $(this).attr('data-filter');
+      $('.isotope-wrapper').isotope({
+        filter: selector
+      });
+    });
+  </script>
+
+  <!-- Range Slider -->
+  {{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script> --}}
+  <script>
+    $("#distanceFilter").ionRangeSlider({
+          keyboard: true,
+          min: 0,
+          max: 200,
+          from: {{#distance query.radius}} {{/distance}},
+          postfix: " KM. ",
+          grid: false
+    });
+          $("#priceFilter").ionRangeSlider({
+            hide_min_max: true,
+            keyboard: true,
+            min: 200,
+            max: 100000,
+            from: 200,
+            to: 10000,
+            type: 'double',
+            step: 1,
+            prefix: "Rs. ",
+            grid: false
+          });
+  </script>
+
+
+
+  <script>
+    //this is the value of to price ranges
+    function filter() {
+
+      //convert url queries into objects
+      const urlSearchParams = new URLSearchParams(window.location.search);
+      const urlParams = Object.fromEntries(urlSearchParams.entries());
+
+      //taking values from filter div
+      var priceRange = $('#priceFilter').val().split(";")
+      try {
+        var radius = $('#distanceFilter').val().split(";")
+      } catch {
+        var radius = 30
+      }
+
+      //checklist into array
+      var checkedBoxInput = $('input[type="checkbox"]:checked')
+      var checkedList = []
+      for (let i = 0; i < checkedBoxInput.length; i++) {
+        checkedList.push(checkedBoxInput[i].value)
+      }
+
+      //Adding new key value pair from filter into the the object so that we can later covert back into the url format..
+      urlParams.priceRange = priceRange
+      urlParams.checkedList = checkedList
+      urlParams.radius = radius * 1000
+      delete urlParams.page
+
+
+      // Converting the object back to url format..
+      var url = Object.keys(urlParams).map(function (key) {
+        return key + '=' + urlParams[key];
+      }).join('&');
+
+      window.location.href = `/app/search?${url}&page=1`
+    }
+  </script>
