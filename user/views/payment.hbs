@@ -1,118 +1,98 @@
 <main>
-	<form id="bookForm">
+  <form id="bookForm">
 
-  <div class="hero_in cart_section">
-    <div class="wrapper">
-      <div class="container">
-        <div class="bs-wizard clearfix">
-          <div class="bs-wizard-step">
-            <div class="text-center bs-wizard-stepnum">Pick a service</div>
-            <div class="progress">
-              <div class="progress-bar"></div>
+    <div class="hero_in cart_section">
+      <div class="wrapper">
+        <div class="container">
+          <div class="bs-wizard clearfix">
+            <div class="bs-wizard-step">
+              <div class="text-center bs-wizard-stepnum">Pick a service</div>
+              <div class="progress">
+                <div class="progress-bar"></div>
+              </div>
+              <a href="cart-1.html" class="bs-wizard-dot"></a>
             </div>
-            <a href="cart-1.html" class="bs-wizard-dot"></a>
-          </div>
 
-          <div class="bs-wizard-step active">
-            <div class="text-center bs-wizard-stepnum">Payment</div>
-            <div class="progress">
-              <div class="progress-bar"></div>
+            <div class="bs-wizard-step active">
+              <div class="text-center bs-wizard-stepnum">Payment</div>
+              <div class="progress">
+                <div class="progress-bar"></div>
+              </div>
+              <a href="#0" class="bs-wizard-dot"></a>
             </div>
-            <a href="#0" class="bs-wizard-dot"></a>
-          </div>
 
-          <div class="bs-wizard-step disabled">
-            <div class="text-center bs-wizard-stepnum">Finish!</div>
-            <div class="progress">
-              <div class="progress-bar"></div>
+            <div class="bs-wizard-step disabled">
+              <div class="text-center bs-wizard-stepnum">Finish!</div>
+              <div class="progress">
+                <div class="progress-bar"></div>
+              </div>
+              <a href="#0" class="bs-wizard-dot"></a>
             </div>
-            <a href="#0" class="bs-wizard-dot"></a>
           </div>
+          <!-- End bs-wizard -->
         </div>
-        <!-- End bs-wizard -->
       </div>
     </div>
-  </div>
-  <!--/hero_in-->
+    <!--/hero_in-->
 
-  <div class="bg_color_1">
-    <div class="container margin_60_35">
-      <div class="row">
-        <div class="col-lg-8">
-          <div class="box_cart">
+    <div class="bg_color_1">
+      <div class="container margin_60_35">
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="box_cart">
 
-            <div class="form_title">
-              <h3><strong>1</strong>Your Details</h3>
-              <p>
-                Give your basic contact information for the host.
-              </p>
-            </div>
-            <div class="step">
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label>First name</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="firstName"
-                      name="firstName"
-                      value="{{userDetails.firstName}}"
-                    />
+              <div class="form_title">
+                <h3><strong>1</strong>Your Details</h3>
+                <p>
+                  Give your basic contact information for the host.
+                </p>
+              </div>
+              <div class="step">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>First name</label>
+                      <input type="text" class="form-control" id="firstName" name="firstName" required
+                        value="{{userDetails.firstName}}" />
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Last name</label>
+                      <input type="text" class="form-control" id="lastName" name="lastName" required
+                        value="{{userDetails.lastName}}" />
+                    </div>
                   </div>
                 </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label>Last name</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="lastName"
-                      name="lastName"
-                      value="{{userDetails.lastName}}"
-                    />
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Email</label>
+                      <input type="email" id="userEmail" name="userEmail" class="form-control" required
+                        value="{{userDetails.userEmail}}" /> 
+                    </div>
                   </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Phone number</label>
+                      <input type="text" id="userPhone" name="userPhone" class="form-control" required
+                        value="{{userDetails.userPhone}}" />
+                    </div>
+                  </div>
+
+
+                </div>
+                <div class="row">
+
                 </div>
               </div>
-              <div class="row">
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label>Email</label>
-                    <input
-                      type="email"
-                      id="userEmail"
-                      name="userEmail"
-                      class="form-control"
-                      value="{{userDetails.userEmail}}"
-                    />
-                  </div>
-                </div>
-
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <label>Phone number</label>
-                    <input
-                      type="text"
-                      id="userPhone"
-                      name="userPhone"
-                      class="form-control"
-                      value="{{userDetails.userPhone}}"
-                    />
-                  </div>
-                </div>
+              <hr />
+              <!--End step -->
 
 
-              </div>
-              <div class="row">
 
-              </div>
-            </div>
-            <hr />
-            <!--End step -->
-
-           
-            
-            {{!-- <hr />
+              {{!-- <hr />
             <!--End step -->
             <div id="policy">
               <h5>Cancellation policy</h5>
@@ -121,94 +101,74 @@
                 consectetuer per eu. Percipit repudiare similique ad sed, vix ad
                 decore nullam ornatus.</p>
             </div> --}}
+            </div>
           </div>
+          <!-- /col -->
+
+          <aside class="col-lg-4" id="sidebar">
+            <input type="hidden" id="dbRoomId" value="{{roomDetails._id}}" />
+            <input type="hidden" id="dbRoomPrice" value="{{roomDetails.roomPrice}}" />
+            <input type="hidden" id="dbDateFrom" value="{{query.dateFrom}}" />
+            <input type="hidden" id="dbDateTo" value="{{query.dateTo}}" />
+            <input type="hidden" id="dbGuestQty" value="{{query.guestQty}}" />
+            <div class="box_detail">
+              <div id="total_cart">
+                Total
+                <span class="float-right" id="grandTotal">{{roomDetails.roomPrice}}</span>
+              </div>
+              <ul class="cart_details">
+                <li>From <span id="dateFrom"></span></li>
+                <li>To <span id="dateTo"></span></li>
+                <li>Days <span id="bookDays"></span></li>
+                <li>Guest <span id="guestQty"></span></li>
+
+              </ul>
+              <div class="row px-4 justify-content-center align-item-center">
+
+                <div class="form-check p-2 col-md-12">
+                  <input class="form-check-input" type="radio" name="paymentMethod" id="RazorPay" value="RazorPay" />
+                  <label class="form-check-label" for="RazorPay">
+                    Online
+                  </label>
+                </div>
+                <div class="form-check p-2 col-md-12">
+                  <input class="form-check-input" type="radio" name="paymentMethod" id="COD" value="COD" checked />
+                  <label class="form-check-label" for="flexRadioDefault2">
+                    Pay directly
+                  </label>
+                </div>
+
+
+              </div>
+
+              <button id="submitBtn" type="submit" class="btn_1 full-width purchase">Purchase</button>
+            </div>
+          </aside>
         </div>
-        <!-- /col -->
-
-        <aside class="col-lg-4" id="sidebar">
-          <input type="hidden" id="dbRoomId" value="{{roomDetails._id}}" />
-          <input
-            type="hidden"
-            id="dbRoomPrice"
-            value="{{roomDetails.roomPrice}}"
-          />
-          <input type="hidden" id="dbDateFrom" value="{{query.dateFrom}}" />
-          <input type="hidden" id="dbDateTo" value="{{query.dateTo}}" />
-          <input type="hidden" id="dbGuestQty" value="{{query.guestQty}}" />
-          <div class="box_detail">
-            <div id="total_cart">
-              Total
-              <span
-                class="float-right"
-                id="grandTotal"
-              >{{roomDetails.roomPrice}}</span>
-            </div>
-            <ul class="cart_details">
-              <li>From <span id="dateFrom"></span></li>
-              <li>To <span id="dateTo"></span></li>
-              <li>Days <span id="bookDays"></span></li>
-              <li>Guest <span id="guestQty"></span></li>
-
-            </ul>
-			<div class="row px-4 justify-content-center align-item-center">
-
-			<div class="form-check p-2 col-md-12">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="paymentMethod"
-                id="RazorPay"
-				value="RazorPay"
-              />
-              <label class="form-check-label" for="RazorPay">
-                Online
-              </label>
-            </div>
-            <div class="form-check p-2 col-md-12">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="paymentMethod"
-                id="COD"
-				value="COD"
-                checked
-              />
-              <label class="form-check-label" for="flexRadioDefault2">
-                Pay directly
-              </label>
-            </div>
-
-
-			</div>
-           
-            <button id="submitBtn" type="submit" class="btn_1 full-width purchase">Purchase</button>
-          </div>
-        </aside>
+        <!-- /row -->
       </div>
-      <!-- /row -->
+      <!-- /container -->
     </div>
-    <!-- /container -->
-  </div>
-  <!-- /bg_color_1 -->
-	</form>
+    <!-- /bg_color_1 -->
+  </form>
 
 </main>
 <!--/main-->
 
-	
+
 <script src="/templates/user-template/js/jquery-2.2.4.min.js"></script>
-  <script src="/templates/user-template/js/common_scripts.js"></script>
-  <script src="/templates/user-template/js/main.js"></script>
-  <script src="/templates/user-template/assets/validate.js"></script>
+<script src="/templates/user-template/js/common_scripts.js"></script>
+<script src="/templates/user-template/js/main.js"></script>
+<script src="/templates/user-template/assets/validate.js"></script>
 
 
 
-  <!-- SPECIFIC SCRIPTS -->
-  <script src="/templates/user-template/js/pw_strenght.js"></script>
+<!-- SPECIFIC SCRIPTS -->
+<script src="/templates/user-template/js/pw_strenght.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-  <script>
-
-	function updateTotal () {
+<script>
+  function updateTotal() {
     var formatter = new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'INR'
@@ -221,63 +181,157 @@
     let guestQty = $('#dbGuestQty').val();
     let dateFrom = $('#dbDateFrom').val();
     let dateTo = $('#dbDateTo').val();
-	
-    let reserveDays = Math.round((new Date(dateTo)- new Date(dateFrom))/(1000*60*60*24)) + 1
-        
+
+    let reserveDays = Math.round((new Date(dateTo) - new Date(dateFrom)) / (1000 * 60 * 60 * 24)) + 1
+
     let roomPrice = parseFloat(document.getElementById("dbRoomPrice").value)
 
-    $("#grandTotal").html(formatter.format((roomPrice * reserveDays))) 
-	$('#dateFrom').html(dateFrom)
-	$('#dateTo').html(dateTo)
-	$('#guestQty').html(guestQty)
+    $("#grandTotal").html(formatter.format((roomPrice * reserveDays)))
+    $('#dateFrom').html(dateFrom)
+    $('#dateTo').html(dateTo)
+    $('#guestQty').html(guestQty)
     $("#bookDays").html(reserveDays)
     $("#subTotal").html(formatter.format(roomPrice))
   }
 
   updateTotal()
-  </script>
+</script>
 
-  <script>
-	document.getElementById('bookForm').addEventListener('submit', (event) => {
-		event.preventDefault()
-		
-		$('#submitBtn').prop('disabled', true)
-		
-		let firstName = $('#firstName').val();
-		let lastName = $('#lastName').val();
-		let userEmail = $('#userEmail').val();
-		let userPhone = $('#userPhone').val();
+<script>
+
+  function razorPay(orderDetails) {
+    console.log(orderDetails)
+
+    var options = {
+      "key": "rzp_test_ROpqYnbTvLgmPC", // Enter the Key ID generated from the Dashboard
+      "amount": orderDetails.order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+      "currency": "INR",
+      "name": "ALPHA ECOM",
+      "description": "Purchase transcation",
+      "order_id": `${orderDetails.order.id}`, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+      "handler": function (response) {
+        verfiryPayment(response, orderDetails.order,orderDetails.orderId)
+      },
+      "prefill": {
+        "name": `${orderDetails.userDetails.firstName} ${orderDetails.userDetails.lastName}`,
+        "email": orderDetails.userDetails.userEmail,
+        "contact": orderDetails.userDetails.userPhone
+      },
+      "notes": {
+        "address": "Hotel AGG"
+      },
+      "theme": {
+        "color": "#000000"
+      },
+      "modal": {
+        "ondismiss": function () {
+          paymentAborted(orderDetails.orderId);
+        }
+      }
+    };
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+  }
 
 
-		let roomId = $('#dbRoomId').val();
-		let guestQty = $('#dbGuestQty').val();
-		let dateFrom = $('#dbDateFrom').val();
-		let dateTo = $('#dbDateTo').val();
-		let paymentMethod = $('input[name="paymentMethod"]:checked').val();
+
+  document.getElementById('bookForm').addEventListener('submit', (event) => {
+    event.preventDefault()
+
+    $('#submitBtn').prop('disabled', true)
+
+    let firstName = $('#firstName').val();
+    let lastName = $('#lastName').val();
+    let userEmail = $('#userEmail').val();
+    let userPhone = $('#userPhone').val();
 
 
-		console.log(paymentMethod)
+    let roomId = $('#dbRoomId').val();
+    let guestQty = $('#dbGuestQty').val();
+    let dateFrom = $('#dbDateFrom').val();
+    let dateTo = $('#dbDateTo').val();
+    let paymentMethod = $('input[name="paymentMethod"]:checked').val();
 
-		const requestOptions = {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json"
-		},
-		body: JSON.stringify({
-			firstName,lastName,userEmail,userPhone,
-			roomId,guestQty,dateTo,dateFrom,paymentMethod
-		})
-		}
 
-		 fetch(`/app/book-and-pay`, requestOptions)
-		.then((response) => response.json())
-		.then((paymentStatus) => {
-			if (paymentStatus.isSuccess) window.location.href = `/app/order-completed/${paymentStatus.orderId}`
-      else alert(paymentStatus.message)
-		})
-		.catch((err) => console.log(err));
-	})
 
-    
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        firstName,
+        lastName,
+        userEmail,
+        userPhone,
+        roomId,
+        guestQty,
+        dateTo,
+        dateFrom,
+        paymentMethod
+      })
+    }
 
-  </script>
+    fetch(`/user/book-and-pay`, requestOptions)
+      .then((response) => response.json())
+      .then((orderStatus) => {
+        if (!orderStatus.isSuccess) alert(orderStatus.message)
+        else if(orderStatus.paymentMethod == "COD") window.location.href = `/user/order-completed/${orderStatus.orderId}`
+        else {
+          razorPay(orderStatus)
+        }
+      })
+      .catch((err) => console.log(err));
+  })
+
+
+
+
+
+  function verfiryPayment(payment, order,orderId) {
+
+    const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        payment,
+        order,
+        orderId
+      })
+    }
+
+    fetch(`/user/book-and-pay/verifyPayment`, requestOptions)
+      .then((response) => response.json())
+      .then((orderStatus) => {
+        console.log(orderStatus)
+        if (!orderStatus.status) alert("Payment Failed")
+        else window.location.href = `/user/order-completed/${orderId}`
+      })
+      .catch((err) => console.log(err));
+
+  }
+
+  function paymentAborted(orderId) {
+
+      const requestOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+       orderId
+      })
+    }
+
+    fetch(`/user/book-and-pay/paymentAborted`, requestOptions)
+      .then((response) => response.json())
+      .then((orderStatus) => {
+        if (!orderStatus) alert("Goto Orders")
+        else location.reload();
+      })
+      .catch((err) => console.log(err));
+
+  }
+</script>

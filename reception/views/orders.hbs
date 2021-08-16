@@ -1,0 +1,73 @@
+<link rel="stylesheet" href="/templates/admin-template/vendors/simple-datatables/style.css">
+<div class="page-heading">
+  <h3>Orders</h3>
+</div>
+  <section class="section">
+    <div class="card">
+      <div class="card-header">
+        Simple Datatable
+      </div>
+      <div class="card-body">
+        <table class="table table-striped" id="table1">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Guest</th>
+              <th>Check In/Out</th>
+              <th>Total Amount</th>
+              <th class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each orderList}}
+            <tr>
+              <td><a href="/reception/order-invoice/{{this._id}}">{{this._id}}</a></td>
+              <td>{{this.guestInfo.guestName}} <br> {{this.guestInfo.guestPhone}} <br> {{this.guestInfo.guestEmail}}</td>
+              <td> <span class="orderDates">{{this.dateCheckIn}}</span> - <span class="orderDates">{{this.dateCheckOut}}</span></td>
+              <td class="totalAmount">{{this.totalAmount}}</td>
+              <td class="text-center">
+                <button class="btn btn-outline-success btn-sm m-1">Check In</button>
+                <button class="btn btn-outline-danger btn-sm m-1">Cancel</button>
+              </td>
+            </tr>
+            {{/each}}
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </section>
+
+<script
+  src="/templates/admin-template/vendors/simple-datatables/simple-datatables.js"
+></script>
+<script>
+  dataTable = new simpleDatatables.DataTable(table1);
+</script>
+<script src="/templates/admin-template/vendors/jquery/jquery.min.js"></script>
+
+
+<script src="https://momentjs.com/downloads/moment.js"></script>
+
+  <script>
+	$( ".orderDates" ).each(function( index ) {
+		let thisDate = $(this).text()
+		let value = moment(thisDate).format("dddd, MMMM Do YYYY");
+  		$( this ).html(value) ;
+	});
+
+		var formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'INR',
+
+      // These options are needed to round to whole numbers if that's what you want.
+      //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+      //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+    });
+
+
+	$( ".totalAmount" ).each(function( index ) {
+  		$( this ).html(formatter.format(parseFloat($(this).text()))) ;
+	});
+  </script>

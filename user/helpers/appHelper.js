@@ -1,9 +1,13 @@
 const bcrypt = require("bcrypt");
+
 const User = require("../models/User");
 const Admin = require("../models/Admin");
 const Portal = require("../models/Portal");
 const RoomService = require("../models/portalRoomService");
 const Order = require("../models/Order");
+
+
+
 
 module.exports = {
   logIn: (formCred) => {
@@ -52,6 +56,12 @@ module.exports = {
         .catch((err) => console.log(err));
     });
   },
+  getUserDetails: (tagId) =>
+  new Promise(async (resolve, reject) => {
+    let userDetails = await User.findById(tagId).lean();
+    if (userDetails) resolve(userDetails);
+    else reject(false);
+  }),
 
   autoSuggestionSearch: async (searchKeyword) => {
     return new Promise(async (resolve, reject) => {
@@ -191,77 +201,4 @@ module.exports = {
     });
   },
 
-  getUserDetails: (tagId) =>
-    new Promise(async (resolve, reject) => {
-      let userDetails = await User.findById(tagId).lean();
-      if (userDetails) resolve(userDetails);
-      else reject(false);
-    }),
-
-  paymentConfirm: (formData) =>
-    new Promise(async (resolve, reject) => {
-      const { roomId, guestQty, dateFrom, dateTo, tagId } = formData;
-      let roomDetails = await RoomService.findById(roomId).lean();
-      let reserveDays =
-        Math.round(
-          (new Date(dateTo) - new Date(dateFrom)) / (1000 * 60 * 60 * 24)
-        ) + 1;
-      let totalAmount = roomDetails.roomPrice * reserveDays;
-
-      let bookingDetails = {
-        user: tagId,
-        bookingStart: new Date(dateFrom),
-        bookingEnd: new Date(dateTo),
-        duration: reserveDays,
-        purpose: formData.purpose,
-        roomId: roomId,
-      };
-
-      if(formData.paymentMethod === "COD") formData.paymentStatus = "Pending"
-      else formData.paymentStatus = "Placed"
-      await RoomService.updateOne(
-        { _id: roomId },
-        { $push: { bookings: bookingDetails } }
-      );
-      let newOrder = new Order({
-        userId: tagId,
-        portalId: roomDetails.portalId,
-        roomId: roomDetails._id,
-
-        guestInfo: {
-          guestName: `${formData.firstName} ${formData.lastName}`,
-          guestPhone: formData.userPhone,
-          guestEmail: formData.userEmail,
-        },
-        paymentMethod: formData.paymentMethod,
-        paymentStatus: formData.paymentStatus,
-        orderStatus: "Waiting",
-        totalAmount,
-        dateCheckIn: new Date(dateFrom),
-        dateCheckOut: new Date(dateTo),
-      });
-
-      newOrder.save()
-      .then((insertedData) => {
-        resolve({
-          isSuccess: true,
-          orderId: insertedData._id,
-        });
-      })
-      .catch((err) =>
-        reject({
-          isSuccess: false,
-          message:
-            "Order error",
-            err
-        })
-      );
-
-    }),
-
-    getOrderDetail : (orderId) => new Promise(async (resolve,reject) => {
-      let orderDetail = await Order.findById(orderId).lean()
-      if (orderDetail) resolve(orderDetail)
-      else reject(false)
-    })
 };

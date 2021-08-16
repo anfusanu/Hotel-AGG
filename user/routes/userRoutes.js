@@ -1,7 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const helper = require("../helpers/appHelper");
-
+const helper = require("../helpers/userHelper");
 
 const verifyLogin = (req, res, next) => {
   if (req.session.user) {
@@ -57,51 +56,28 @@ router.get("/logout", function (req, res) {
   res.redirect("/app");
 });
 
-router.get("/wishlist", verifyLogin, function (req, res) {
-  res.render("wishlist", { user: req.session.user });
-});
+//have both user details and order history
+router.get("/profile", verifyLogin, function (req, res) {
+  let tagId = req.session.user.userId;
 
-router.get("/autocomplete-search/:searchKeyword", (req, res) => {
-  helper
-    .autoSuggestionSearch(req.params.searchKeyword)
-    .then((result) => res.json(result))
-    .catch((err) => res.json(result));
-});
-
-router.get("/search", (req, res) => {
-  if (!req.query.page) res.redirect(`${req.originalUrl}&page=1`);
-  helper.getSearchResults(req.query).then((searchResults) => {
-    res.render("hotels-list", {
-      Active: "Search",
-      searchResults,
-      query: req.query,
-      user: req.session.user,
-    });
+  helper.getUserProfile(tagId).then((aggDetails) => {
+    res.render("profile", { ...aggDetails, user: req.session.user });
   });
 });
 
-router.get("/hotel-detail", (req, res) => {
-  if (!req.query.hotelId) res.redirect("/app");
-  helper
-    .getHotelDetails(req.query.hotelId)
-    .then((aggDetails) => {
-      res.render("hotel-detail", { ...aggDetails, user: req.session.user });
-    })
-    .catch((err) => res.redirect("/app"));
+router.get("/order-invoice/:orderId", verifyLogin, function (req, res) {
+  // let tagId = req.session.user.userId;
+  if(!req.params.orderId) return res.redirect('/app')
+
+  let orderId = req.params.orderId;
+
+  helper.getInvoice(orderId).then((getInvoice) => {
+    res.render("invoice", { ...getInvoice, user: req.session.user });
+  });
 });
 
-router.get("/hotel-room-detail", (req, res) => {
-  if (!req.query.roomId) res.redirect("/app");
-  helper
-    .getRoomWIthPortal(req.query.roomId)
-    .then((aggDetails) => {
-      res.render("hotel-room-detail", {
-        ...aggDetails,
-        query: req.query,
-        user: req.session.user,
-      });
-    })
-    .catch((err) => res.redirect("/app"));
+router.get("/wishlist", verifyLogin, function (req, res) {
+  res.render("wishlist", { user: req.session.user });
 });
 
 router.get("/checkout-room", verifyLogin, (req, res) => {
@@ -116,33 +92,84 @@ router.get("/checkout-room", verifyLogin, (req, res) => {
           query: req.query,
           userDetails,
           user: req.session.user,
-        })
+        });
       });
-     
     })
     .catch((err) => res.redirect("/app"));
 });
 
-
 router.post("/book-and-pay", function (req, res) {
   let tagId = req.session.user.userId;
-  
+
   helper
-    .paymentConfirm({...req.body,tagId})
-    .then((paymentStatus) => {
-      res.json(paymentStatus);
+    .orderPlace({ ...req.body, tagId })
+    .then((orderStatus) => {
+      if (orderStatus.paymentMethod == "COD") {
+        res.json(orderStatus);
+      } else {
+        console.log(orderStatus);
+        helper
+          .generateRazorPay(orderStatus._id, orderStatus.totalAmount)
+          .then((order) => {
+            helper.getUserDetails(tagId).then((userDetails) => {
+              res.json({ ...orderStatus, order, userDetails });
+            });
+          });
+      }
     })
     .catch((err) => res.json(err));
 });
 
-router.get("/order-completed/:orderId" ,verifyLogin,(req,res) => {
-  let user = req.session.user
-  helper.getOrderDetail(req.params.orderId).then( orderDetail =>{
-    let { guestInfo} = orderDetail
-    if (`${orderDetail._id}` == req.params.orderId)
-    res.render('order-confirmation',{user,guestInfo})
-    else res.redirect('/app')
-  }).catch(err => res.redirect('/app'))
-})
+router.get("/order-completed/:orderId", verifyLogin, (req, res) => {
+  let user = req.session.user;
+  helper
+    .getOrderDetail(req.params.orderId)
+    .then((orderDetail) => {
+      let { guestInfo } = orderDetail;
+      if (`${orderDetail._id}` == req.params.orderId)
+        res.render("order-confirmation", { user, guestInfo });
+      else res.redirect("/app");
+    })
+    .catch((err) => res.redirect("/app"));
+});
+
+router.post("/book-and-pay/verifyPayment", verifyLogin, function (req, res) {
+  helper.verifyPayment(req.body).then((paymentStatus) => {
+    if (paymentStatus) {
+      helper
+        .changePaymentStatus(req.body.orderId)
+        .then((paymentStatus) => res.json({ status: true }));
+    } else {
+      helper
+        .paymentAborted(req.body.orderId)
+        .then((paymentStatus) => res.json({ status: false }));
+    }
+  });
+});
+
+router.post("/book-and-pay/paymentAborted", verifyLogin, function (req, res) {
+  helper.paymentAborted(req.body.orderId);
+  res.json({ status: true });
+});
+
+
+router.post("/update-profile", verifyLogin, function (req, res) {
+  let tagId = req.session.user.userId
+  helper.updateProfile(tagId,req.body)
+  .then(eventStatus => {
+    res.json(eventStatus)
+  })
+  .catch(err => res.json(err))
+});
+
+router.post("/update-password", verifyLogin, function (req, res) {
+  let tagId = req.session.user.userId
+  helper.updatePassword(tagId,req.body)
+  .then(eventStatus => {
+    res.json(eventStatus)
+  })
+  .catch(err => res.json(err))
+});
+//update-password
 
 module.exports = router;

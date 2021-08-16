@@ -35,13 +35,8 @@ router.post("/login", function (req, res) {
   helper
     .logIn(req.body)
     .then((loginStatus) => {
-      let _admin = {
-        userId: loginStatus.userId,
-        verifiedUser: loginStatus.userStatus,
-      };
-
-      req.session.admin = _admin;
-      res.json(loginStatus);
+      req.session.admin = loginStatus;
+      res.json({isMatch:true});
     })
     .catch((err) => res.json(err));
 });
@@ -50,11 +45,8 @@ router.post("/signup", function (req, res) {
   helper
     .signUp(req.body)
     .then((loginStatus) => {
-      req.session.admin = {
-        userId: loginStatus.userId,
-        verifiedUser: loginStatus.userStatus,
-      };
-      res.json(loginStatus);
+      req.session.admin = loginStatus
+      res.json({isMatch:true});
     })
     .catch((err) => res.json(err));
 });
@@ -72,9 +64,18 @@ router.get("/dashboard", verifyLogin, function (req, res) {
 router.get("/reception-mgt", verifyLogin, function (req, res) {
   let tagId = req.session.admin.userId;
 
-  helper.getReceptionDetail(tagId).then((receptionDetail) => {
-    res.render("reception-mgt", { Active: "reception", receptionDetail });
+  helper.getReceptionList(tagId).then((receptionList) => {
+    res.render("reception-mgt", { Active: "reception", receptionList });
   });
+});
+router.post(`/reception-mgt/add-reception`, verifyLogin, (req, res) => {
+  let adminCred = req.session.admin;
+  let formData = req.body;
+
+  helper
+    .addReception(adminCred, formData)
+    .then((saved) => res.redirect("/portal/reception-mgt"))
+    .catch((err) => res.redirect("/portal/reception-mgt"));
 });
 
 router.get("/service-mgt", verifyLogin, function (req, res) {

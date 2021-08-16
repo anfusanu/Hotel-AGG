@@ -1,0 +1,162 @@
+<style>
+  .service-select {
+    cursor: pointer;
+    transition: 300ms;
+  }
+
+  .service-select:hover .service-text {
+    color: white;
+  }
+ 
+
+  .service-select:hover {
+    background-color: #435ebe;
+  }
+
+  .service-active {
+    cursor: pointer;
+    background-color: #435ebe;
+  }
+  .service-text-active{
+    color: white;
+  }
+</style>
+
+{{!-- <div class="page-heading">
+  <h3>Profile Statistics</h3>
+</div> --}}
+<div class="page-content">
+  <section class="row">
+    <div class="col-12 col-lg-9">
+
+      <div class="row">
+        {{#if roomServices}}
+        <div class="col-6 col-lg-3 col-md-6">
+          <div class="card service-active" onclick="window.location.href = '#'">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="stats-icon blue">
+                    <i class="iconly-boldProfile"></i>
+                  </div>
+                </div>
+                <div class="col-md-8">
+                  <h4 class="font-extrabold mb-0 service-text-active">Room service</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{/if}}
+
+        {{#if eventServices}}
+        <div class="col-6 col-lg-3 col-md-6">
+          <div class="card">
+            <div class="card-body px-3 py-4-5">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="stats-icon blue">
+                    <i class="iconly-boldProfile"></i>
+                  </div>
+                </div>
+                <div class="col-md-8">
+                  {{! <h6 class="text-muted font-semibold">Followers</h6> }}
+                  <h4 class="font-extrabold mb-0">Room service</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{/if}}
+
+        {{#if foodServices}}
+        <div class="col-6 col-lg-3 col-md-6">
+          <div class="card">
+            <div class="card-body px-3 py-4-5">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="stats-icon blue">
+                    <i class="iconly-boldProfile"></i>
+                  </div>
+                </div>
+                <div class="col-md-8">
+                  {{! <h6 class="text-muted font-semibold">Followers</h6> }}
+                  <h4 class="font-extrabold mb-0">Room service</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{/if}}
+
+      </div>
+
+      <div class="row">
+
+        {{#each roomServices}}
+        <div class="col-6 col-lg-4 col-md-6">
+
+          <div class="card">
+
+            <img src="{{this.roomImages.[0]}}" alt="" class="card-img-top" />
+
+            <div class="card-header text-center justify-content-center">
+              
+              <h4 class="card-title">{{this.roomTitle}}</h4>
+              <!-- <p class="text-center">A standart features you can get</p> -->
+            </div>
+            <h1 class="price text-center">RS.{{this.roomPrice}}</h1>
+            <div class="card-footer">
+              <button class="btn btn-primary btn-block"
+                onclick="window.location.href = '/portal/service-mgt/edit-room/{{this._id}}'">Edit</button>
+            </div>
+          </div>
+        </div>
+
+        {{/each}}
+
+      </div>
+
+    </div>
+    <div class="col-12 col-lg-3">
+
+      <div class="card" style="height: 85vh;">
+        <div class="card-header">
+          <h4>Recent Messages</h4>
+        </div>
+        <div class="card-content pb-4">
+          <div class="recent-message d-flex px-4 py-3">
+            <div class="avatar avatar-lg">
+              <img src="/templates/admin-template/images/faces/4.jpg" />
+            </div>
+            <div class="name ms-4">
+              <h5 class="mb-1">Hank Schrader</h5>
+              <h6 class="text-muted mb-0">@johnducky</h6>
+            </div>
+          </div>
+          <div class="recent-message d-flex px-4 py-3">
+            <div class="avatar avatar-lg">
+              <img src="/templates/admin-template/images/faces/5.jpg" />
+            </div>
+            <div class="name ms-4">
+              <h5 class="mb-1">Dean Winchester</h5>
+              <h6 class="text-muted mb-0">@imdean</h6>
+            </div>
+          </div>
+          <div class="recent-message d-flex px-4 py-3">
+            <div class="avatar avatar-lg">
+              <img src="/templates/admin-template/images/faces/1.jpg" />
+            </div>
+            <div class="name ms-4">
+              <h5 class="mb-1">John Dodol</h5>
+              <h6 class="text-muted mb-0">@dodoljohn</h6>
+            </div>
+          </div>
+          <div class="px-4">
+            <button class="btn btn-block btn-xl btn-light-primary font-bold mt-3">Start Conversation</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

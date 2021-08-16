@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const receptionSchema = new mongoose.Schema(
   {
-    userEmail: {
+    userName: {
       type: String,
       trim: true,
       required: true,
@@ -13,11 +13,15 @@ const receptionSchema = new mongoose.Schema(
       required: true,
     },
 
+    portalId: mongoose.ObjectId,
+    portalEmail: {
+      type: String,
+      required: true
+    },
     accessStatus: {
       type: String,
       required: true,
-    },
-    portalId: mongoose.ObjectId,
+    }
   },
   { timestamps: true }
 );

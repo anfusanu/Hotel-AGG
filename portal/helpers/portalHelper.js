@@ -5,6 +5,7 @@ const Portal = require("../models/Portal");
 const RoomService = require("../models/portalRoomService");
 const FoodService = require("../models/portalFoodService");
 const EventService = require("../models/portalEventService");
+const Reception = require("../models/Reception");
 
 const { imageDelete } = require("../helpers/s3bucket");
 
@@ -19,7 +20,8 @@ module.exports = {
               resolve({
                 isMatch,
                 userId: dbUser._id,
-                userStatus: dbUser.userStatus,
+                verifiedUser: dbUser.userStatus,
+                userEmail: dbUser.adminEmail,
               });
             else reject({ isMatch, message: "User or Password is invalid" });
           });
@@ -43,7 +45,8 @@ module.exports = {
               resolve({
                 isMatch: true,
                 userId: dbUser._id,
-                userStatus: dbUser.userStatus,
+                verifiedUser: dbUser.userStatus,
+                userEmail: dbUser.adminEmail,
               });
             })
             .catch((err) => {
@@ -58,6 +61,33 @@ module.exports = {
         .catch((err) => console.log(err));
     });
   },
+
+  getReceptionList: (portalId) =>
+    new Promise((resolve, reject) => {
+      let receptionList = Reception.find({ portalId }).lean();
+      if (receptionList) resolve(receptionList);
+      else reject(false);
+    }),
+
+  addReception: (adminCred, formData) =>
+    new Promise((resolve, reject) => {
+      console.log(adminCred);
+      console.log(formData);
+      bcrypt.hash(formData.passKey, 10).then((hash) => {
+        let newReception = new Reception({
+          userName: formData.userName,
+          passKey: hash,
+          accessStatus: "Active",
+          portalId: adminCred.userId,
+          portalEmail: adminCred.userEmail,
+        });
+        console.log(newReception);
+        newReception
+          .save()
+          .then((insertedData) => resolve(true))
+          .catch((err) => reject(false));
+      });
+    }),
 
   portalStatusChanger: async (tagId) => {
     let requestedPortalDetail = await Portal.findById(tagId);
@@ -147,6 +177,31 @@ module.exports = {
           );
           resolve(isSuccess);
         });
+      }
+    }),
+
+  deleteRoom: (tagId, roomId) =>
+    new Promise(async (resolve, reject) => {
+      let roomDetails = await RoomService.findOne({
+        _id: roomId,
+        portalId: tagId,
+      }).lean();
+
+      if (!roomDetails) reject(false);
+      else {
+        const remDoc = await RoomService.deleteOne({ _id: roomDetails._id });
+        
+        if(remDoc == 1){
+          imageDelete(fileName).then(async (isSuccess) => {
+            await RoomService.updateOne(
+              { _id: roomId },
+              { $pullAll: { roomImages: [url] } }
+            );
+            resolve(isSuccess);
+          });
+
+        }
+       
       }
     }),
 };

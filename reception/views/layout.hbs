@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AGG ADMIN</title>
+    <title>Reception AGG</title>
     <style>
         body {
             background-color: rgb(245, 245, 245) !important;
@@ -17,17 +17,12 @@
 
     {{#ifeq Active 'imageUpload'}}
     <link rel="stylesheet" href="/templates/admin-template/vendors/toastify/toastify.css">
-    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
-    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
-        rel="stylesheet">
 
     {{/ifeq}}
 
     {{#ifeq Active 'service'}}
     <link rel="stylesheet" href="/templates/admin-template/vendors/toastify/toastify.css">
-    <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet">
-    <link href="https://unpkg.com/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css"
-        rel="stylesheet">
+    
 
     {{/ifeq}}
 
@@ -57,123 +52,40 @@
             <div class="sidebar-menu">
                 <ul class="menu">
                     <!-- <li class="sidebar-title">Menu</li> -->
-                    {{#if newUser}}
-                    <li class="sidebar-item {{#ifeq Active 'registration'}} active {{/ifeq}}">
-                        <a href="/registration/initial" class='sidebar-link'>
-                            <i class="bi bi-grid-fill"></i>
-                            <span>Initial Registration</span>
-                        </a>
-                    </li>
-
-                    
-
-                    <li class="sidebar-item {{#ifeq Active 'serviceRegistration'}} active {{/ifeq}}">
-                        <a href="/registration/services" class='sidebar-link'>
-                            <i class="bi bi-stack"></i>
-                            <span>Service Registration</span>
-                        </a>
-                    </li>
-
-                    <li class="sidebar-item {{#ifeq Active 'imageUpload'}} active {{/ifeq}}">
-                        <a href="/registration/image-upload" class='sidebar-link'>
-                            <i class="bi bi-cloud-arrow-up-fill"></i>
-                            <span>Image upload</span>
-                        </a>
-                    </li>
-
-                    <li class="sidebar-item {{#ifeq Active 'finishUp'}} active {{/ifeq}}">
-                        <a href="/registration/finish-up" class='sidebar-link'>
-                            <i class="bi bi-check-square-fill"></i>
-                            <span>Finish Up</span>
-                        </a>
-                    </li>
-                    {{else}}
 
 
                     <li class="sidebar-item {{#ifeq Active 'dashboard'}} active {{/ifeq}}">
-                        <a href="/portal/dashboard" class='sidebar-link'>
+                        <a href="/reception/dashboard" class='sidebar-link'>
                             <i class="bi bi-grid-fill"></i>
                             <span>Dashboard</span>
                         </a>
                     </li>
 
-                    <!-- <li class="sidebar-item  has-sub">
-                            <a href="#" class='sidebar-link'>
-                                <i class="bi bi-stack"></i>
-                                <span>Components</span>
-                            </a>
-                            <ul class="submenu ">
-                                <li class="submenu-item ">
-                                    <a href="component-alert.html">Alert</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="component-badge.html">Badge</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="component-breadcrumb.html">Breadcrumb</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="component-button.html">Button</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="component-card.html">Card</a>
-                                </li>
-                                <li class="submenu-item ">
-                                    <a href="component-carousel.html">Carousel</a>
-                                </li>
-                          
-                                </li>
-                            </ul>
-                        </li> -->
-
-
-
 
                     <li class="sidebar-title">Management</li>
 
-                    <li class="sidebar-item  {{#ifeq Active 'reception'}} active {{/ifeq}}">
-                        <a href="/portal/reception-mgt" class='sidebar-link'>
+
+                    <li class="sidebar-item  {{#ifeq Active 'orders'}} active {{/ifeq}}">
+                        <a href="/reception/orders" class='sidebar-link'>
                             <i class="bi bi-stack"></i>
-                            <span>Reception MGT</span>
-                        </a>
-                    </li>
-
-                    <li class="sidebar-item  {{#ifeq Active 'service'}} active {{/ifeq}}">
-                        <a href="/portal/service-mgt" class='sidebar-link'>
-                            <i class="bi bi-stack"></i>
-                            <span>Service MGT</span>
+                            <span>Orders</span>
                         </a>
                     </li>
 
 
-                    <li class="sidebar-item  {{#ifeq Active 'subs'}} active {{/ifeq}}">
-                        <a href="/portal/subs-mgt" class='sidebar-link'>
-                            <i class="bi bi-file-earmark-medical-fill"></i>
-                            <span>Subscription</span>
-                        </a>
-                    </li>
 
 
-                    <li class="sidebar-item  {{#ifeq Active 'sales'}} active {{/ifeq}}">
-                        <a href="/portal/sales" class='sidebar-link'>
-                            <i class="bi bi-cash"></i>
-                            <span>Sales</span>
-                        </a>
-                    </li>
-
-
-                    {{/if}}
                     <li class="sidebar-title">Settings</li>
 
 
                     <li class="sidebar-item  {{#ifeq Active 'settings'}} active {{/ifeq}}">
-                        <a href="/portal/change-password" class='sidebar-link'>
+                        <a href="/reception/change-password" class='sidebar-link'>
                             <i class="bi bi-key-fill"></i>
                             <span>Change Password</span>
                         </a>
                     </li>
                     <li class="sidebar-item ">
-                        <a href="/portal/logout" class='sidebar-link'>
+                        <a href="/reception/logout" class='sidebar-link'>
                             <i class="bi bi-door-closed-fill"></i>
                             <span>Logout</span>
                         </a>
@@ -207,8 +119,8 @@
 <script src="/templates/admin-template/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 <script src="/templates/admin-template/js/bootstrap.bundle.min.js"></script>
 
-<script src="/templates/admin-template/vendors/apexcharts/apexcharts.js"></script>
-<script src="/templates/admin-template/js/pages/dashboard.js"></script>
+{{!-- <script src="/templates/admin-template/vendors/apexcharts/apexcharts.js"></script> --}}
+{{!-- <script src="/templates/admin-template/js/pages/dashboard.js"></script> --}}
 
 <script src="/templates/admin-template/js/main.js"></script>
 </body>

@@ -50,6 +50,11 @@
       </div>
       <ul id="top_menu">
         {{#if user}}
+        <li  class="mt-2 pt-1">
+              <a href="/user/profile">
+                {{user.userName}}
+              </a>
+          </li>
         <li>
           <a href="/app/wishlist" class="wishlist_bt_top" title="Your wishlist">
             Your wishlist
@@ -69,42 +74,8 @@
         </li>
         {{/if}}
       </ul>
-      <!-- /top_menu -->
-      {{!-- <a href="#menu" class="btn_mobile">
-        <div class="hamburger hamburger--spin" id="hamburger">
-          <div class="hamburger-box">
-            <div class="hamburger-inner"></div>
-          </div>
-        </div>
-      </a> --}}
-      <nav id="menu" class="main-menu">
-        {{#if user}}
-        <ul>
-          <li>
-            <span>
-              <a href="#0">
-                {{user.userName}}
-              </a>
-            </span>
-            <ul>
-              <li>
-                <a href="#">
-                  Profile
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  Become a host
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li>
-            &nbsp;
-          </li>
-        </ul>
-        {{/if}}
-      </nav>
+  
+ 
     </header>
 
     {{/ifeq}}

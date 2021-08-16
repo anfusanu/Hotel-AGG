@@ -16,13 +16,18 @@
         <div class="signin-signup">
           <form action="#" class="sign-in-form">
             <h2 class="title">Reception Sign in</h2>
+
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Username" id="loginAdminEmail" />
+              <input type="text" placeholder="Portal Email" id="portalEmail" />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input type="text" placeholder="User Name" id="userName" />
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Password" id="loginPassKey" />
+              <input type="password" placeholder="Password" id="passKey" />
             </div>
             <button type="submit" class="btn solid" id="login">Login </button> 
             
@@ -46,31 +51,30 @@
       </div>
     </div>
 
-    <script src="/templates/login/app.js"></script>
-
     <script>
 
        
 
       document.getElementById('login').addEventListener('click',(event)=>{
         event.preventDefault();
-        const adminEmail = document.getElementById('loginAdminEmail').value;
-        const passKey = document.getElementById('loginPassKey').value;
+        const portalEmail = document.getElementById('portalEmail').value;
+        const userName = document.getElementById('userName').value;
+        const passKey = document.getElementById('passKey').value;
 
 
         const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          adminEmail,passKey
+          portalEmail,userName,passKey
         }),
       }
 
-        fetch(`/portal/login`, requestOptions)
+        fetch(`/reception/login`, requestOptions)
         .then((response) =>  response.json())
         .then((data) => {
           if (!data.isMatch) alert(data.message)
-          else window.location.href = "/portal/dashboard"
+          else window.location.href = "/reception/dashboard"
         })
         .catch((err) => console.log(err));
       });

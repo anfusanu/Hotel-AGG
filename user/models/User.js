@@ -8,6 +8,10 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: 32,
     },
+    userPhone: {
+      type: Number,
+      unique: 12,
+    },
     passKey: {
       type: String,
       required: true,
