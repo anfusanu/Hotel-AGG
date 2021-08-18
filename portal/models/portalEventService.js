@@ -8,7 +8,7 @@ const bookingSchema = new Schema({
   bookingEnd: Date,
   duration: Number,
   purpose: { type: String, required: true },
-  roomId: { type: Schema.Types.ObjectId, ref: "portalEventService" },
+  eventId: { type: Schema.Types.ObjectId, ref: "portalEventService" },
 });
 
 const portalEventServiceSchema = new Schema(
@@ -30,3 +30,4 @@ const portalEventServiceSchema = new Schema(
 );
 
 module.exports = mongoose.model("portalEventService", portalEventServiceSchema);
+

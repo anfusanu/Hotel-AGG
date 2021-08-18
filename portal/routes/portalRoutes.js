@@ -36,7 +36,7 @@ router.post("/login", function (req, res) {
     .logIn(req.body)
     .then((loginStatus) => {
       req.session.admin = loginStatus;
-      res.json({isMatch:true});
+      res.json({ isMatch: true });
     })
     .catch((err) => res.json(err));
 });
@@ -45,8 +45,8 @@ router.post("/signup", function (req, res) {
   helper
     .signUp(req.body)
     .then((loginStatus) => {
-      req.session.admin = loginStatus
-      res.json({isMatch:true});
+      req.session.admin = loginStatus;
+      res.json({ isMatch: true });
     })
     .catch((err) => res.json(err));
 });
@@ -167,16 +167,54 @@ router.get(`/service-mgt/remove-room/:roomId`, verifyLogin, (req, res) => {
     .catch((err) => res.redirect("/portal/service-mgt"));
 });
 
+router.get(`/service-mgt/set-room/:roomId`, verifyLogin, (req, res) => {
+  let tagId = req.session.admin.userId;
+  let roomId = req.params.roomId;
+  helper.getRoomOfflineList(tagId, roomId).then((aggDetails) => {
+    res.render("service-mgt-room", { Active: "service", ...aggDetails });
+  });
+});
+
+router.post(`/service-mgt/set-room/:roomId`, verifyLogin, (req, res) => {
+  let tagId = req.session.admin.userId;
+  let roomId = req.params.roomId;
+  helper
+    .addRoomNumber(tagId, roomId, req.body.roomNumber)
+    .then((aggDetails) => {
+      res.redirect(`/portal/service-mgt/set-room/${roomId}`);
+    });
+});
+
+router.get(`/service-mgt/set-room/:roomId`, verifyLogin, (req, res) => {
+  let tagId = req.session.admin.userId;
+  let roomId = req.params.roomId;
+  helper.getRoomOfflineList(tagId, roomId).then((aggDetails) => {
+    res.render("service-mgt-room", { Active: "service", ...aggDetails });
+  });
+});
+
+router.post(`/service-mgt/set-room-update/:roomId`, verifyLogin, (req, res) => {
+  let tagId = req.session.admin.userId;
+  helper.updateRoomNumber(tagId, roomId, req.body).then((status) => {
+    res.redirect(`/portal/service-mgt/set-room/${roomId}`);
+  });
+});
+
+router.get(`/service-mgt/set-room-delete`, verifyLogin, (req, res) => {
+  let tagId = req.session.admin.userId;
+  const {roomId, roomNumber} = req.query
+
+  helper.deleteRoomNumber(tagId, roomId, roomNumber).then((status) => {
+    res.redirect(`/portal/service-mgt/set-room/${roomId}`);
+  });
+});
+
 router.get("/subs-mgt", verifyLogin, function (req, res) {
   res.render("subs-mgt", { Active: "subs" });
 });
 
 router.get("/sales", verifyLogin, function (req, res) {
   res.render("sales", { Active: "sales" });
-});
-
-router.get("/test", function (req, res) {
-  res.render("test", { Active: "sales" });
 });
 
 router.get("/active", verifyLogin, function (req, res) {

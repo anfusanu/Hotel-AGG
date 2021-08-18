@@ -8,9 +8,26 @@
       <h4 class="card-title">Rooms Service</h4>
       <p class="text-center">Manage your rooms here</p>
     </div>
-    <div class="col-12 col-md-8 offset-md-2">
+    <div class="col-12 col-md-10 offset-md-1">
       <div class="pricing">
         <div class="row align-items-center justify-content-center">
+
+          {{! Add new room card }}
+          <div class="col-md-4" style="cursor: pointer;">
+            <div class="card" style="outline: 2px dashed rgb(0, 0, 0); outline-offset: -10px;">
+              <div class="card-header text-center">
+                <h4 class="card-title">Add room</h4>
+                <p class="text-center">Add new room to your portal </p>
+              </div>
+              <h1 class="price"><i class="bi bi-plus-square-dotted" data-bs-toggle="modal"
+                  data-bs-target="#roomModal"></i></h1>
+
+              <div class="card-footer border-0">
+                <button class="btn btn-primary btn-block fw-bold" data-bs-toggle="modal"
+                  data-bs-target="#roomModal">ADD</button>
+              </div>
+            </div>
+          </div>
 
           {{#each serviceList.roomServices}}
 
@@ -40,27 +57,15 @@
               <div class="card-footer">
                 <button class="btn btn-primary btn-block"
                   onclick="window.location.href = '/portal/service-mgt/edit-room/{{this._id}}'">Edit</button>
+
+                <button class="btn btn-success btn-block mt-2"
+                  onclick="window.location.href = '/portal/service-mgt/set-room/{{this._id}}'">Set Room Id</button>
               </div>
             </div>
           </div>
           {{/each}}
 
-          {{! Add new room card }}
-          <div class="col-md-4" style="cursor: pointer;">
-            <div class="card" style="outline: 2px dashed rgb(0, 0, 0); outline-offset: -10px;">
-              <div class="card-header text-center">
-                <h4 class="card-title">Add room</h4>
-                <p class="text-center">Add new room to your portal </p>
-              </div>
-              <h1 class="price"><i class="bi bi-plus-square-dotted" data-bs-toggle="modal"
-                  data-bs-target="#roomModal"></i></h1>
-
-              <div class="card-footer border-0">
-                <button class="btn btn-primary btn-block fw-bold" data-bs-toggle="modal"
-                  data-bs-target="#roomModal">ADD</button>
-              </div>
-            </div>
-          </div>
+          
 
         </div>
       </div>
@@ -83,6 +88,22 @@
       <div class="pricing">
         <div class="row align-items-center justify-content-center">
 
+ {{! Add new room card }}
+          <div class="col-md-4" style="cursor: pointer;">
+            <div class="card" style="outline: 2px dashed rgb(0, 0, 0); outline-offset: -10px;">
+              <div class="card-header text-center">
+                <h4 class="card-title">Add event</h4>
+                <p class="text-center">Add new event hall to your portal </p>
+              </div>
+              <h1 class="price"><i class="bi bi-plus-square-dotted" data-bs-toggle="modal"
+                  data-bs-target="#eventModal"></i></h1>
+
+              <div class="card-footer border-0">
+                <button class="btn btn-primary btn-block fw-bold" data-bs-toggle="modal"
+                  data-bs-target="#eventModal">ADD</button>
+              </div>
+            </div>
+          </div>
           {{#each serviceList.eventService}}
 
           <div class="col-md-4">
@@ -116,22 +137,7 @@
           </div>
           {{/each}}
 
-          {{! Add new room card }}
-          <div class="col-md-4" style="cursor: pointer;">
-            <div class="card" style="outline: 2px dashed rgb(0, 0, 0); outline-offset: -10px;">
-              <div class="card-header text-center">
-                <h4 class="card-title">Add event</h4>
-                <p class="text-center">Add new event hall to your portal </p>
-              </div>
-              <h1 class="price"><i class="bi bi-plus-square-dotted" data-bs-toggle="modal"
-                  data-bs-target="#eventModal"></i></h1>
-
-              <div class="card-footer border-0">
-                <button class="btn btn-primary btn-block fw-bold" data-bs-toggle="modal"
-                  data-bs-target="#eventModal">ADD</button>
-              </div>
-            </div>
-          </div>
+         
 
         </div>
       </div>

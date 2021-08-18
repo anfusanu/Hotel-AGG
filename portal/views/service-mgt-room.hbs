@@ -1,0 +1,233 @@
+<div class="page-heading">
+  <h3 style="cursor: pointer;" onclick="window.location.href = '/portal/service-mgt'">Services MGT</h3>
+</div>
+  <section class="section">
+    <div class="row card p-4">
+      
+      <div class="card-header text-center">
+        <h4 class="card-title">Room Numbers</h4>
+        <p>To access offline booking you should add room numbers here</p>
+        <p>You can add a total of {{roomDetails.roomQty}} rooms here</p>
+
+      </div>
+      <div class="col-12 col-md-8 offset-md-2">
+        <div class="pricing">
+          <div class="row align-items-center justify-content-center">
+
+            {{#each roomList.roomList}}
+
+              <div class="col-md-4">
+                <div class="card">
+                  <div class="card-header text-center justify-content-center">
+                    <h4 class="card-title">{{this.roomTitle}}</h4>
+                    <!-- <p class="text-center">A standard features you can get</p> -->
+                  </div>
+                  <h1>{{this.roomNumber}}</h1>
+            
+
+                  <div class="card-footer">
+                    
+                    <button
+                      class="btn btn-danger mt-2 btn-block"
+                      onclick="window.location.href = '/portal/service-mgt/set-room-delete?roomId={{../roomList._id}}&roomNumber={{this.roomNumber}}'"
+                    >Delete</button>
+
+                  </div>
+                </div>
+              </div>
+            {{/each}}
+
+            {{! Add new room card }}
+
+            {{#ifeq roomList.roomList.length roomDetails.roomQty}}
+            {{else}}
+            <div class="col-md-4" style="cursor: pointer;">
+              <div
+                class="card"
+                style="outline: 2px dashed rgb(0, 0, 0); outline-offset: -10px;"
+              >
+                <div class="card-header text-center">
+                  <h4 class="card-title">Add room number</h4>
+                </div>
+                <h1 class="price"><i
+                    class="bi bi-plus-square-dotted"
+                    data-bs-toggle="modal"
+                    data-bs-target="#roomModal"
+                  ></i></h1>
+
+                <div class="card-footer border-0">
+                  <button
+                    class="btn btn-primary btn-block fw-bold"
+                    data-bs-toggle="modal"
+                    data-bs-target="#roomModal"
+                  >ADD</button>
+                </div>
+              </div>
+            </div>
+            {{/ifeq}}
+
+          </div>
+        </div>
+      </div>
+        <div class="card-footer border-0">
+                  <button
+                    class="btn btn-primary w-25 btn-block fw-bold"
+                    style="float: right;"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editModal"
+                  >Edit a Room Number</button>
+                </div>
+    </div>
+
+  </section>
+
+
+ 
+<!-- MODAL OF ROOM REGISTRATION -->
+
+<div
+  class="modal fade text-left"
+  id="roomModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myModalLabel33"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel33">
+          ADD ROOM
+        </h4>
+        {{! <p>This is only for your request purpose.</p> }}
+        <button
+          type="button"
+          class="close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <i data-feather="x"></i>
+        </button>
+      </div>
+      <form
+        id="addRoom"
+        method="POST"
+        action="/portal/service-mgt/set-room/{{roomDetails._id}}"
+      >
+
+        <div class="modal-body">
+          <label>Room Number: </label>
+          <div class="form-group">
+            <input
+              type="text"
+              placeholder="Room name"
+              class="form-control"
+              id="roomNumber"
+              name="roomNumber"
+              required
+            />
+          </div>
+
+      
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-light-secondary"
+            data-bs-dismiss="modal"
+          >
+            <i class="bx bx-x d-block d-sm-none"></i>
+            <span class="d-none d-sm-block">Close</span>
+          </button>
+          <button type="submit" class="btn btn-primary ml-1">
+            <i class="bx bx-check d-block d-sm-none"></i>
+            <span class="d-none d-sm-block">ADD</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+{{!-- Editing room number MODAL --}}
+
+<!-- MODAL OF ROOM REGISTRATION -->
+
+<div
+  class="modal fade text-left"
+  id="editModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myModalLabel33"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel33">
+          ADD ROOM
+        </h4>
+        {{! <p>This is only for your request purpose.</p> }}
+        <button
+          type="button"
+          class="close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <i data-feather="x"></i>
+        </button>
+      </div>
+      <form
+        id="addRoom"
+        method="POST"
+        action="/portal/service-mgt/set-room-update/{{roomDetails._id}}"
+      >
+
+        <div class="modal-body">
+          <label>Room Number to change: </label>
+          <div class="form-group">
+            <input
+              type="text"
+              placeholder="Room name"
+              class="form-control"
+              id="roomNumber"
+              name="roomNumber"
+              required
+            />
+          </div>
+
+           <label>New room number: </label>
+          <div class="form-group">
+            <input
+              type="text"
+              placeholder="Room name"
+              class="form-control"
+              id="roomNumber"
+              name="newRoomNumber"
+              required
+            />
+          </div>
+
+      
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-light-secondary"
+            data-bs-dismiss="modal"
+          >
+            <i class="bx bx-x d-block d-sm-none"></i>
+            <span class="d-none d-sm-block">Close</span>
+          </button>
+          <button type="submit" class="btn btn-primary ml-1">
+            <i class="bx bx-check d-block d-sm-none"></i>
+            <span class="d-none d-sm-block">ADD</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

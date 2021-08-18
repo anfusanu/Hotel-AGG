@@ -6,6 +6,7 @@ const RoomService = require("../models/portalRoomService");
 const FoodService = require("../models/portalFoodService");
 const EventService = require("../models/portalEventService");
 const Reception = require("../models/Reception");
+const RoomOffline = require("../models/portalRoomOffline");
 
 const { imageDelete } = require("../helpers/s3bucket");
 
@@ -190,8 +191,8 @@ module.exports = {
       if (!roomDetails) reject(false);
       else {
         const remDoc = await RoomService.deleteOne({ _id: roomDetails._id });
-        
-        if(remDoc == 1){
+
+        if (remDoc == 1) {
           imageDelete(fileName).then(async (isSuccess) => {
             await RoomService.updateOne(
               { _id: roomId },
@@ -199,9 +200,60 @@ module.exports = {
             );
             resolve(isSuccess);
           });
-
         }
-       
       }
+    }),
+
+  getRoomOfflineList: (tagId, roomId) =>
+    new Promise(async (resolve, reject) => {
+      let roomList = await RoomOffline.findOne({
+        _id: roomId,
+        portalId: tagId,
+      }).lean();
+      let roomDetails = await RoomService.findOne({
+        _id: roomId,
+        portalId: tagId,
+      }).lean();
+      const aggDetails = { roomList, roomDetails };
+      resolve(aggDetails);
+    }),
+  addRoomNumber: (tagId, roomId, roomNumber) =>
+    new Promise(async (resolve, reject) => {
+      let roomUpdate = await RoomOffline.findOneAndUpdate(
+        { _id: roomId, portalId: tagId },
+        {
+          $push: {
+            roomList: {
+              roomNumber: roomNumber,
+              isAvailable: true,
+              checkOut: new Date(),
+            },
+          },
+        },
+        { upsert: true, useFindAndModify: false }
+      );
+      if (roomUpdate) resolve(true);
+      else reject(false);
+    }),
+
+  updateRoomNumber: (roomId, roomForm) =>
+    new Promise(async (resolve, reject) => {
+      const query = { _id: roomId, "roomList.roomNumber": roomNumber };
+      const updateDocument = {
+        $set: { "roomList.$.roomNumber": newRoomNumber },
+      };
+      const roomUpdate = await RoomOffline.updateOne(query, updateDocument);
+
+      if (roomUpdate) resolve(true);
+      else reject(false);
+    }),
+  deleteRoomNumber: (tagId, roomId, roomNumber) =>
+    new Promise(async (resolve, reject) => {
+      const query = { _id: roomId,portalId: tagId};
+      const updateDocument = { $pull: { roomList: {roomNumber} } };
+      let roomUpdate = await RoomOffline.updateOne(query, updateDocument);
+
+      if (roomUpdate) resolve(true);
+      else reject(false);
     }),
 };

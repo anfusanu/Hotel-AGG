@@ -1,0 +1,238 @@
+<div class="page-heading">
+  <h3 style="cursor: pointer;" onclick="window.location.href = '/reception'">Offline room</h3>
+  <button class="btn btn-primary" onclick="window.location.href = '/reception/reserve-room'">Reserve a Room</button>
+
+</div>
+  <section class="section">
+    <div class="row card p-4">
+      
+      <div class="card-header text-center">
+        <h4 class="card-title">{{roomDetails.roomTitle}}</h4>
+      </div>
+      <div class="col-12 col-md-10 offset-md-1 p-4">
+        <div class="pricing">
+          <div class="row align-items-center justify-content-center">
+
+            {{#each roomList.roomList}}
+
+              <div class="col-md-4 pb-3">
+                <div class="card shadow-md">
+                  <div class="card-header text-center justify-content-center">
+                    <h4 class="card-title">Room Number</h4>
+                    <!-- <p class="text-center">A standard features you can get</p> -->
+                  </div>
+                  <h1>{{this.roomNumber}}</h1>
+            
+
+                  <div class="card-footer">
+
+
+                     {{#if isAvailable}} 
+                    <button
+                      class="btn btn-primary mt-2 btn-block"
+                      onclick="bookRoom('{{this.roomNumber}}')"
+                    >Available</button>
+                    {{else}} <button
+                      class="btn btn-success mt-2 btn-block"
+                      onclick="bookedInfo('{{this.roomNumber}}')"
+                    >Booked</button>
+                     {{/if}}
+                    
+
+                  </div>
+                </div>
+              </div>
+            {{/each}}
+
+            {{! Add new room card }}
+
+            
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+
+ 
+<!-- MODAL OF ROOM REGISTRATION -->
+
+<div
+  class="modal fade text-left"
+  id="roomModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myModalLabel33"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel33">
+          ADD ROOM
+        </h4>
+        {{! <p>This is only for your request purpose.</p> }}
+        <button
+          type="button"
+          class="close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <i data-feather="x"></i>
+        </button>
+      </div>
+      <form
+        id="addRoom"
+        method="POST"
+        action="/portal/service-mgt/set-room/{{roomDetails._id}}"
+      >
+
+        <div class="modal-body">
+          <label>Room Number: </label>
+          <div class="form-group">
+            <input
+              type="text"
+              placeholder="Room name"
+              class="form-control"
+              id="roomNumber"
+              name="roomNumber"
+              required
+            />
+          </div>
+
+      
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-light-secondary"
+            data-bs-dismiss="modal"
+          >
+            <i class="bx bx-x d-block d-sm-none"></i>
+            <span class="d-none d-sm-block">Close</span>
+          </button>
+          <button type="submit" class="btn btn-primary ml-1">
+            <i class="bx bx-check d-block d-sm-none"></i>
+            <span class="d-none d-sm-block">ADD</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+{{!-- Editing room number MODAL --}}
+
+<!-- MODAL OF ROOM REGISTRATION -->
+
+<div
+  class="modal fade text-left"
+  id="editModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myModalLabel33"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel33">
+          ADD ROOM
+        </h4>
+        {{! <p>This is only for your request purpose.</p> }}
+        <button
+          type="button"
+          class="close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <i data-feather="x"></i>
+        </button>
+      </div>
+      <form
+        id="addRoom"
+        method="POST"
+        action="/portal/service-mgt/set-room-update/{{roomDetails._id}}"
+      >
+
+        <div class="modal-body">
+          <label>Room Number to change: </label>
+          <div class="form-group">
+            <input
+              type="text"
+              placeholder="Room name"
+              class="form-control"
+              id="roomNumber"
+              name="roomNumber"
+              required
+            />
+          </div>
+
+           <label>New room number: </label>
+          <div class="form-group">
+            <input
+              type="text"
+              placeholder="Room name"
+              class="form-control"
+              id="roomNumber"
+              name="newRoomNumber"
+              required
+            />
+          </div>
+
+      
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-light-secondary"
+            data-bs-dismiss="modal"
+          >
+            <i class="bx bx-x d-block d-sm-none"></i>
+            <span class="d-none d-sm-block">Close</span>
+          </button>
+          <button type="submit" class="btn btn-primary ml-1">
+            <i class="bx bx-check d-block d-sm-none"></i>
+            <span class="d-none d-sm-block">ADD</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<input type="hidden" id="roomId" value="{{roomDetails._id}}">
+<script>
+  function bookRoom(roomNumber){
+    const roomId = document.getElementById('roomId').value;
+    window.location.href = `/reception/offline-rooms-booking?roomId=${roomId}&roomNumber=${roomNumber}`
+  }
+
+  function bookedInfo(roomNumber){
+
+    const roomId = document.getElementById('roomId').value;
+
+
+    const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      roomId,orderId,roomNumber
+    }),
+    }
+
+    fetch(`/reception/guest-info`, requestOptions)
+    .then((response) =>  response.json())
+    .then((data) => {
+      if(data.isSuccess) window.location.href = '/reception/orders/today'
+      else alert("Internal Error")
+    })
+    .catch((err) => console.log(err));
+  }
+</script>

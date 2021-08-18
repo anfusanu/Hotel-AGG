@@ -67,7 +67,7 @@ router.get("/profile", verifyLogin, function (req, res) {
 
 router.get("/order-invoice/:orderId", verifyLogin, function (req, res) {
   // let tagId = req.session.user.userId;
-  if(!req.params.orderId) return res.redirect('/app')
+  if (!req.params.orderId) return res.redirect("/app");
 
   let orderId = req.params.orderId;
 
@@ -152,24 +152,37 @@ router.post("/book-and-pay/paymentAborted", verifyLogin, function (req, res) {
   res.json({ status: true });
 });
 
+router.get("/order-cancel/:orderId", verifyLogin, (req, res) => {
+  let user = req.session.user;
+  console.log(req.session.user);
+  console.log(req.params);
+
+  helper
+    .orderCancel(user.userId, req.params.orderId)
+    .then((status) => {
+      res.redirect("/user/profile");
+    })
+    .catch((err) => res.redirect("/app"));
+});
 
 router.post("/update-profile", verifyLogin, function (req, res) {
-  let tagId = req.session.user.userId
-  helper.updateProfile(tagId,req.body)
-  .then(eventStatus => {
-    res.json(eventStatus)
-  })
-  .catch(err => res.json(err))
+  let tagId = req.session.user.userId;
+  helper
+    .updateProfile(tagId, req.body)
+    .then((eventStatus) => {
+      res.json(eventStatus);
+    })
+    .catch((err) => res.json(err));
 });
 
 router.post("/update-password", verifyLogin, function (req, res) {
-  let tagId = req.session.user.userId
-  helper.updatePassword(tagId,req.body)
-  .then(eventStatus => {
-    res.json(eventStatus)
-  })
-  .catch(err => res.json(err))
+  let tagId = req.session.user.userId;
+  helper
+    .updatePassword(tagId, req.body)
+    .then((eventStatus) => {
+      res.json(eventStatus);
+    })
+    .catch((err) => res.json(err));
 });
-//update-password
 
 module.exports = router;

@@ -22,39 +22,47 @@ module.exports = {
       else reject(false);
     }),
 
-  getUserProfile: (tagId) => new Promise(async (resolve, reject) => {
-    let aggDetails = {}
-    aggDetails.userDetails = await User.findById(tagId).lean();
-    delete aggDetails.userDetails.passKey;
-    aggDetails.orderHistory = await Order.find({userId : tagId}).lean();
-    if (aggDetails) resolve(aggDetails);
-    else reject(false);
-  }),
+  getUserProfile: (tagId) =>
+    new Promise(async (resolve, reject) => {
+      let aggDetails = {};
+      aggDetails.userDetails = await User.findById(tagId).lean();
+      delete aggDetails.userDetails.passKey;
+      aggDetails.orderHistory = await Order.find({ userId: tagId }).lean();
+      if (aggDetails) resolve(aggDetails);
+      else reject(false);
+    }),
 
-  updateProfile: (tagId,formData) => new Promise(async (resolve, reject) => {
+  updateProfile: (tagId, formData) =>
+    new Promise(async (resolve, reject) => {
+      let userUpdate = await User.updateOne({ _id: tagId }, { $set: formData });
+      if (userUpdate) resolve({ isSuccess: true });
+      else resolve({ isSuccess: false });
+    }),
 
-  let userUpdate = await User.updateOne({_id : tagId}, {$set: formData})
-  if (userUpdate) resolve({isSuccess:true})
-  else resolve({isSuccess:false})
-  }),
+  updatePassword: (tagId, formData) =>
+    new Promise(async (resolve, reject) => {
+      let userDetails = await User.findById(tagId).lean();
 
-  updatePassword: (tagId,formData) => new Promise(async (resolve, reject) => {
-    let userDetails = await User.findById(tagId).lean()
-
-    bcrypt.compare(formData.passKey, userDetails.passKey)
-    .then(isMatch => {
-      if (!isMatch) reject({isMatch, message: "Wrong password"})
-      else {
-        bcrypt.hash(formData.newPassKey,10)
-        .then( async(hash) => {
-          let updateUser = await User.updateOne({_id : tagId},{$set : {passKey : hash}})
-          if (updateUser) resolve({isMatch})
-          else reject({isMatch:false,message:'Error updating password'})
+      bcrypt
+        .compare(formData.passKey, userDetails.passKey)
+        .then((isMatch) => {
+          if (!isMatch) reject({ isMatch, message: "Wrong password" });
+          else {
+            bcrypt.hash(formData.newPassKey, 10).then(async (hash) => {
+              let updateUser = await User.updateOne(
+                { _id: tagId },
+                { $set: { passKey: hash } }
+              );
+              if (updateUser) resolve({ isMatch });
+              else
+                reject({ isMatch: false, message: "Error updating password" });
+            });
+          }
         })
-      }
-    }).catch(err => reject({isMatch:false,message:'Error updating password'}))
-
-  }),
+        .catch((err) =>
+          reject({ isMatch: false, message: "Error updating password" })
+        );
+    }),
 
   orderPlace: (formData) =>
     new Promise(async (resolve, reject) => {
@@ -173,25 +181,30 @@ module.exports = {
       else reject(false);
     }),
 
+
   getUserOrderList: (tagId) =>
     new Promise(async (resolve, reject) => {
-      let orderList = await Order.find({ _id: tagId }).lean();
+      let orderList = await Order.find({ _id: tagId }).sort({dateCheckIn :1}).lean();
       if (orderList) resolve(orderList);
       else reject(false);
     }),
 
-  getInvoice : (orderId) => new Promise(async(resolve,reject) => {
-    let aggDetails = {}
-    aggDetails.orderDetails = await Order.findById(orderId).lean()
-    aggDetails.portalDetails = await Portal.findById(aggDetails.orderDetails.portalId).lean()
-    if(aggDetails.orderDetails.roomId)
-      aggDetails.roomDetails = await RoomService.findById(aggDetails.orderDetails.roomId).lean()
-    // if(aggDetails.orderDetails.eventId)
-    // aggDetails.roomDetails = await EventService.findById(aggDetails.orderDetails.eventId).lean()
+  getInvoice: (orderId) =>
+    new Promise(async (resolve, reject) => {
+      let aggDetails = {};
+      aggDetails.orderDetails = await Order.findById(orderId).lean();
+      aggDetails.portalDetails = await Portal.findById(
+        aggDetails.orderDetails.portalId
+      ).lean();
+      if (aggDetails.orderDetails.roomId)
+        aggDetails.roomDetails = await RoomService.findById(
+          aggDetails.orderDetails.roomId
+        ).lean();
+      // if(aggDetails.orderDetails.eventId)
+      // aggDetails.roomDetails = await EventService.findById(aggDetails.orderDetails.eventId).lean()
 
-    resolve(aggDetails)
-
-  }),
+      resolve(aggDetails);
+    }),
 
   orderCancel: (tagId, orderId) =>
     new Promise(async (resolve, reject) => {

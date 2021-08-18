@@ -109,7 +109,10 @@
 										<div class="col-md-2 pt-3">
 										<button class="btn btn-outline-primary mx-2" onclick="window.location.href = '/user/order-invoice/{{this._id}}'">Invoice </button>
 										{{#ifEqual this.orderStatus 'Waiting'}}
-										<button class="btn btn-outline-danger mt-2 mx-2">Cancel </button>
+										<button class="btn btn-outline-danger mt-2 mx-2" onclick="window.location.href = '/user/order-cancel/{{this._id}}'">Cancel </button>
+										{{/ifEqual}}
+										{{#ifEqual this.orderStatus 'Cancelled'}}
+										<button class="btn btn-danger mt-2 mx-2" onclick="alert('This order is already cancelled')">Cancelled </button>
 										{{/ifEqual}}
 										</div>
 

@@ -30,17 +30,17 @@
   <div class="row">
 
     <div class="col-4 col-lg-2 col-md-2">
-      <div class="card service-select" onclick="window.location.href = '/reception/orders/today'">
+      <div class="card service-active" onclick="window.location.href = '/reception/orders/today'">
         <div class="card-body">
           <div class="row text-center">
-            <h4 class="font-extrabold mb-0 service-text">Today</h4>
+            <h4 class="font-extrabold mb-0 service-text-active">Today</h4>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="col-4 col-lg-2 col-md-2">
-      <div class="card {{#ifeq select "Tomorrow"}}service-active {{else}}service-select{{/ifeq}}" onclick="window.location.href = '/reception/orders?select=Tomorrow&days=2'">
+     <div class="col-4 col-lg-2 col-md-2">
+      <div class="card {{#ifeq select "Tomorrow"}}service-active {{else}}service-select{{/ifeq}}" onclick="window.location.href = '/reception/orders?select=Tomorrow'">
         <div class="card-body">
           <div class="row text-center">
             <h4 class="font-extrabold mb-0 {{#ifeq select "Tomorrow"}}service-text-active {{else}}service-text{{/ifeq}}">Tomorrow</h4>
@@ -50,7 +50,7 @@
     </div>
 
      <div class="col-4 col-lg-2 col-md-2">
-      <div class="card {{#ifeq select "Week"}}service-active {{else}}service-select{{/ifeq}}" onclick="window.location.href = '/reception/orders?select=Week&days=7'">
+      <div class="card {{#ifeq select "Week"}}service-active {{else}}service-select{{/ifeq}}" onclick="window.location.href = '/reception/orders?select=Week'">
         <div class="card-body">
           <div class="row text-center">
             <h4 class="font-extrabold mb-0 {{#ifeq select "Week"}}service-text-active {{else}}service-text{{/ifeq}}">Week</h4>
@@ -116,6 +116,7 @@
               <span class="orderDates">{{this.dateCheckOut}}</span></td>
             <td class="totalAmount">{{this.totalAmount}}</td>
             <td class="text-center">
+              <button class="btn btn-outline-success btn-sm m-1" onclick="window.location.href = '/reception/order-check-in?orderId={{this._id}}&roomId={{this.roomId}}'">Check In</button>
               <button class="btn btn-outline-danger btn-sm m-1" onclick="window.location.href = '/reception/order-cancel/{{this._id}}'">Cancel</button>
             </td>
           </tr>

@@ -1,0 +1,102 @@
+<div class="page-heading">
+  <h3 style="cursor: pointer;" onclick="window.location.href = '/portal/service-mgt'">Offline room</h3>
+</div>
+  <section class="section">
+    <div class="row card p-4">
+      
+      <div class="card-header text-center">
+        <h4 class="card-title">{{roomDetails.roomTitle}}</h4>
+      </div>
+      <div class="col-12 col-md-8 offset-md-2">
+        <div class="pricing">
+          <div class="row align-items-center justify-content-center">
+
+            {{#each roomList.roomList}}
+
+              <div class="col-md-4">
+                <div class="card">
+                  <div class="card-header text-center justify-content-center">
+                    <h4 class="card-title">{{this.roomTitle}}</h4>
+                    <!-- <p class="text-center">A standard features you can get</p> -->
+                  </div>
+                  <h1>{{this.roomNumber}}</h1>
+            
+
+                  <div class="card-footer">
+                    {{#if isAvailable}} 
+                    <button
+                      class="btn btn-success mt-2 btn-block"
+                      onclick="bookRoom('{{this.roomNumber}}')"
+                    >Select</button>
+                    {{else}} <button
+                      class="btn btn-success mt-2 btn-block"
+                    >Unavailable</button>
+                     {{/if}}
+                    
+
+                  </div>
+                </div>
+              </div>
+            {{/each}}
+
+            {{! Add new room card }}
+
+            {{#ifeq roomList.roomList.length roomDetails.roomQty}}
+            {{else}}
+            <div class="col-md-4" style="cursor: pointer;">
+              <div
+                class="card"
+                style="outline: 2px dashed rgb(0, 0, 0); outline-offset: -10px;"
+              >
+                <div class="card-header text-center">
+                  <h4 class="card-title">Add room number</h4>
+                </div>
+                <h1 class="price"><i
+                    class="bi bi-plus-square-dotted"
+                    data-bs-toggle="modal"
+                    data-bs-target="#roomModal"
+                  ></i></h1>
+
+                <div class="card-footer border-0">
+                  <button
+                    class="btn btn-primary btn-block fw-bold"
+                    data-bs-toggle="modal"
+                    data-bs-target="#roomModal"
+                  >ADD</button>
+                </div>
+              </div>
+            </div>
+            {{/ifeq}}
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+<input type="hidden" id="roomId" value="{{query.roomId}}">
+<input type="hidden" id="orderId" value="{{query.orderId}}">
+<script>
+  function bookRoom(roomNumber){
+    const roomId = document.getElementById('roomId').value;
+    const orderId = document.getElementById('orderId').value;
+
+
+    const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      roomId,orderId,roomNumber
+    }),
+    }
+
+    fetch(`/reception/check-in-room-select`, requestOptions)
+    .then((response) =>  response.json())
+    .then((data) => {
+      if(data.isSuccess) window.location.href = '/reception/orders/today'
+      else alert("Internal Error")
+    })
+    .catch((err) => console.log(err));
+  }
+</script>
