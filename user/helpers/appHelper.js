@@ -86,6 +86,7 @@ module.exports = {
   },
 
   getSearchResults: (query) => {
+    console.log(query)
     return new Promise(async (resolve, reject) => {
       //initial find query
       let findQuery = { portalStatus: "Inactive" };
@@ -93,7 +94,7 @@ module.exports = {
 
       //find query incase of geolocation
       if (query.geolocation)
-        findQuery.location = {
+        findQuery.portalDetail.location = {
           $near: {
             $geometry: {
               type: "Point",
@@ -103,16 +104,19 @@ module.exports = {
           },
         };
 
+      // if (query.searchKeyword)
+      //   findQuery.portalTag = {
+      //     $regex: `${query.searchKeyword}`,
+      //     $options: "i",
+      //   };
+
       if (query.searchKeyword)
-        findQuery.portalTag = {
-          $regex: `${query.searchKeyword}`,
-          $options: "i",
-        };
+        findQuery = {'portalDetail.portalTag':{ $regex: `${query.searchKeyword}`, $options: "i"}}
+        // {'portalDetail.portalTag':{ $regex: `${query.searchKeyword}`, $options: "i"}}
+      // { $regexFindAll: { input: "$category", regex: /cafe/ }  }
 
       console.log(findQuery);
-      console.log(query);
       let searchResult = await RoomService.aggregate([
-        { $match: {} },
         {
           $lookup: {
             from: "portals",
@@ -122,12 +126,13 @@ module.exports = {
           },
         },
         { $unwind: "$portalDetail" },
+        { $match: findQuery },
 
-        { $limit: 6 },
-        { $skip: (pageNumber - 1) * 6 },
+        // { $limit: 6 },
+        // { $skip: (pageNumber - 1) * 6 },
       ]);
 
-      console.log(searchResult);
+      // console.log(searchResult);
       // let searchResult = await Portal.find(findQuery)
       //   .limit(6)
       //   .skip((pageNumber - 1) * 6)

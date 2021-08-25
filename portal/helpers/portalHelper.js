@@ -63,6 +63,31 @@ module.exports = {
     });
   },
 
+  updatePassword: (tagId, formData) =>
+    new Promise(async (resolve, reject) => {
+      let portalDetails = await Admin.findById(tagId).lean();
+
+      bcrypt
+        .compare(formData.passKey, portalDetails.passKey)
+        .then((isMatch) => {
+          if (!isMatch) reject({ isMatch, message: "Wrong password" });
+          else {
+            bcrypt.hash(formData.newPassKey, 10).then(async (hash) => {
+              let updateAdmin = await Admin.updateOne(
+                { _id: tagId },
+                { $set: { passKey: hash } }
+              );
+              if (updateAdmin) resolve({ isMatch });
+              else
+                reject({ isMatch: false, message: "Error updating password" });
+            });
+          }
+        })
+        .catch((err) =>
+          reject({ isMatch: false, message: "Error updating password" })
+        );
+    }),
+
   getReceptionList: (portalId) =>
     new Promise((resolve, reject) => {
       let receptionList = Reception.find({ portalId }).lean();
@@ -72,8 +97,6 @@ module.exports = {
 
   addReception: (adminCred, formData) =>
     new Promise((resolve, reject) => {
-      console.log(adminCred);
-      console.log(formData);
       bcrypt.hash(formData.passKey, 10).then((hash) => {
         let newReception = new Reception({
           userName: formData.userName,
@@ -88,6 +111,12 @@ module.exports = {
           .then((insertedData) => resolve(true))
           .catch((err) => reject(false));
       });
+    }),
+
+  removeReception: (portalId, userName) =>
+    new Promise(async (resolve, reject) => {
+      await Reception.deleteOne({ portalId, userName });
+      resolve(true);
     }),
 
   portalStatusChanger: async (tagId) => {
@@ -236,7 +265,7 @@ module.exports = {
       else reject(false);
     }),
 
-  updateRoomNumber: (roomId, roomForm) =>
+  updateRoomNumber: (tagId, roomId, { roomNumber, newRoomNumber }) =>
     new Promise(async (resolve, reject) => {
       const query = { _id: roomId, "roomList.roomNumber": roomNumber };
       const updateDocument = {
@@ -249,8 +278,8 @@ module.exports = {
     }),
   deleteRoomNumber: (tagId, roomId, roomNumber) =>
     new Promise(async (resolve, reject) => {
-      const query = { _id: roomId,portalId: tagId};
-      const updateDocument = { $pull: { roomList: {roomNumber} } };
+      const query = { _id: roomId, portalId: tagId };
+      const updateDocument = { $pull: { roomList: { roomNumber } } };
       let roomUpdate = await RoomOffline.updateOne(query, updateDocument);
 
       if (roomUpdate) resolve(true);

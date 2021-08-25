@@ -29,7 +29,12 @@
       <div class="card-header">
         <h4 class="card-title">
           Enter the details of your place
-        </h4>
+        </h4> 
+        {{#if requestDetail.requestStatus}}
+        <span class="text-danger">
+          Message from Admin : {{requestDetail.requestStatus}}
+        </span>
+        {{/if}}
       </div>
       <div class="card-content">
         <div class="card-body">
@@ -264,6 +269,10 @@
                     Update Info
                   </button>
 
+                  <button type="submit" id="nextPage" class="btn btn-success me-1 mb-1 p-3 m-4 fw-bold">
+                    Next page
+                  </button>
+
                 </div>
               </div>
             </div>
@@ -398,4 +407,10 @@
         })
 
     })
+
+    document.getElementById('nextPage').addEventListener('click', (event) => {
+      window.location.href = '/registration/services'
+    })
+
+
 </script>

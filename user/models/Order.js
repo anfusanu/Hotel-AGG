@@ -7,9 +7,11 @@ const orderSchema = new mongoose.Schema(
     roomId: mongoose.ObjectId,
 
     guestInfo: {
-      guestName : String,
+      guestName: String,
       guestPhone: String,
-      guestEmail : String
+      guestEmail: String,
+      guestQty: Number,
+      purpose: String
     },
     paymentMethod: {
       type: String,

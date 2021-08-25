@@ -207,8 +207,7 @@
                                             </h5>
                                         </div>
                                         <div class="col-md-10"> <br>
-                                            <p class="text-center">The portal provide food that can be added later..
-                                                {{requestDetail.services.foodService}}</p>
+                                            <p class="text-center">The portal provide food that can be added later..</p>
                                         </div>
                                     </div>
                                     {{/if}}
@@ -390,19 +389,10 @@
         center: [{{requestDetail.portalAddress.geolocation.longitude}},{{requestDetail.portalAddress.geolocation.latitude}}],
         zoom: 13
     });
-
+    
     const marker = new mapboxgl.Marker()
 
     map.on('load', function (e) {
-        console.log(e)
-        marker.setLngLat([{
-            {
-                requestDetail.portalAddress.geolocation.longitude
-            }
-        }, {
-            {
-                requestDetail.portalAddress.geolocation.latitude
-            }
-        }]).addTo(map)
+        marker.setLngLat([{{requestDetail.portalAddress.geolocation.longitude}}, {{requestDetail.portalAddress.geolocation.latitude}}]).addTo(map)
     });
 </script>

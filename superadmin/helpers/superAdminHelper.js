@@ -76,15 +76,15 @@ module.exports = {
     });
   },
 
-  rejectRequest: (tagId, rejectReason) => {
+  rejectRequest: (rejectForm) => {
     return new Promise(async (resolve, reject) => {
       let userDetail = await Admin.updateOne(
-        { _id: tagId },
-        { requestStatus: "Pending" }
+        { _id: rejectForm.reqId },
+        { userStatus: "Pending" }
       );
       let requestDetail = await portalRequest.updateOne(
-        { _id: tagId },
-        { requestStatus: rejectReason }
+        { _id: rejectForm.reqId },
+        { requestStatus: rejectForm.requestStatus }
       );
       if (requestDetail.n == 1 && userDetail.n == 1) resolve(true);
       else reject(false);

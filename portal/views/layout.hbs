@@ -166,11 +166,12 @@
                     <li class="sidebar-title">Settings</li>
 
 
-                    <li class="sidebar-item  {{#ifeq Active 'settings'}} active {{/ifeq}}">
-                        <a href="/portal/change-password" class='sidebar-link'>
+                    <li class="sidebar-item  {{#ifeq Active 'settings'}} active {{/ifeq}}" data-bs-toggle="modal"
+                  data-bs-target="#changePasswordModal" style="cursor: pointer;">
+                        <span class='sidebar-link'>
                             <i class="bi bi-key-fill"></i>
                             <span>Change Password</span>
-                        </a>
+                        </span>
                     </li>
                     <li class="sidebar-item ">
                         <a href="/portal/logout" class='sidebar-link'>
@@ -211,6 +212,97 @@
 <script src="/templates/admin-template/js/pages/dashboard.js"></script>
 
 <script src="/templates/admin-template/js/main.js"></script>
+
+
+
+<!-- MODAL OF ROOM REGISTRATION -->
+
+<div
+  class="modal fade text-left"
+  id="changePasswordModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="myModalLabel33"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel33">
+          Change your Password
+        </h4>
+        {{! <p>This is only for your request purpose.</p> }}
+        <button
+          type="button"
+          class="close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <i data-feather="x"></i>
+        </button>
+      </div>
+      <form
+        id="addRoom"
+        method="POST"
+        action="/portal/change-password"
+      >
+
+        <div class="modal-body">
+          <label>Old Password: </label>
+          <div class="form-group">
+            <input
+              type="password"
+              class="form-control"
+              id="passKey"
+              name="passKey"
+              required
+            />
+          </div>
+
+           <label>New Password: </label>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="newPassKey"
+              name="newPassKey"
+              required
+            />
+          </div>
+
+           <label>Old Password: </label>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="conPassKey"
+              name="ConPassKey"
+              required
+            />
+          </div>
+
+      
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-light-secondary"
+            data-bs-dismiss="modal"
+          >
+            <i class="bx bx-x d-block d-sm-none"></i>
+            <span class="d-none d-sm-block">Close</span>
+          </button>
+          <button type="submit" class="btn btn-primary ml-1">
+            <i class="bx bx-check d-block d-sm-none"></i>
+            <span class="d-none d-sm-block">ADD</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
 </body>
 
 </html>

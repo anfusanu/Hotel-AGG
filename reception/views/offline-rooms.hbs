@@ -218,21 +218,7 @@
 
     const roomId = document.getElementById('roomId').value;
 
+    window.location.href = `/reception/offline-rooms-status?roomId=${roomId}&roomNumber=${roomNumber}`
 
-    const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      roomId,orderId,roomNumber
-    }),
-    }
-
-    fetch(`/reception/guest-info`, requestOptions)
-    .then((response) =>  response.json())
-    .then((data) => {
-      if(data.isSuccess) window.location.href = '/reception/orders/today'
-      else alert("Internal Error")
-    })
-    .catch((err) => console.log(err));
   }
 </script>

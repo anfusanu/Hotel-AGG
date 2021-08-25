@@ -116,7 +116,12 @@
               <span class="orderDates">{{this.dateCheckOut}}</span></td>
             <td class="totalAmount">{{this.totalAmount}}</td>
             <td class="text-center">
+              {{#ifeq this.orderStatus 'Cancelled'}}
+                No Action
+              {{else}}
               <button class="btn btn-outline-danger btn-sm m-1" onclick="window.location.href = '/reception/order-cancel/{{this._id}}'">Cancel</button>
+
+              {{/ifeq}}
             </td>
           </tr>
           {{/each}}

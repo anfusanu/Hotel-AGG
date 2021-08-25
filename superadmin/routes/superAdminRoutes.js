@@ -50,12 +50,11 @@ router.get(
 // Admin rejects a request with a message (POST request)
 
 router.post("/portal-mgt/reject-request/", verifyLogin, function (req, res) {
-  console.log(req.body);
-  // helper.rejectRequest(req.body.reqId)
-  // .then(requestDetail => {
-  //   res.render('portal-mgt/detailed-request',{requestDetail})
+  helper.rejectRequest(req.body)
+  .then(requestDetail => {
+    res.redirect('/super-admin/portal-mgt')
 
-  // })
+  })
 });
 
 router.get("/subs-mgt", verifyLogin, function (req, res) {

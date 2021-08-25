@@ -188,7 +188,7 @@
 
         <div class="modal-body">
           <label>Room Number to change: </label>
-          <div class="form-group">
+          {{!-- <div class="form-group">
             <input
               type="text"
               placeholder="Room name"
@@ -197,15 +197,28 @@
               name="roomNumber"
               required
             />
+          </div> --}}
+          <div class="form-group">
+            <select class="form-select" id="roomNumber" name="roomNumber" required>
+              <option value="">
+                --Select the room number--
+              </option>
+              {{#each roomList.roomList}}
+              <option value="{{this.roomNumber}}">
+                {{this.roomNumber}}
+              </option>
+              {{/each}}
+            
+            </select>
           </div>
 
            <label>New room number: </label>
           <div class="form-group">
             <input
               type="text"
-              placeholder="Room name"
+              placeholder="New room number"
               class="form-control"
-              id="roomNumber"
+              id="newRoomNumber"
               name="newRoomNumber"
               required
             />

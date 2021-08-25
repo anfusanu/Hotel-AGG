@@ -39,6 +39,7 @@ module.exports = {
 
       let data = await portalRequest.findOneAndUpdate({ _id: tagId }, regDB, {
         upsert: true,
+        useFindAndModify :false,
       });
 
       if (data) resolve({ isSuccess: true, data });

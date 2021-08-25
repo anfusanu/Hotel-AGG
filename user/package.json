@@ -1,6 +1,6 @@
 {
-  "name": "alpha-ecom",
-  "version": "0.0.0",
+  "name": "hotel-agg",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www"

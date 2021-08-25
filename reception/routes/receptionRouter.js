@@ -60,10 +60,10 @@ router.get("/food-menu", verifyLogin, function (req, res) {
 });
 
 router.get(`/offline-rooms/:roomId`, verifyLogin, (req, res) => {
-  let tagId = req.session.admin.userId;
+  let portalId = req.session.reception.portalId;
   let roomId = req.params.roomId;
   helper
-    .getRoomOfflineList(tagId, roomId)
+    .getRoomOfflineList(portalId, roomId)
     .then((aggDetails) => {
       res.render("offline-rooms", { Active: "service", ...aggDetails });
     })
@@ -77,23 +77,42 @@ router.get(`/offline-rooms-booking`, verifyLogin, (req, res) => {
 
 router.post(`/offline-rooms-booking`, verifyLogin, (req, res) => {
   let portalId = req.session.reception.portalId;
-  console.log(req.body);
-  helper.bookRoomOffline(portalId, req.body).then((orderStatus) => {
-    res.json(orderStatus)
-  }).catch(err => res.json(err))
+  helper
+    .bookRoomOffline(portalId, req.body)
+    .then((orderStatus) => {
+      res.json(orderStatus);
+    })
+    .catch((err) => res.json(err));
 });
 
-
-router.get(`/offline-rooms-booking`, verifyLogin, (req, res) => {
-  res.render("offline-room-booking", { Active: "dashboard", query: req.query });
+router.get(`/reserve-offline`, verifyLogin, (req, res) => {
+  let portalId = req.session.reception.portalId;
+  helper.getRoomDetails(portalId).then((roomServices) => {
+    console.log(roomServices);
+    res.render("room-reserve", { Active: "dashboard", roomServices });
+  });
 });
 
-router.post(`/offline-rooms-booking`, verifyLogin, (req, res) => {
+router.post(`/reserve-offline`, verifyLogin, (req, res) => {
   let portalId = req.session.reception.portalId;
   console.log(req.body);
-  helper.bookRoomOffline(portalId, req.body).then((orderStatus) => {
-    res.json(orderStatus)
-  }).catch(err => res.json(err))
+  helper
+    .reserveRoomOffline(portalId, req.body)
+    .then((orderStatus) => {
+      res.redirect("/reception/orders/today");
+    })
+    .catch((err) => res.json(err));
+});
+
+router.get("/offline-rooms-status", verifyLogin, function (req, res) {
+  let portalId = req.session.reception.portalId;
+  helper.getGuestDetailsOffline(portalId, req.query).then((guestDetails) => {
+    console.log(guestDetails)
+    res.render("guest-details", {
+      Active: "dashboard",
+      ...guestDetails
+    });
+  });
 });
 
 router.get("/orders", verifyLogin, function (req, res) {

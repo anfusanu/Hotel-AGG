@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const helper = require("../helpers/portalHelper");
-const { imageUpload } = require("../helpers/s3bucket");
+const { imageUpload } = require("../helpers/s3bucket"); 
 
 /* Middleware*/
 
@@ -68,12 +68,23 @@ router.get("/reception-mgt", verifyLogin, function (req, res) {
     res.render("reception-mgt", { Active: "reception", receptionList });
   });
 });
+
 router.post(`/reception-mgt/add-reception`, verifyLogin, (req, res) => {
   let adminCred = req.session.admin;
   let formData = req.body;
 
   helper
     .addReception(adminCred, formData)
+    .then((saved) => res.redirect("/portal/reception-mgt"))
+    .catch((err) => res.redirect("/portal/reception-mgt"));
+});
+
+router.get(`/reception-mgt/remove-reception/:userName`, verifyLogin, (req, res) => {
+  let tagId = req.session.admin.userId;
+  let userName = req.params.userName;
+
+  helper
+    .removeReception(adminCred, formData)
     .then((saved) => res.redirect("/portal/reception-mgt"))
     .catch((err) => res.redirect("/portal/reception-mgt"));
 });
@@ -195,6 +206,8 @@ router.get(`/service-mgt/set-room/:roomId`, verifyLogin, (req, res) => {
 
 router.post(`/service-mgt/set-room-update/:roomId`, verifyLogin, (req, res) => {
   let tagId = req.session.admin.userId;
+  let roomId = req.params.roomId;
+
   helper.updateRoomNumber(tagId, roomId, req.body).then((status) => {
     res.redirect(`/portal/service-mgt/set-room/${roomId}`);
   });
@@ -202,7 +215,7 @@ router.post(`/service-mgt/set-room-update/:roomId`, verifyLogin, (req, res) => {
 
 router.get(`/service-mgt/set-room-delete`, verifyLogin, (req, res) => {
   let tagId = req.session.admin.userId;
-  const {roomId, roomNumber} = req.query
+  const { roomId, roomNumber } = req.query;
 
   helper.deleteRoomNumber(tagId, roomId, roomNumber).then((status) => {
     res.redirect(`/portal/service-mgt/set-room/${roomId}`);
@@ -221,6 +234,19 @@ router.get("/active", verifyLogin, function (req, res) {
   helper.portalStatusChanger(req.session.admin.userId).then((message) => {
     res.json({ message });
   });
+});
+
+router.post("/change-password", function (req, res) {
+  if (req.session.admin) {
+    let tagId = req.session.admin.userId;
+    helper
+      .updatePassword(tagId, req.body)
+      .then((status) => {
+        req.session.destroy();
+        res.redirect("/");
+      })
+      .catch((err) => res.redirect("/"));
+  } else res.redirect("/");
 });
 
 module.exports = router;

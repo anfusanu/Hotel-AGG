@@ -50,6 +50,15 @@ module.exports = {
       else reject(false);
     }),
 
+  getRoomDetails: (portalId) =>
+    new Promise(async (resolve, reject) => {
+      portalDetails = await Portal.findById(portalId).lean();
+      let roomServices = await RoomService.find({ portalId }).lean();
+
+      if (portalDetails) resolve(roomServices);
+      else reject(false);
+    }),
+
   getOrderList: (portalId, query) =>
     new Promise(async (resolve, reject) => {
       let findQuery = { portalId };
@@ -170,6 +179,8 @@ module.exports = {
           guestName: orderCred.guestName,
           guestPhone: orderCred.guestPhone,
           guestEmail: orderCred.guestEmail,
+          guestQty: orderCred.guestQty,
+          purpose: orderCred.purpose,
         },
         paymentMethod: "COD",
         paymentStatus: "Success",
@@ -181,6 +192,22 @@ module.exports = {
       newOrder
         .save()
         .then(async (insertedData) => {
+          console.log("SUCCESSFULLY ENDED\n\n\n\n");
+
+          let newOfflineRoom = await RoomOffline.updateOne(
+            {
+              _id: orderCred.roomId,
+              "roomList.roomNumber": orderCred.roomNumber,
+            },
+            {
+              $set: {
+                "roomList.$.isAvailable": false,
+                "roomList.$.orderId": insertedData._id,
+                "roomList.$.checkOut": insertedData.dateCheckOut,
+              },
+            }
+          );
+
           let bookingDetails = {
             _id: insertedData._id,
             user: portalId,
@@ -194,18 +221,9 @@ module.exports = {
             { _id: orderCred.roomId },
             { $push: { bookings: bookingDetails } }
           );
-          let newOfflineRoom = await RoomOffline.updateOne(
-            { _id: orderCred.roomId, "roomList.roomNumber": orderCred.roomNumber },
-            {
-              $set: {
-                "roomList.$.isAvailable": false,
-                "roomList.$.orderId": insertedData._id,
-              },
-            }
-          );
 
-          console.log(newRoomBooking)
-          console.log(newOfflineRoom)
+          console.log(newOfflineRoom);
+          console.log(newRoomBooking);
           resolve({
             isSuccess: true,
             orderId: insertedData._id,
@@ -226,66 +244,80 @@ module.exports = {
 
   reserveRoomOffline: (portalId, orderCred) =>
     new Promise(async (resolve, reject) => {
-      const { roomId, dateFrom, dateTo } = orderCred;
-      let roomDetails = await RoomService.findById(roomId).lean();
+      let roomDetails = await RoomService.findById(orderCred.roomId).lean();
+
       let reserveDays =
         Math.round(
-          (new Date(dateTo) - new Date(dateFrom)) / (1000 * 60 * 60 * 24)
+          (new Date(orderCred.dateTo) - new Date(orderCred.dateFrom)) /
+            (1000 * 60 * 60 * 24)
         ) + 1;
       let totalAmount = roomDetails.roomPrice * reserveDays;
 
-      if (formData.paymentMethod === "COD") formData.paymentStatus = "Pending";
-      else formData.paymentStatus = "Placed";
-
       let newOrder = new Order({
-        userId: tagId,
-        portalId: roomDetails.portalId,
+        userId: portalId,
+        portalId: portalId,
         roomId: roomDetails._id,
 
         guestInfo: {
-          guestName: `${formData.firstName} ${formData.lastName}`,
-          guestPhone: formData.userPhone,
-          guestEmail: formData.userEmail,
+          guestName: orderCred.guestName,
+          guestPhone: orderCred.guestPhone,
+          guestEmail: orderCred.guestEmail,
+          guestQty: orderCred.guestQty,
+          purpose: orderCred.purpose,
         },
-        paymentMethod: formData.paymentMethod,
-        paymentStatus: formData.paymentStatus,
+        paymentMethod: "COD",
+        paymentStatus: "Pending",
         orderStatus: "Waiting",
         totalAmount,
-        dateCheckIn: new Date(dateFrom),
-        dateCheckOut: new Date(dateTo),
+        dateCheckIn: new Date(orderCred.dateFrom),
+        dateCheckOut: new Date(orderCred.dateTo),
       });
-
       newOrder
         .save()
         .then(async (insertedData) => {
+          let newOfflineRoom = await RoomOffline.updateOne(
+            {
+              _id: orderCred.roomId,
+              "roomList.roomNumber": orderCred.roomNumber,
+              "roomList.$.checkOut": insertedData.dateCheckOut,
+            },
+            {
+              $set: {
+                "roomList.$.isAvailable": false,
+                "roomList.$.orderId": insertedData._id,
+              },
+            }
+          );
+
           let bookingDetails = {
             _id: insertedData._id,
-            user: tagId,
-            bookingStart: new Date(dateFrom),
-            bookingEnd: new Date(dateTo),
+            user: portalId,
+            bookingStart: new Date(orderCred.dateFrom),
+            bookingEnd: new Date(orderCred.dateTo),
             duration: reserveDays,
-            purpose: formData.purpose,
-            roomId: roomId,
+            purpose: orderCred.purpose,
+            roomId: orderCred.roomId,
           };
-          await RoomService.updateOne(
-            { _id: roomId },
+          let newRoomBooking = await RoomService.updateOne(
+            { _id: orderCred.roomId },
             { $push: { bookings: bookingDetails } }
           );
+          console.log(newOfflineRoom);
+          console.log(newRoomBooking);
+          console.log("SUCCESSFULLY ENDED\n\n\n\n");
+
           resolve({
             isSuccess: true,
-            orderId: insertedData._id,
-            paymentMethod: insertedData.paymentMethod,
-            paymentStatus: insertedData.paymentStatus,
-            totalAmount: insertedData.totalAmount,
           });
         })
-        .catch((err) =>
+        .catch((err) => {
+          console.log(newOrder);
           reject({
             isSuccess: false,
             message: "Order error",
             err,
-          })
-        );
+          });
+        });
     }),
 
   checkInUser: (portalId, orderCred) =>
@@ -310,6 +342,20 @@ module.exports = {
 
       if (offlineRoomUpdate) resolve({ isSuccess: true });
       else reject({ isSuccess: false });
+    }),
+
+  getGuestDetailsOffline: (portalId, { roomId, roomNumber }) =>
+    new Promise(async (resolve, reject) => {
+      let roomOffline = await RoomOffline.findOne(
+        { _id: roomId, portalId },
+        { roomList: { $elemMatch: { roomNumber } } }
+      ).lean();
+      roomOffline = roomOffline.roomList[0];
+
+      let orderDetails = await Order.findById(roomOffline.orderId);
+
+      if (roomOffline.isAvailable) reject(false);
+      else resolve({roomOffline,orderDetails});
     }),
 
   checkOutUser: (tagId, orderId) =>

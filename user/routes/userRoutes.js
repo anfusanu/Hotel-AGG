@@ -183,6 +183,6 @@ router.post("/update-password", verifyLogin, function (req, res) {
       res.json(eventStatus);
     })
     .catch((err) => res.json(err));
-});
+}); 
 
 module.exports = router;

@@ -30,7 +30,6 @@
                       Delete</button>
                   </div>
                 </div>
-
                 {{/each}}
 
               </div>
@@ -150,7 +149,6 @@
     fetch(`/portal/service-mgt/edit-room/delete-image`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
         if (!data.isSuccess) alert(data.message)
         else {
           document.getElementById(url).style.display = "none"
